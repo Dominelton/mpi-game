@@ -16,6 +16,7 @@ public:
     void doLoop();
 private:
 
+    
 };
 
 #endif	/* GAMELOOP_H */
