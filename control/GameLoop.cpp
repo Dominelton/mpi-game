@@ -17,6 +17,6 @@ gameLoop::~gameLoop() {
 }
 
 void gameLoop::doLoop() {
-   
+    
 }
 
