@@ -7,9 +7,9 @@
 
 #ifndef PLAYER_H
 #define	PLAYER_H
-#include "Personagem.h"
+#include "Character.h"
 
-class Player : public Personagem {
+class Player : public Character {
 public:
     Player();
     Player(const Player& orig);

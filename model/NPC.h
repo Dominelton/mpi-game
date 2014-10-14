@@ -7,9 +7,9 @@
 
 #ifndef NPC_H
 #define	NPC_H
-#include "Personagem.h"
+#include "Character.h"
 
-class NPC : public Personagem {
+class NPC : public Character {
 public:
     NPC();
     NPC(const NPC& orig);
