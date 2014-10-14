@@ -37,10 +37,10 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/control/GameLoop.o \
 	${OBJECTDIR}/control/mpiGameMain.o \
+	${OBJECTDIR}/model/Character.o \
 	${OBJECTDIR}/model/NPC.o \
-	${OBJECTDIR}/model/Personagem.o \
 	${OBJECTDIR}/model/Player.o \
-	${OBJECTDIR}/model/Posicao.o
+	${OBJECTDIR}/model/Position.o
 
 
 # C Compiler Flags
@@ -77,25 +77,25 @@ ${OBJECTDIR}/control/mpiGameMain.o: control/mpiGameMain.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/control/mpiGameMain.o control/mpiGameMain.cpp
 
+${OBJECTDIR}/model/Character.o: model/Character.cpp 
+	${MKDIR} -p ${OBJECTDIR}/model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Character.o model/Character.cpp
+
 ${OBJECTDIR}/model/NPC.o: model/NPC.cpp 
 	${MKDIR} -p ${OBJECTDIR}/model
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/NPC.o model/NPC.cpp
-
-${OBJECTDIR}/model/Personagem.o: model/Personagem.cpp 
-	${MKDIR} -p ${OBJECTDIR}/model
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Personagem.o model/Personagem.cpp
 
 ${OBJECTDIR}/model/Player.o: model/Player.cpp 
 	${MKDIR} -p ${OBJECTDIR}/model
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Player.o model/Player.cpp
 
-${OBJECTDIR}/model/Posicao.o: model/Posicao.cpp 
+${OBJECTDIR}/model/Position.o: model/Position.cpp 
 	${MKDIR} -p ${OBJECTDIR}/model
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Posicao.o model/Posicao.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Position.o model/Position.cpp
 
 # Subprojects
 .build-subprojects:

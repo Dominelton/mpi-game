@@ -21,16 +21,16 @@
       </logicalFolder>
       <logicalFolder name="f1" displayName="model" projectFiles="true">
         <logicalFolder name="f1" displayName="header" projectFiles="true">
+          <itemPath>model/Character.h</itemPath>
           <itemPath>model/NPC.h</itemPath>
-          <itemPath>model/Personagem.h</itemPath>
           <itemPath>model/Player.h</itemPath>
-          <itemPath>model/Posicao.h</itemPath>
+          <itemPath>model/Position.h</itemPath>
         </logicalFolder>
         <logicalFolder name="f2" displayName="impl" projectFiles="true">
+          <itemPath>model/Character.cpp</itemPath>
           <itemPath>model/NPC.cpp</itemPath>
-          <itemPath>model/Personagem.cpp</itemPath>
           <itemPath>model/Player.cpp</itemPath>
-          <itemPath>model/Posicao.cpp</itemPath>
+          <itemPath>model/Position.cpp</itemPath>
         </logicalFolder>
       </logicalFolder>
       <logicalFolder name="f2" displayName="view" projectFiles="true">
@@ -80,21 +80,21 @@
       </item>
       <item path="control/mpiGameMain.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="model/Character.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="model/Character.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="model/NPC.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="model/NPC.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="model/Personagem.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="model/Personagem.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="model/Player.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="model/Player.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="model/Posicao.cpp" ex="false" tool="1" flavor2="0">
+      <item path="model/Position.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="model/Posicao.h" ex="false" tool="3" flavor2="0">
+      <item path="model/Position.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -123,21 +123,21 @@
       </item>
       <item path="control/mpiGameMain.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="model/Character.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="model/Character.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="model/NPC.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="model/NPC.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="model/Personagem.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="model/Personagem.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="model/Player.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="model/Player.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="model/Posicao.cpp" ex="false" tool="1" flavor2="0">
+      <item path="model/Position.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="model/Posicao.h" ex="false" tool="3" flavor2="0">
+      <item path="model/Position.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

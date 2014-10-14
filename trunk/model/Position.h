@@ -1,5 +1,5 @@
 /* 
- * File:   Posicao.h
+ * File:   Position.h
  * Author: wander
  *
  * Created on October 14, 2014, 3:08 PM
@@ -8,11 +8,11 @@
 #ifndef POSICAO_H
 #define	POSICAO_H
 
-class Posicao {
+class Position {
 public:
-    Posicao();
-    Posicao(const Posicao& orig);
-    virtual ~Posicao();
+    Position();
+    Position(const Position& orig);
+    virtual ~Position();
 private:
 
 };
