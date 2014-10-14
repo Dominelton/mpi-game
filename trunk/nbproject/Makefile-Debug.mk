@@ -35,8 +35,12 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/control/gameLoop.o \
-	${OBJECTDIR}/control/mpiGameMain.o
+	${OBJECTDIR}/control/GameLoop.o \
+	${OBJECTDIR}/control/mpiGameMain.o \
+	${OBJECTDIR}/model/NPC.o \
+	${OBJECTDIR}/model/Personagem.o \
+	${OBJECTDIR}/model/Player.o \
+	${OBJECTDIR}/model/Posicao.o
 
 
 # C Compiler Flags
@@ -63,15 +67,35 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/mpi-game: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	mpicxx -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/mpi-game ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/control/gameLoop.o: control/gameLoop.cpp 
+${OBJECTDIR}/control/GameLoop.o: control/GameLoop.cpp 
 	${MKDIR} -p ${OBJECTDIR}/control
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../../mpich_install/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/control/gameLoop.o control/gameLoop.cpp
+	$(COMPILE.cc) -g -I../../mpich_install/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/control/GameLoop.o control/GameLoop.cpp
 
 ${OBJECTDIR}/control/mpiGameMain.o: control/mpiGameMain.cpp 
 	${MKDIR} -p ${OBJECTDIR}/control
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I../../mpich_install/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/control/mpiGameMain.o control/mpiGameMain.cpp
+
+${OBJECTDIR}/model/NPC.o: model/NPC.cpp 
+	${MKDIR} -p ${OBJECTDIR}/model
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I../../mpich_install/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/NPC.o model/NPC.cpp
+
+${OBJECTDIR}/model/Personagem.o: model/Personagem.cpp 
+	${MKDIR} -p ${OBJECTDIR}/model
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I../../mpich_install/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Personagem.o model/Personagem.cpp
+
+${OBJECTDIR}/model/Player.o: model/Player.cpp 
+	${MKDIR} -p ${OBJECTDIR}/model
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I../../mpich_install/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Player.o model/Player.cpp
+
+${OBJECTDIR}/model/Posicao.o: model/Posicao.cpp 
+	${MKDIR} -p ${OBJECTDIR}/model
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I../../mpich_install/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Posicao.o model/Posicao.cpp
 
 # Subprojects
 .build-subprojects:

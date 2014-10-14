@@ -5,7 +5,7 @@
  * Created on September 25, 2014, 3:27 PM
  */
 
-#include "gameLoop.h"
+#include "GameLoop.h"
 
 gameLoop::gameLoop() {
 }
@@ -14,5 +14,9 @@ gameLoop::gameLoop(const gameLoop& orig) {
 }
 
 gameLoop::~gameLoop() {
+}
+
+void gameLoop::doLoop() {
+   
 }
 
