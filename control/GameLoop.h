@@ -13,6 +13,7 @@ public:
     gameLoop();
     gameLoop(const gameLoop& orig);
     virtual ~gameLoop();
+    void doLoop();
 private:
 
 };
