@@ -15,8 +15,8 @@ public:
     virtual ~gameLoop();
     void doLoop();
 private:
-
-    
+    int startLoop;
+    int endLoop;
 };
 
 #endif	/* GAMELOOP_H */
