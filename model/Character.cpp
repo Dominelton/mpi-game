@@ -10,10 +10,6 @@
 Character::Character() {
 }
 
-Character::Character(int id) {
-    setId(id);
-}
-
 Character::Character(const Character& orig) {
 }
 
