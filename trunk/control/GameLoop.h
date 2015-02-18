@@ -9,6 +9,7 @@
 #define	GAMELOOP_H
 
 #include <time.h>
+#include <vector>
 
 class GameLoop {
 public:
@@ -19,6 +20,7 @@ public:
 private:
     clock_t startLoop;
     clock_t endLoop;
+    std::vector<NPC> npcs;
 };
 
 #endif	/* GAMELOOP_H */
