@@ -11,17 +11,18 @@
 
 class Character {
 public:
+    Character(int id);
     Character();
     Character(const Character& orig);
     virtual ~Character();
-    void mover();
-    void parar();
+    void move();
+    void stop();
     
     Position getPosition(){
-        return posicao;
+        return position;
     }
-    void setPosition(Position posicao){
-        this->posicao = posicao;
+    void setPosition(Position position){
+        this->position = position;
     }
     int getSpeed(){
         return speed;
@@ -29,10 +30,17 @@ public:
     void setSpeed(int speed){
         this->speed = speed;
     }
+    int getId(){
+        return this-> id;
+    }
+    void setId(int id){
+        this-> id = id;
+    }
     
 private:
-    Position posicao;
+    Position position;
     int speed;
+    int id;
 };
 
 #endif	/* PERSONAGEM_H */
