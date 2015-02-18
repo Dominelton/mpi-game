@@ -65,6 +65,7 @@
           <commandlineTool>mpicxx</commandlineTool>
           <incDir>
             <pElem>../../mpich_install/include</pElem>
+            <pElem>model</pElem>
           </incDir>
         </ccTool>
         <linkerTool>
