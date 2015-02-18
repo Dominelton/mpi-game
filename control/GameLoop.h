@@ -8,15 +8,17 @@
 #ifndef GAMELOOP_H
 #define	GAMELOOP_H
 
-class gameLoop {
+#include <time.h>
+
+class GameLoop {
 public:
-    gameLoop();
-    gameLoop(const gameLoop& orig);
-    virtual ~gameLoop();
+    GameLoop();
+    GameLoop(const GameLoop& orig);
+    virtual ~GameLoop();
     void doLoop();
 private:
-    int startLoop;
-    int endLoop;
+    clock_t startLoop;
+    clock_t endLoop;
 };
 
 #endif	/* GAMELOOP_H */
