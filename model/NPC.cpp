@@ -7,6 +7,10 @@
 
 #include "NPC.h"
 
+NPC::NPC(int id) {
+    setId(id);
+}
+
 NPC::NPC() {
 }
 

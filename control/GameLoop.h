@@ -10,6 +10,7 @@
 
 #include <time.h>
 #include <vector>
+#include <NPC.h>
 
 class GameLoop {
 public:

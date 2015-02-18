@@ -10,6 +10,7 @@
 #include <time.h>
 #include <iostream>
 #include <fstream>
+#include <NPC.h>
 
 GameLoop::GameLoop() {
     npcs.reserve(100);
@@ -39,7 +40,7 @@ void GameLoop::doLoop() {
         n++;
     }
     
-    int n = 1;
+    n = 1;
     while (n < 100){
     
         startLoop = clock();
