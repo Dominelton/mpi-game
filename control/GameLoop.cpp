@@ -12,6 +12,11 @@
 #include <fstream>
 
 GameLoop::GameLoop() {
+    npcs.reserve(100);
+    for (int i = 0; i < 100; i++){
+        NPC npc(i);
+        npcs.push_back(npc);
+    }
 }
 
 GameLoop::GameLoop(const GameLoop& orig) {
@@ -21,34 +26,33 @@ GameLoop::~GameLoop() {
 }
 
 void GameLoop::doLoop() {
-    int n = 1;
+    
     
     std::ofstream dataFile;
     dataFile.open( "../dataFile.txt" );
-    // Outputs to example.txt through a_file
     
+    int n = 0;
+    while (n < 100){
+        dataFile << "NPC " << n << ":\n";
+        dataFile << "id: " << npcs[n].getId() << "\n";
+        
+        n++;
+    }
+    
+    int n = 1;
     while (n < 100){
     
         startLoop = clock();
-        // Aqui teremos a logica de loop
-        //Creates an instance of ofstream, and opens example.txt
 
         endLoop = clock();
         
-        
-        
-        dataFile << "Loop :\n";
-
+        dataFile << "Loop " << n << ":\n";
         dataFile << startLoop << "\n";
-
-        // Close the file stream explicitly
         dataFile << endLoop << "\n";
-
         dataFile << CLOCKS_PER_SEC << "\n";
         
         n++;
     }
     
     dataFile.close();
-    // Aqui gravaremos dados em arquivo para análise
 }
