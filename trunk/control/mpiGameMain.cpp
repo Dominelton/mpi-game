@@ -2,6 +2,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"
+#include "GameLoop.h"
 
 const char* openPort();
 MPI::Intercomm acceptConnection(const char* port_name);
@@ -11,12 +12,16 @@ void printRankAndSize(MPI::Intercomm intercom);
  *
  */
 int main(int argc, char** argv) {
-    MPI::Init(argc, argv);
+    /*MPI::Init(argc, argv);
     
     const char* port_name = openPort();
     MPI::Intercomm intercom = acceptConnection(port_name);
     
-    MPI::Finalize();
+    MPI::Finalize();*/
+    
+    GameLoop game;
+    game.doLoop();
+    
     return 0;
 }
 
