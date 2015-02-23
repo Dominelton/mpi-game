@@ -12,7 +12,7 @@
 class Character {
 public:
     Character();
-    Character(int id);
+    Character(int, Position);
     Character(const Character& orig);
     virtual ~Character();
     void move();

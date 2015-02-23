@@ -19,6 +19,7 @@ public:
     virtual ~GameLoop();
     void doLoop();
 private:
+    void spawnNPC();
     clock_t startLoop;
     clock_t endLoop;
     std::vector<NPC> npcs;

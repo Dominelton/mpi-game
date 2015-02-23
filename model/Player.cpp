@@ -10,7 +10,7 @@
 Player::Player() {
 }
 
-Player::Player(int vId):Character(vId) {
+Player::Player(int id, Position position):Character(id, position) {
 }
 
 Player::Player(const Player& orig) {

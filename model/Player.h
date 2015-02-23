@@ -12,7 +12,7 @@
 class Player : public Character {
 public:
     Player();
-    Player(int vId);
+    Player(int, Position);
     Player(const Player& orig);
     virtual ~Player();
 private:
