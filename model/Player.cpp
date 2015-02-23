@@ -10,6 +10,9 @@
 Player::Player() {
 }
 
+Player::Player(int vId):Character(vId) {
+}
+
 Player::Player(const Player& orig) {
 }
 
