@@ -16,7 +16,8 @@ GameLoop::GameLoop() {
     npcs.reserve(100);
     for (int i = 0; i < 100; i++){
         NPC npc(i);
-        npcs.push_back(npc);
+        //npcs.push_back(npc);
+        npcs[i] = npc;
     }
 }
 
@@ -36,7 +37,7 @@ void GameLoop::doLoop() {
     while (n < 100){
         dataFile << "NPC " << n << ":\n";
         dataFile << "id: " << npcs[n].getId() << "\n";
-        
+        std::cout << "xxx " << npcs[n].getId() << "\n";
         n++;
     }
     
