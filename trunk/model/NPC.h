@@ -11,8 +11,8 @@
 
 class NPC : public Character {
 public:
-    NPC(int);
     NPC();
+    NPC(int vId);
     NPC(const NPC& orig);
     virtual ~NPC();
     typedef Character super;

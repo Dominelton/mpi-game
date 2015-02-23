@@ -10,9 +10,12 @@
 Character::Character() {
 }
 
+Character::Character(int vId) {
+    id = vId;
+}
+
 Character::Character(const Character& orig) {
 }
 
 Character::~Character() {
 }
-

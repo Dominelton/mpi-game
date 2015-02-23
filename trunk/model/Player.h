@@ -12,6 +12,7 @@
 class Player : public Character {
 public:
     Player();
+    Player(int vId);
     Player(const Player& orig);
     virtual ~Player();
 private:

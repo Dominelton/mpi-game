@@ -7,8 +7,7 @@
 
 #include "NPC.h"
 
-NPC::NPC(int vId) {
-    setId(vId);
+NPC::NPC(int vId):Character(vId) {
 }
 
 NPC::NPC() {
