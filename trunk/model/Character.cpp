@@ -10,8 +10,9 @@
 Character::Character() {
 }
 
-Character::Character(int vId) {
-    id = vId;
+Character::Character(int id, Position position) {
+    this->id = id;
+    this->position = position;
 }
 
 Character::Character(const Character& orig) {

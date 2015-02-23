@@ -6,6 +6,7 @@
  */
 
 #include "GameLoop.h"
+#include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
 #include <iostream>
@@ -13,18 +14,22 @@
 #include <NPC.h>
 
 GameLoop::GameLoop() {
-    npcs.reserve(100);
-    for (int i = 0; i < 100; i++){
-        NPC npc(i);
-        //npcs.push_back(npc);
-        npcs[i] = npc;
-    }
+    spawnNPC();
 }
 
 GameLoop::GameLoop(const GameLoop& orig) {
 }
 
 GameLoop::~GameLoop() {
+}
+
+void GameLoop::spawnNPC(){
+    npcs.reserve(100);
+    for (int id = 0; id < 100; id++){
+        Position position(rand() % 1000, rand() % 1000, rand() % 1000);
+        NPC npc(id, position);
+        npcs[id] = npc;
+    }
 }
 
 void GameLoop::doLoop() {
