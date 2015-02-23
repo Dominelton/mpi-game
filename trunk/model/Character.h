@@ -11,7 +11,6 @@
 
 class Character {
 public:
-    Character(int id);
     Character();
     Character(const Character& orig);
     virtual ~Character();
@@ -31,10 +30,10 @@ public:
         this->speed = speed;
     }
     int getId(){
-        return this-> id;
+        return id;
     }
-    void setId(int id){
-        this-> id = id;
+    void setId(int vId){
+        id = vId;
     }
     
 private:
