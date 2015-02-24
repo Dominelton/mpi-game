@@ -28,6 +28,7 @@ void GameLoop::spawnNPC(){
     for (int id = 0; id < 100; id++){
         Position position(rand() % 1000, rand() % 1000, rand() % 1000);
         Movement movement(position);
+        
         NPC npc(id, movement);
         npcs[id] = npc;
     }
