@@ -7,38 +7,44 @@
 
 #ifndef PERSONAGEM_H
 #define	PERSONAGEM_H
-#include "Position.h"
+
+#include "Movement.h"
 
 class Character {
 public:
     Character();
-    Character(int, Position);
+    Character(int, Movement);
     Character(const Character& orig);
     virtual ~Character();
     void move();
     void stop();
-    
-    Position getPosition(){
-        return position;
+
+    void setId(int id) {
+        this->id = id;
     }
-    void setPosition(Position position){
-        this->position = position;
-    }
-    int getSpeed(){
-        return speed;
-    }
-    void setSpeed(int speed){
-        this->speed = speed;
-    }
-    int getId(){
+
+    int getId() const {
         return id;
     }
-    void setId(int vId){
-        id = vId;
+
+    void setSpeed(int speed) {
+        this->speed = speed;
+    }
+
+    int getSpeed() const {
+        return speed;
+    }
+
+    void setMovement(Movement movement) {
+        this->movement = movement;
+    }
+
+    Movement getMovement() const {
+        return movement;
     }
     
 private:
-    Position position;
+    Movement movement;
     int speed;
     int id;
 };

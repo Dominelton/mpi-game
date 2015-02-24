@@ -27,7 +27,8 @@ void GameLoop::spawnNPC(){
     npcs.reserve(100);
     for (int id = 0; id < 100; id++){
         Position position(rand() % 1000, rand() % 1000, rand() % 1000);
-        NPC npc(id, position);
+        Movement movement(position);
+        NPC npc(id, movement);
         npcs[id] = npc;
     }
 }

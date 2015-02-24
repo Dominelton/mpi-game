@@ -11,7 +11,7 @@
 
 class NPC : public Character {
 public:
-    NPC(int, Position);
+    NPC(int, Movement);
     NPC();
     NPC(int vId);
     NPC(const NPC& orig);

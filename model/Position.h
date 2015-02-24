@@ -14,23 +14,29 @@ public:
     Position(int, int, int);
     Position(const Position& orig);
     virtual ~Position();
-    int getX(){
-        return x;
+
+    void setZ(int z) {
+        this->z = z;
     }
-    void setX(int x){
-        this->x = x;
-    }
-    int getY(){
-        return y;
-    }
-    void setY(int y){
-        this->y = y;
-    }
-    int getZ(){
+
+    int getZ() const {
         return z;
     }
-    void setZ(int z){
-        this->z = z;
+
+    void setY(int y) {
+        this->y = y;
+    }
+
+    int getY() const {
+        return y;
+    }
+
+    void setX(int x) {
+        this->x = x;
+    }
+
+    int getX() const {
+        return x;
     }
 private:
     int x;
