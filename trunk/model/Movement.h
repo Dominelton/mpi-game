@@ -18,7 +18,7 @@ public:
     const double MULT_BACKWARDS = 0.50;*/
     
     Movement();
-    Movement(Position);
+    Movement(Position*);
     Movement(const Movement& orig);
     virtual ~Movement();
 
@@ -30,33 +30,33 @@ public:
         return speed;
     }
 
-    void setDirecao(double direcao) {
-        this->direcao = direcao;
+    void setDirection(double direction) {
+        this->direction = direction;
     }
 
-    double getDirecao() const {
-        return direcao;
+    double getDirection() const {
+        return direction;
     }
 
-    void setEnd(Position end) {
+    void setEnd(Position* end) {
         this->end = end;
     }
 
-    Position getEnd() const {
+    Position* getEnd() {
         return end;
     }
 
-    void setStart(Position start) {
+    void setStart(Position* start) {
         this->start = start;
     }
 
-    Position getStart() const {
+    Position* getStart() {
         return start;
     }
 private:
-    Position start;
-    Position end;
-    double direcao;
+    Position* start;
+    Position* end;
+    double direction;
     double speed;
 };
 

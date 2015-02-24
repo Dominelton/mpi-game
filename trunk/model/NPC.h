@@ -13,7 +13,7 @@
 class NPC : public Character {
 public:
     NPC();
-    NPC(int, Movement);
+    NPC(int, Movement*);
     NPC(int vId);
     NPC(const NPC& orig);
     virtual ~NPC();

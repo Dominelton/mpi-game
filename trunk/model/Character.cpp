@@ -10,7 +10,7 @@
 Character::Character() {
 }
 
-Character::Character(int id, Movement movement) {
+Character::Character(int id, Movement* movement) {
     this->id = id;
     this->movement = movement;
 }

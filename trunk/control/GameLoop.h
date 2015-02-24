@@ -22,7 +22,7 @@ private:
     void spawnNPC();
     clock_t startLoop;
     clock_t endLoop;
-    std::vector<NPC> npcs;
+    std::vector<NPC*> npcs;
 };
 
 #endif	/* GAMELOOP_H */
