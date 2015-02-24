@@ -37,14 +37,9 @@ void GameLoop::spawnNPC(){
 
 void GameLoop::doLoop() {
     
-     
-    std::ofstream dataFile;
-    dataFile.open( "../dataFile.txt" );
-    
     int n = 0;
     while (n < 100){
-        dataFile << "NPC " << n << ":\n";
-        dataFile << "id: " << npcs[n]->getId() << "\n";
+        
         std::cout << "NPC id " << npcs[n]->getId() << "\n";
         std::cout << "Position start x " << npcs[n]->getMovement()->getStart()->getX() << "\n";
         std::cout << "Position start y " << npcs[n]->getMovement()->getStart()->getY() << "\n";
@@ -52,7 +47,11 @@ void GameLoop::doLoop() {
         n++;
     }
     
-    n = 1;
+    /* 
+    std::ofstream dataFile;
+    dataFile.open( "../dataFile.txt" );
+    
+    n = 0;
     while (n < 100){
     
         startLoop = clock();
@@ -61,11 +60,15 @@ void GameLoop::doLoop() {
         
         dataFile << "Loop " << n << ":\n";
         dataFile << startLoop << "\n";
+     
+        dataFile << "NPC " << n << ":\n";
+        dataFile << "id: " << npcs[n]->getId() << "\n";
+      
         dataFile << endLoop << "\n";
         dataFile << CLOCKS_PER_SEC << "\n";
         
         n++;
     }
     
-    dataFile.close();
+    dataFile.close();*/
 }
