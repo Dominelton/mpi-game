@@ -22,12 +22,14 @@
       <logicalFolder name="f1" displayName="model" projectFiles="true">
         <logicalFolder name="f1" displayName="header" projectFiles="true">
           <itemPath>model/Character.h</itemPath>
+          <itemPath>model/Movement.h</itemPath>
           <itemPath>model/NPC.h</itemPath>
           <itemPath>model/Player.h</itemPath>
           <itemPath>model/Position.h</itemPath>
         </logicalFolder>
         <logicalFolder name="f2" displayName="impl" projectFiles="true">
           <itemPath>model/Character.cpp</itemPath>
+          <itemPath>model/Movement.cpp</itemPath>
           <itemPath>model/NPC.cpp</itemPath>
           <itemPath>model/Player.cpp</itemPath>
           <itemPath>model/Position.cpp</itemPath>
@@ -85,6 +87,10 @@
       </item>
       <item path="model/Character.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="model/Movement.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="model/Movement.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="model/NPC.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="model/NPC.h" ex="false" tool="3" flavor2="0">
@@ -127,6 +133,10 @@
       <item path="model/Character.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="model/Character.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="model/Movement.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="model/Movement.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="model/NPC.cpp" ex="false" tool="1" flavor2="0">
       </item>

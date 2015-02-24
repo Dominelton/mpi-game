@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/control/GameLoop.o \
 	${OBJECTDIR}/control/mpiGameMain.o \
 	${OBJECTDIR}/model/Character.o \
+	${OBJECTDIR}/model/Movement.o \
 	${OBJECTDIR}/model/NPC.o \
 	${OBJECTDIR}/model/Player.o \
 	${OBJECTDIR}/model/Position.o
@@ -81,6 +82,11 @@ ${OBJECTDIR}/model/Character.o: model/Character.cpp
 	${MKDIR} -p ${OBJECTDIR}/model
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Character.o model/Character.cpp
+
+${OBJECTDIR}/model/Movement.o: model/Movement.cpp 
+	${MKDIR} -p ${OBJECTDIR}/model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Movement.o model/Movement.cpp
 
 ${OBJECTDIR}/model/NPC.o: model/NPC.cpp 
 	${MKDIR} -p ${OBJECTDIR}/model

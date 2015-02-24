@@ -7,12 +7,13 @@
 
 #ifndef NPC_H
 #define	NPC_H
+
 #include "Character.h"
 
 class NPC : public Character {
 public:
-    NPC(int, Movement);
     NPC();
+    NPC(int, Movement);
     NPC(int vId);
     NPC(const NPC& orig);
     virtual ~NPC();
