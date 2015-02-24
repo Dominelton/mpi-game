@@ -12,6 +12,7 @@
 #include <iostream>
 #include <fstream>
 #include <NPC.h>
+#include <time.h> 
 
 GameLoop::GameLoop() {
     spawnNPC();
@@ -24,27 +25,30 @@ GameLoop::~GameLoop() {
 }
 
 void GameLoop::spawnNPC(){
-    npcs.reserve(100);
+    this->npcs.reserve(100);
+    srand (time(NULL));
     for (int id = 0; id < 100; id++){
-        Position position(rand() % 1000, rand() % 1000, rand() % 1000);
-        Movement movement(position);
-        
-        NPC npc(id, movement);
-        npcs[id] = npc;
+        Position* position = new Position(rand() % 1000, rand() % 1000, rand() % 1000);
+        Movement* movement = new Movement(position);
+        NPC* npc = new NPC(id, movement);
+        this->npcs[id] = npc;
     }
 }
 
 void GameLoop::doLoop() {
     
-    
+     
     std::ofstream dataFile;
     dataFile.open( "../dataFile.txt" );
     
     int n = 0;
     while (n < 100){
         dataFile << "NPC " << n << ":\n";
-        dataFile << "id: " << npcs[n].getId() << "\n";
-        std::cout << "xxx " << npcs[n].getId() << "\n";
+        dataFile << "id: " << npcs[n]->getId() << "\n";
+        std::cout << "NPC id " << npcs[n]->getId() << "\n";
+        std::cout << "Position start x " << npcs[n]->getMovement()->getStart()->getX() << "\n";
+        std::cout << "Position start y " << npcs[n]->getMovement()->getStart()->getY() << "\n";
+        std::cout << "Position start z " << npcs[n]->getMovement()->getStart()->getZ() << "\n";
         n++;
     }
     

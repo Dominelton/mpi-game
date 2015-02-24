@@ -13,7 +13,7 @@
 class Character {
 public:
     Character();
-    Character(int, Movement);
+    Character(int, Movement*);
     Character(const Character& orig);
     virtual ~Character();
     void move();
@@ -35,16 +35,16 @@ public:
         return speed;
     }
 
-    void setMovement(Movement movement) {
+    void setMovement(Movement* movement) {
         this->movement = movement;
     }
 
-    Movement getMovement() const {
+    Movement* getMovement() {
         return movement;
     }
     
 private:
-    Movement movement;
+    Movement* movement;
     int speed;
     int id;
 };

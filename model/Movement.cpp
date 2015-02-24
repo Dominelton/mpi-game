@@ -10,7 +10,7 @@
 Movement::Movement() {
 }
 
-Movement::Movement(Position start) {
+Movement::Movement(Position* start) {
     this->start = start;
 }
 
