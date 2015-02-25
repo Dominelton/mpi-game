@@ -13,9 +13,10 @@
 #include <fstream>
 #include <NPC.h>
 #include <time.h> 
+#include <cmath>
 
 GameLoop::GameLoop() {
-    spawnNPC();
+    //spawnNPC();
 }
 
 GameLoop::GameLoop(const GameLoop& orig) {
@@ -37,7 +38,34 @@ void GameLoop::spawnNPC(){
 
 void GameLoop::doLoop() {
     
-    int n = 0;
+    int x1 = 0;
+    int y1 = 0;
+    int z1 = 0;
+    
+    int x2 = -5;
+    int y2 = 5;
+    int z2 = 5;
+    
+    double deltaX = x2 - x1;
+    double deltaY = y2 - y1;
+    double deltaZ = z2 - z1;
+    
+    double facingAngleXY = atan2(deltaY, deltaX) * 180 / M_PI;
+    
+    double theta = atan2(deltaZ, deltaX);
+    
+    
+    std::cout << "Angulo XY: " << facingAngleXY;
+    
+    std::cout << "Angulo XY: " << theta * 180 / M_PI;
+    
+    double dist=sqrt(pow(deltaX, 2) + pow(deltaY, 2) + pow(deltaZ, 2));
+    
+    double dist2=sqrt(pow(deltaX, 2) + pow(deltaZ, 2));
+    
+    std::cout << "Angulo Z: " << acos(dist2/dist) * 180 / M_PI;
+    
+    /*int n = 0;
     while (n < 100){
         
         std::cout << "NPC id " << npcs[n]->getId() << "\n";
@@ -45,7 +73,7 @@ void GameLoop::doLoop() {
         std::cout << "Position start y " << npcs[n]->getMovement()->getStart()->getY() << "\n";
         std::cout << "Position start z " << npcs[n]->getMovement()->getStart()->getZ() << "\n";
         n++;
-    }
+    }*/
     
     /* 
     std::ofstream dataFile;
