@@ -37,6 +37,7 @@ void Movement::moveTo(Position* end){
     
     if (needToTurn) {
         int turningDirection = calculateTurnDirection(facingToMove);
+        turn(turningDirection);
     }
     else{
         // Aqui ele vai andar/correr
@@ -62,7 +63,33 @@ Facing* Movement::calcFacingToMove(){
 int Movement::calculateTurnDirection(Facing* facingToMove){
     int angleXYStart = this->facing->getFacingDirectionXY();
     int angleXYEnd = facingToMove->getFacingDirectionXY();
+    int angleZStart = this->facing->getFacingDirectionZ();
+    int angleZEnd = facingToMove->getFacingDirectionZ();
     
+    if (angleXYStart != angleXYEnd){
+        int distanceRight = 0;
+        int distanceLeft = 0;
+        
+        if (angleXYStart > angleXYEnd){
+            distanceRight = angleXYStart - angleXYEnd;
+            distanceLeft  = angleXYEnd - angleXYStart + 360;
+        }
+        else{
+            distanceRight = angleXYStart - angleXYEnd + 360;
+            distanceLeft  = angleXYEnd - angleXYStart;
+        }
+        
+        if (distanceRight < distanceLeft){
+            return Movement::TURNING_RIGHT;
+        }
+        return Movement::TURNING_LEFT;
+    }
+    else{
+        if (angleZStart < angleZEnd){
+            return Movement::TURNING_UP;
+        }
+        return Movement::TURNING_DOWN;
+    }
 }
 
 void move(int typeOfMove){
@@ -88,6 +115,12 @@ void turn(int typeOfTurn){
             // implementacao
             break;
         case Movement::TURNING_LEFT:
+            // implementacao
+            break;
+        case Movement::TURNING_UP:
+            // implementacao
+            break;
+        case Movement::TURNING_DOWN:
             // implementacao
             break;
     }
