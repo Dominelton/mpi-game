@@ -92,11 +92,11 @@ int Movement::calculateTurnDirection(Facing* facingToMove){
     }
 }
 
-void move(int typeOfMove){
+void Movement::move(int typeOfMove){
+    this->moving = typeOfMove;
     switch(typeOfMove){
         case Movement::NOT_MOVING:
-            // implementacao
-            break;
+            return;
         case Movement::WALKING:
             // implementacao
             break;
@@ -106,22 +106,26 @@ void move(int typeOfMove){
     }
 }
 
-void turn(int typeOfTurn){
+void Movement::turn(int typeOfTurn){
+    this->turning = typeOfTurn;
     switch(typeOfTurn){
         case Movement::NOT_TURNING:
-            // implementacao
-            break;
+            return;
         case Movement::TURNING_RIGHT:
-            // implementacao
+            //Verificar Tratamento facing < 0  ou >180
+            this->facing->setFacingDirectionXY(this->facing->getFacingDirectionXY()+this->turnSpeed);
             break;
         case Movement::TURNING_LEFT:
-            // implementacao
+            //Verificar Tratamento facing < 0  ou >180
+            this->facing->setFacingDirectionXY(this->facing->getFacingDirectionXY()-this->turnSpeed);
             break;
         case Movement::TURNING_UP:
-            // implementacao
+            //Verificar Tratamento facing < 0  ou >180
+            this->facing->setFacingDirectionZ(this->facing->getFacingDirectionZ()+this->turnSpeed);
             break;
         case Movement::TURNING_DOWN:
-            // implementacao
+            //Verificar Tratamento facing < 0  ou >180
+            this->facing->setFacingDirectionZ(this->facing->getFacingDirectionZ()-this->turnSpeed);
             break;
     }
 }
