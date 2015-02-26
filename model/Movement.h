@@ -13,77 +13,47 @@
 
 class Movement {
 public:
-    const static int NOT_MOVING = 0;
-    const static int WALKING    = 1;
-    const static int RUNNING    = 2;
+    const static int NOT_MOVING    = 0;
+    const static int WALKING       = 1;
+    const static int RUNNING       = 2;
+    const static int TURNING_RIGHT = 3;
+    const static int TURNING_LEFT  = 4;
+    const static int TURNING_UP    = 5;
+    const static int TURNING_DOWN  = 6;
     
-    const static int NOT_TURNING   = 100;
-    const static int TURNING_RIGHT = 101;
-    const static int TURNING_LEFT  = 102;
-    const static int TURNING_UP    = 103;
-    const static int TURNING_DOWN  = 104;
+    /* Measured in Degrees per second */
+    const static int TURN_SPEED    = 180;
+    /* Measured in meters per second */
+    const static double WALK_SPEED = 1.5;
+    const static double RUN_SPEED  = 5.0;
     
     Movement();
     Movement(Position*);
     Movement(const Movement& orig);
     virtual ~Movement();
+    
     void moveTo(Position*);
     void move(double, int);
-    
-    void setTurnSpeed(double turnSpeed) {
-        this->turnSpeed = turnSpeed;
+
+    void setTargetPosition(Position* targetPosition) {
+        this->targetPosition = targetPosition;
     }
 
-    double getTurnSpeed() const {
-        return turnSpeed;
-    }
-    
-    void setSpeed(double speed) {
-        this->speed = speed;
-    }
-
-    double getSpeed() const {
-        return speed;
-    }
-    
-    void setFacing(Facing* facing) {
-        this->facing = facing;
-    }
-
-    Facing* getFacing() const {
-        return facing;
-    }
-
-    void setEnd(Position* end) {
-        this->end = end;
-    }
-
-    Position* getEnd() {
-        return end;
-    }
-
-    void setStart(Position* start) {
-        this->start = start;
-    }
-
-    Position* getStart() {
-        return start;
+    Position* getTargetPosition() {
+        return targetPosition;
     }
 private:
-    Position* start;
-    Position* end;
-    Facing* facing;
+    Position* targetPosition;
     
-    int moving;
-    double speed;
-    
-    int turning;
-    double turnSpeed;
+    int currentState;
     
     Facing* calcFacingToMove();
     int calculateTurnDirection(Facing*);
     void move(int);
     void turn(int);
+    
+    bool isFacingTargetPosition(Facing*);
+    bool hasArrivedTargetPosition(Position*);
 };
 
 #endif	/* MOVEMENT_H */

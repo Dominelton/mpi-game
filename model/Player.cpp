@@ -10,7 +10,7 @@
 Player::Player() {
 }
 
-Player::Player(int id, Movement* movement):Character(id, movement) {
+Player::Player(int id, Position* currentPosition, Facing* currentFacing):Character(id, currentPosition, currentFacing) {
 }
 
 Player::Player(const Player& orig) {

@@ -10,7 +10,8 @@
 
 #include <time.h>
 #include <vector>
-#include <NPC.h>
+#include "NPC.h"
+#include "Action.h"
 
 class GameLoop {
 public:
@@ -18,11 +19,15 @@ public:
     GameLoop(const GameLoop& orig);
     virtual ~GameLoop();
     void doLoop();
+    long getCurrentMs();
+    
 private:
     void spawnNPC();
-    clock_t startLoop;
-    clock_t endLoop;
+    long startLoop;
+    long endLoop;
+    long diffLoop;
     std::vector<NPC*> npcs;
+    std::vector<Action*> action;
 };
 
 #endif	/* GAMELOOP_H */

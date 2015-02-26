@@ -12,7 +12,7 @@
 class Player : public Character {
 public:
     Player();
-    Player(int, Movement*);
+    Player(int,  Position*, Facing*);
     Player(const Player& orig);
     virtual ~Player();
 private:
