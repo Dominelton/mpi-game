@@ -36,7 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/control/GameLoop.o \
-	${OBJECTDIR}/control/mpiGameMain.o \
+	${OBJECTDIR}/control/MPIGameMain.o \
 	${OBJECTDIR}/model/Action.o \
 	${OBJECTDIR}/model/Character.o \
 	${OBJECTDIR}/model/Facing.o \
@@ -75,10 +75,10 @@ ${OBJECTDIR}/control/GameLoop.o: control/GameLoop.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/control/GameLoop.o control/GameLoop.cpp
 
-${OBJECTDIR}/control/mpiGameMain.o: control/mpiGameMain.cpp 
+${OBJECTDIR}/control/MPIGameMain.o: control/MPIGameMain.cpp 
 	${MKDIR} -p ${OBJECTDIR}/control
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/control/mpiGameMain.o control/mpiGameMain.cpp
+	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/control/MPIGameMain.o control/MPIGameMain.cpp
 
 ${OBJECTDIR}/model/Action.o: model/Action.cpp 
 	${MKDIR} -p ${OBJECTDIR}/model

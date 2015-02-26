@@ -10,7 +10,7 @@
                    projectFiles="true">
       <logicalFolder name="f3" displayName="control" projectFiles="true">
         <logicalFolder name="f4" displayName="connection" projectFiles="true">
-          <itemPath>control/mpiGameMain.cpp</itemPath>
+          <itemPath>control/MPIGameMain.cpp</itemPath>
         </logicalFolder>
         <logicalFolder name="f1" displayName="header" projectFiles="true">
           <itemPath>control/GameLoop.h</itemPath>
@@ -85,7 +85,7 @@
       </item>
       <item path="control/GameLoop.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="control/mpiGameMain.cpp" ex="false" tool="1" flavor2="0">
+      <item path="control/MPIGameMain.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="model/Action.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -140,7 +140,7 @@
       </item>
       <item path="control/GameLoop.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="control/mpiGameMain.cpp" ex="false" tool="1" flavor2="0">
+      <item path="control/MPIGameMain.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="model/Action.cpp" ex="false" tool="1" flavor2="0">
       </item>
