@@ -11,6 +11,7 @@
 #include "Movement.h"
 #include "Position.h"
 #include "Facing.h"
+#include "Action.h"
 
 class Character {
 public:
@@ -18,7 +19,19 @@ public:
     Character(int, Position*, Facing*);
     Character(const Character& orig);
     virtual ~Character();
+    
+    void executeAction(long);
+    
+    void processWaiting(long);
 
+    void setAction(Action* action) {
+        this->action = action;
+    }
+
+    Action* getAction() const {
+        return action;
+    }
+    
     void setCurrentFacing(Facing* currentFacing) {
         this->currentFacing = currentFacing;
     }
@@ -47,6 +60,7 @@ private:
     int id;
     Position* currentPosition;
     Facing* currentFacing;
+    Action* action;
 };
 
 #endif	/* PERSONAGEM_H */

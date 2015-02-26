@@ -7,15 +7,17 @@
 
 #include "Action.h"
 #include <time.h>
-#include <stdio.h>
-#include <iostream>
+#include <stdlib.h>
 
 Action::Action(){
+    srand (time(NULL));
+    this->actionType = Action::WAIT;
+    this->waitingTime = rand() % 5000;
 }
 
-Action::Action(Character* owner){
-    this->owner = owner;
+Action::Action(long waitingTime){
     this->actionType = Action::WAIT;
+    this->waitingTime = waitingTime;
 }
 
 Action::Action(const Action& orig) {
@@ -24,7 +26,11 @@ Action::Action(const Action& orig) {
 Action::~Action() {
 }
 
-void Action::executeAction(long time){
-    std::cout << "Previous time for Action from owner " << this->owner->getId() << ": " << time << "\n";
+void Action::reduceWaitingTime(long time){
+    if (this->waitingTime <= time){
+        this->waitingTime = 0;
+    }
+    else{
+        this->waitingTime -= time;
+    }
 }
-
