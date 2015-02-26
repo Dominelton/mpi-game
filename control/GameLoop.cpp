@@ -21,6 +21,7 @@ GameLoop::GameLoop() {
     this->diffLoop  = 0;
     this->startLoop = 0;
     this->endLoop   = 0;
+    this->actionCount = 2;
     spawnNPC();
 }
 
@@ -39,11 +40,15 @@ void GameLoop::spawnNPC(){
         NPC* npc = new NPC(id, movement);
         this->npcs[id] = npc;
     }*/
-    this->npcs.reserve(1);
-    Position* position = new Position(rand() % 1000, rand() % 1000, rand() % 1000);
-    Facing* facing = new Facing(90, 0);
-    NPC* npc = new NPC(0, position, facing);
-    this->npcs.push_back(npc);
+    srand (time(NULL));
+    this->actions.reserve(actionCount);
+    for(int i=0; i< actionCount; i++){
+        Position* position = new Position(rand() % 1000, rand() % 1000, rand() % 1000);
+        Facing* facing = new Facing(90, 0);
+        NPC* npc = new NPC(i, position, facing);
+        Action* action = new Action(npc);
+        this->actions.push_back(action);
+    }
 }
 
 void GameLoop::doLoop() {
@@ -51,22 +56,25 @@ void GameLoop::doLoop() {
     dataFile.open( "../dataFile.txt" );
     
     long timeRun = 0;
-    while(timeRun < 10000){
+    struct timespec sleepTime;
+    sleepTime.tv_nsec = 1000000;
+    sleepTime.tv_sec = 0;
+    while(timeRun < 5000){
         startLoop = getCurrentMs();
-        
+        std::cout << "********** NEW TURN STARTING AT " << startLoop << " ms. **********\n";
         // Aqui executa toda a lógica de loop
-        for (int i = 0; i < npcs.size(); i++){
-            npcs[i]->getAction()->executeAction(diffLoop);
+        for (int i = 0; i < actionCount; i++){
+            actions[i]->executeAction(diffLoop);
         }
         
-        //nanosleep(1000000);
+        nanosleep(&sleepTime, NULL);
         
         endLoop   = getCurrentMs();
         diffLoop = endLoop - startLoop;
         if (diffLoop < 0){
             diffLoop += 1000;
         }
-        
+        std::cout << "********** TURN ENDING AT " << endLoop << " ms. ****************\n";
         timeRun += diffLoop;
     }
     

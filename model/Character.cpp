@@ -14,7 +14,6 @@ Character::Character(int id, Position* currentPosition, Facing* currentFacing) {
     this->id = id;
     this->currentPosition = currentPosition;
     this->currentFacing = currentFacing;
-    this->action = new Action();
 }
 
 Character::Character(const Character& orig) {

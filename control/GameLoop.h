@@ -10,8 +10,8 @@
 
 #include <time.h>
 #include <vector>
-#include "NPC.h"
 #include "Action.h"
+
 
 class GameLoop {
 public:
@@ -26,8 +26,8 @@ private:
     long startLoop;
     long endLoop;
     long diffLoop;
-    std::vector<NPC*> npcs;
-    std::vector<Action*> action;
+    long actionCount;
+    std::vector<Action*> actions;
 };
 
 #endif	/* GAMELOOP_H */

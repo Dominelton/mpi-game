@@ -9,7 +9,6 @@
 #define	PERSONAGEM_H
 
 #include "Movement.h"
-#include "Action.h"
 #include "Position.h"
 #include "Facing.h"
 
@@ -36,14 +35,6 @@ public:
         return currentPosition;
     }
 
-    void setAction(Action* action) {
-        this->action = action;
-    }
-
-    Action* getAction() const {
-        return action;
-    }
-
     void setId(int id) {
         this->id = id;
     }
@@ -54,7 +45,6 @@ public:
     
 private:
     int id;
-    Action* action;
     Position* currentPosition;
     Facing* currentFacing;
 };
