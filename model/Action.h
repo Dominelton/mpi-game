@@ -9,7 +9,6 @@
 #define	ACTION_H
 
 #include "Movement.h"
-#include "Character.h"
 
 class Action {
 public:
@@ -17,20 +16,12 @@ public:
     const static int MOVETO = 1;
     
     Action();
-    Action(Character*);
+    Action(long);
     Action(const Action& orig);
     virtual ~Action();
+
+    void reduceWaitingTime(long time);
     
-    void executeAction(long);
-
-    void setOwner(Character* owner) {
-        this->owner = owner;
-    }
-
-    Character* getOwner() const {
-        return owner;
-    }
-
     void setMovement(Movement* movement) {
         this->movement = movement;
     }
@@ -60,7 +51,6 @@ private:
     int actionType;
     long waitingTime;
     Movement* movement;
-    Character* owner;
 };
 
 #endif	/* ACTION_H */

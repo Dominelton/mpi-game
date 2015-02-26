@@ -41,13 +41,12 @@ void GameLoop::spawnNPC(){
         this->npcs[id] = npc;
     }*/
     srand (time(NULL));
-    this->actions.reserve(actionCount);
+    this->npcs.reserve(actionCount);
     for(int i=0; i< actionCount; i++){
         Position* position = new Position(rand() % 1000, rand() % 1000, rand() % 1000);
         Facing* facing = new Facing(90, 0);
         NPC* npc = new NPC(i, position, facing);
-        Action* action = new Action(npc);
-        this->actions.push_back(action);
+        this->npcs.push_back(npc);
     }
 }
 
@@ -64,7 +63,7 @@ void GameLoop::doLoop() {
         std::cout << "********** NEW TURN STARTING AT " << startLoop << " ms. **********\n";
         // Aqui executa toda a lógica de loop
         for (int i = 0; i < actionCount; i++){
-            actions[i]->executeAction(diffLoop);
+            npcs[i]->executeAction(diffLoop);
         }
         
         nanosleep(&sleepTime, NULL);
