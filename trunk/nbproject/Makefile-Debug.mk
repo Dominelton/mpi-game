@@ -37,7 +37,9 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/control/GameLoop.o \
 	${OBJECTDIR}/control/mpiGameMain.o \
+	${OBJECTDIR}/model/Action.o \
 	${OBJECTDIR}/model/Character.o \
+	${OBJECTDIR}/model/Facing.o \
 	${OBJECTDIR}/model/Movement.o \
 	${OBJECTDIR}/model/NPC.o \
 	${OBJECTDIR}/model/Player.o \
@@ -78,10 +80,20 @@ ${OBJECTDIR}/control/mpiGameMain.o: control/mpiGameMain.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/control/mpiGameMain.o control/mpiGameMain.cpp
 
+${OBJECTDIR}/model/Action.o: model/Action.cpp 
+	${MKDIR} -p ${OBJECTDIR}/model
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Action.o model/Action.cpp
+
 ${OBJECTDIR}/model/Character.o: model/Character.cpp 
 	${MKDIR} -p ${OBJECTDIR}/model
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Character.o model/Character.cpp
+
+${OBJECTDIR}/model/Facing.o: model/Facing.cpp 
+	${MKDIR} -p ${OBJECTDIR}/model
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Facing.o model/Facing.cpp
 
 ${OBJECTDIR}/model/Movement.o: model/Movement.cpp 
 	${MKDIR} -p ${OBJECTDIR}/model

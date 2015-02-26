@@ -11,15 +11,10 @@
 Movement::Movement() {
 }
 
-Movement::Movement(Position* start) {
-    Facing* facing = new Facing(90, 0);
+Movement::Movement(Position* targetPosition) {
+    this->targetPosition = targetPosition;
     
-    this->start = start;
-    this->facing = facing;
-    this->turnSpeed = 0;
-    
-    this->turning = Movement::NOT_TURNING;
-    this->moving  = Movement::NOT_MOVING;
+    this->currentState = Movement::NOT_MOVING;
 }
 
 Movement::Movement(const Movement& orig) {
@@ -28,7 +23,7 @@ Movement::Movement(const Movement& orig) {
 Movement::~Movement() {
 }
 
-void Movement::moveTo(Position* end){
+/*void Movement::moveTo(Position* end){
     this->end = end;
     Facing* facingToMove = calcFacingToMove();
     
@@ -113,19 +108,29 @@ void Movement::turn(int typeOfTurn){
             return;
         case Movement::TURNING_RIGHT:
             //Verificar Tratamento facing < 0  ou >180
-            this->facing->setFacingDirectionXY(this->facing->getFacingDirectionXY()+this->turnSpeed);
+            this->facing->setFacingDirectionXY((this->facing->getFacingDirectionXY()-this->turnSpeed) % 360);
             break;
         case Movement::TURNING_LEFT:
             //Verificar Tratamento facing < 0  ou >180
-            this->facing->setFacingDirectionXY(this->facing->getFacingDirectionXY()-this->turnSpeed);
+            this->facing->setFacingDirectionXY((this->facing->getFacingDirectionXY()+this->turnSpeed) % 360);
             break;
         case Movement::TURNING_UP:
             //Verificar Tratamento facing < 0  ou >180
-            this->facing->setFacingDirectionZ(this->facing->getFacingDirectionZ()+this->turnSpeed);
+            if (this->facing->getFacingDirectionZ()+this->turnSpeed > 90){
+                this->facing->setFacingDirectionZ(90);
+            }
+            else{
+                this->facing->setFacingDirectionZ(this->facing->getFacingDirectionZ()+this->turnSpeed);
+            }
             break;
         case Movement::TURNING_DOWN:
             //Verificar Tratamento facing < 0  ou >180
-            this->facing->setFacingDirectionZ(this->facing->getFacingDirectionZ()-this->turnSpeed);
+            if (this->facing->getFacingDirectionZ()-this->turnSpeed < -90){
+                this->facing->setFacingDirectionZ(-90);
+            }
+            else{
+                this->facing->setFacingDirectionZ(this->facing->getFacingDirectionZ()-this->turnSpeed);
+            }
             break;
     }
-}
+}*/

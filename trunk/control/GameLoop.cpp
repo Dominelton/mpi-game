@@ -6,17 +6,22 @@
  */
 
 #include "GameLoop.h"
+#include "Facing.h"
+#include "Position.h"
+#include "NPC.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
 #include <iostream>
 #include <fstream>
-#include <NPC.h>
-#include <time.h> 
 #include <cmath>
 
 GameLoop::GameLoop() {
-    //spawnNPC();
+    this->diffLoop  = 0;
+    this->startLoop = 0;
+    this->endLoop   = 0;
+    spawnNPC();
 }
 
 GameLoop::GameLoop(const GameLoop& orig) {
@@ -26,44 +31,46 @@ GameLoop::~GameLoop() {
 }
 
 void GameLoop::spawnNPC(){
-    this->npcs.reserve(100);
+    /*this->npcs.reserve(100);
     srand (time(NULL));
     for (int id = 0; id < 100; id++){
         Position* position = new Position(rand() % 1000, rand() % 1000, rand() % 1000);
         Movement* movement = new Movement(position);
         NPC* npc = new NPC(id, movement);
         this->npcs[id] = npc;
-    }
+    }*/
+    this->npcs.reserve(1);
+    Position* position = new Position(rand() % 1000, rand() % 1000, rand() % 1000);
+    Facing* facing = new Facing(90, 0);
+    NPC* npc = new NPC(0, position, facing);
+    this->npcs.push_back(npc);
 }
 
 void GameLoop::doLoop() {
+    std::ofstream dataFile;
+    dataFile.open( "../dataFile.txt" );
     
-    int x1 = 0;
-    int y1 = 0;
-    int z1 = 0;
+    long timeRun = 0;
+    while(timeRun < 10000){
+        startLoop = getCurrentMs();
+        
+        // Aqui executa toda a lógica de loop
+        for (int i = 0; i < npcs.size(); i++){
+            npcs[i]->getAction()->executeAction(diffLoop);
+        }
+        
+        //nanosleep(1000000);
+        
+        endLoop   = getCurrentMs();
+        diffLoop = endLoop - startLoop;
+        if (diffLoop < 0){
+            diffLoop += 1000;
+        }
+        
+        timeRun += diffLoop;
+    }
     
-    int x2 = -5;
-    int y2 = 5;
-    int z2 = 5;
-    
-    double deltaX = x2 - x1;
-    double deltaY = y2 - y1;
-    double deltaZ = z2 - z1;
-    
-    double facingAngleXY = atan2(deltaY, deltaX) * 180 / M_PI;
-    
-    double theta = atan2(deltaZ, deltaX);
-    
-    
-    std::cout << "Angulo XY: " << facingAngleXY;
-    
-    std::cout << "Angulo XY: " << theta * 180 / M_PI;
-    
-    double dist=sqrt(pow(deltaX, 2) + pow(deltaY, 2) + pow(deltaZ, 2));
-    
-    double dist2=sqrt(pow(deltaX, 2) + pow(deltaZ, 2));
-    
-    std::cout << "Angulo Z: " << acos(dist2/dist) * 180 / M_PI;
+    dataFile.close();
     
     /*int n = 0;
     while (n < 100){
@@ -99,4 +106,13 @@ void GameLoop::doLoop() {
     }
     
     dataFile.close();*/
+}
+
+long GameLoop::getCurrentMs(){
+    long   ms; // Milliseconds
+    struct timespec spec;
+
+    clock_gettime(CLOCK_REALTIME, &spec);
+
+    return round(spec.tv_nsec / 1.0e6);
 }
