@@ -8,6 +8,8 @@
 #ifndef POSICAO_H
 #define	POSICAO_H
 
+#include <stdlib.h>
+
 class Position {
 public:
     Position();

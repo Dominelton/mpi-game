@@ -23,6 +23,8 @@ public:
     void executeAction(long);
     
     void processWaiting(long);
+    
+    void processMoveTo(long);
 
     void setAction(Action* action) {
         this->action = action;

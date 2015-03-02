@@ -30,6 +30,10 @@ public:
     int getFacingDirectionXY() const {
         return facingDirectionXY;
     }
+    
+    static int differenceOfAngleXY(Facing*, Facing*);
+    static int differenceOfAngleZ(Facing*, Facing*);
+    
 private:
     int facingDirectionXY;
     int facingDirectionZ;

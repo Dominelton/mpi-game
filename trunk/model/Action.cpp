@@ -12,7 +12,7 @@
 Action::Action(){
     srand (time(NULL));
     this->actionType = Action::WAIT;
-    this->waitingTime = rand() % 5000;
+    this->waitingTime = rand() % 1000;
 }
 
 Action::Action(long waitingTime){
@@ -33,4 +33,13 @@ void Action::reduceWaitingTime(long time){
     else{
         this->waitingTime -= time;
     }
+}
+
+void Action::moveTo(Position* destination){
+    this->actionType = Action::MOVETO;
+    this->movement = new Movement(destination);
+}
+
+void Action::updatePositionAndFacing(Position *&currentPosition, Facing *&currentFacing, long time){
+    this->movement->updatePositionAndFacing(currentPosition, currentFacing, time);
 }

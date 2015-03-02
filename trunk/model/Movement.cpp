@@ -11,8 +11,8 @@
 Movement::Movement() {
 }
 
-Movement::Movement(Position* targetPosition) {
-    this->targetPosition = targetPosition;
+Movement::Movement(Position* destination) {
+    this->destination = destination;
     
     this->currentState = Movement::NOT_MOVING;
 }
@@ -23,26 +23,18 @@ Movement::Movement(const Movement& orig) {
 Movement::~Movement() {
 }
 
-/*void Movement::moveTo(Position* end){
-    this->end = end;
-    Facing* facingToMove = calcFacingToMove();
+void Movement::updatePositionAndFacing(Position*& currentPosition, Facing*& currentFacing, long time){
+    Facing* facingToMove = calcFacingToMove(currentPosition);
     
-    bool needToTurn = (this->facing->getFacingDirectionXY() != facingToMove->getFacingDirectionXY() ||
-                       this->facing->getFacingDirectionZ() != facingToMove->getFacingDirectionZ());
+    this->updateCurrentState(currentFacing, facingToMove);
     
-    if (needToTurn) {
-        int turningDirection = calculateTurnDirection(facingToMove);
-        turn(turningDirection);
-    }
-    else{
-        // Aqui ele vai andar/correr
-    }
+    this->executeMovement(currentPosition, currentFacing, facingToMove, time);
 }
 
-Facing* Movement::calcFacingToMove(){
-    double deltaX = this->end->getX() - this->start->getX();
-    double deltaY = this->end->getY() - this->start->getY();
-    double deltaZ = this->end->getZ() - this->start->getZ();
+Facing* Movement::calcFacingToMove(Position* currentPosition){
+    double deltaX = this->destination->getX() - currentPosition->getX();
+    double deltaY = this->destination->getY() - currentPosition->getY();
+    double deltaZ = this->destination->getZ() - currentPosition->getZ();
     
     double facingAngleXY = atan2(deltaY, deltaX) * 180 / M_PI;
     
@@ -55,10 +47,23 @@ Facing* Movement::calcFacingToMove(){
     return facing;
 }
 
-int Movement::calculateTurnDirection(Facing* facingToMove){
-    int angleXYStart = this->facing->getFacingDirectionXY();
+void Movement::updateCurrentState(Facing* currentFacing, Facing* facingToMove){
+    
+    bool needToTurn = (currentFacing->getFacingDirectionXY() != facingToMove->getFacingDirectionXY() ||
+                       currentFacing->getFacingDirectionZ() != facingToMove->getFacingDirectionZ());
+    
+    if (needToTurn) {
+        this->currentState = calculateTurnDirection(currentFacing, facingToMove);
+    }
+    else{
+        this->currentState = Movement::RUNNING;
+    }
+}
+
+int Movement::calculateTurnDirection(Facing* currentFacing, Facing* facingToMove){
+    int angleXYStart = currentFacing->getFacingDirectionXY();
     int angleXYEnd = facingToMove->getFacingDirectionXY();
-    int angleZStart = this->facing->getFacingDirectionZ();
+    int angleZStart = currentFacing->getFacingDirectionZ();
     int angleZEnd = facingToMove->getFacingDirectionZ();
     
     if (angleXYStart != angleXYEnd){
@@ -87,50 +92,100 @@ int Movement::calculateTurnDirection(Facing* facingToMove){
     }
 }
 
-void Movement::move(int typeOfMove){
-    this->moving = typeOfMove;
-    switch(typeOfMove){
-        case Movement::NOT_MOVING:
+void Movement::executeMovement(Position*& currentPosition, Facing*& currentFacing, Facing* facingToMove, long time){
+    switch(this->currentState){
+        case Movement::NOT_MOVING:{
             return;
-        case Movement::WALKING:
-            // implementacao
+        }
             break;
-        case Movement::RUNNING:
-            // implementacao
+        case Movement::WALKING:{
+            //this->move(currentPosition, false, time);
+        }
+            break;
+        case Movement::RUNNING:{
+            //this->move(currentPosition, true, time);
+        }
+            break;
+        case Movement::TURNING_LEFT:
+        case Movement::TURNING_RIGHT:
+        case Movement::TURNING_UP:
+        case Movement::TURNING_DOWN:{
+            this->turn(currentFacing, facingToMove, time);
+        }
+    }
+}
+
+void Movement::turn(Facing*& currentFacing, Facing* facingToMove, long time){
+    int degrees = this->calcTurningDegrees(time);
+    int degreesXY = Facing::differenceOfAngleXY(currentFacing, facingToMove);
+    int degreesZ = Facing::differenceOfAngleZ(currentFacing, facingToMove);
+    
+    switch(this->currentState){
+        case Movement::TURNING_RIGHT:{
+            if (degreesXY > degrees){
+                currentFacing->setFacingDirectionXY((currentFacing->getFacingDirectionXY() - degrees) % 360);
+            }
+            else{
+                currentFacing->setFacingDirectionXY(facingToMove->getFacingDirectionXY());
+            }
+        }
+            break;
+        case Movement::TURNING_LEFT:{
+            if (degreesXY > degrees){
+                currentFacing->setFacingDirectionXY((currentFacing->getFacingDirectionXY() + degrees) % 360);
+            }
+            else{
+                currentFacing->setFacingDirectionXY(facingToMove->getFacingDirectionXY());
+            }
+        }
+            break;
+        case Movement::TURNING_UP:{
+            if (degreesZ > degrees){
+                currentFacing->setFacingDirectionZ(currentFacing->getFacingDirectionZ() + degrees);
+            }
+            else{
+                currentFacing->setFacingDirectionZ(facingToMove->getFacingDirectionZ());
+            }
+        }
+            break;
+        case Movement::TURNING_DOWN:{
+            if (degreesZ > degrees){
+                currentFacing->setFacingDirectionZ(currentFacing->getFacingDirectionZ() - degrees);
+            }
+            else{
+                currentFacing->setFacingDirectionZ(facingToMove->getFacingDirectionZ());
+            }
+        }
             break;
     }
 }
 
-void Movement::turn(int typeOfTurn){
-    this->turning = typeOfTurn;
-    switch(typeOfTurn){
-        case Movement::NOT_TURNING:
-            return;
-        case Movement::TURNING_RIGHT:
-            //Verificar Tratamento facing < 0  ou >180
-            this->facing->setFacingDirectionXY((this->facing->getFacingDirectionXY()-this->turnSpeed) % 360);
-            break;
-        case Movement::TURNING_LEFT:
-            //Verificar Tratamento facing < 0  ou >180
-            this->facing->setFacingDirectionXY((this->facing->getFacingDirectionXY()+this->turnSpeed) % 360);
-            break;
-        case Movement::TURNING_UP:
-            //Verificar Tratamento facing < 0  ou >180
-            if (this->facing->getFacingDirectionZ()+this->turnSpeed > 90){
-                this->facing->setFacingDirectionZ(90);
-            }
-            else{
-                this->facing->setFacingDirectionZ(this->facing->getFacingDirectionZ()+this->turnSpeed);
-            }
-            break;
-        case Movement::TURNING_DOWN:
-            //Verificar Tratamento facing < 0  ou >180
-            if (this->facing->getFacingDirectionZ()-this->turnSpeed < -90){
-                this->facing->setFacingDirectionZ(-90);
-            }
-            else{
-                this->facing->setFacingDirectionZ(this->facing->getFacingDirectionZ()-this->turnSpeed);
-            }
-            break;
+void Movement::move(Position*& currentPosition, bool isRunning, long time){
+    double distanceToDestination = sqrt(pow((currentPosition->getX() + this->destination->getX()), 2) + 
+                                        pow((currentPosition->getY() + this->destination->getY()), 2) + 
+                                        pow((currentPosition->getZ() + this->destination->getZ()), 2));
+    
+    double distanceMoved = this->calcDistanceMoved(isRunning, time);
+    
+    if (distanceToDestination < distanceMoved){
+        currentPosition = this->destination;
     }
-}*/
+    else{
+        double distanceDivisor = distanceMoved / distanceToDestination;
+        
+        currentPosition->setX((currentPosition->getX() + this->destination->getX()) * distanceDivisor);
+        currentPosition->setY((currentPosition->getY() + this->destination->getY()) * distanceDivisor);
+        currentPosition->setZ((currentPosition->getZ() + this->destination->getZ()) * distanceDivisor);
+    }
+}
+
+int Movement::calcTurningDegrees(long time){
+    return (int)(Movement::TURN_SPEED * time / 1000);
+}
+
+double Movement::calcDistanceMoved(bool isRunning, long time){
+    if (isRunning){
+        return Movement::RUN_SPEED * time / 1000;
+    }
+    return Movement::WALK_SPEED * time / 1000;
+}
