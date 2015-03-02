@@ -11,8 +11,8 @@
 #include "NPC.h"
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <time.h>
+#include <stdio.h>
 #include <iostream>
 #include <fstream>
 #include <cmath>
@@ -32,14 +32,6 @@ GameLoop::~GameLoop() {
 }
 
 void GameLoop::spawnNPC(){
-    /*this->npcs.reserve(100);
-    srand (time(NULL));
-    for (int id = 0; id < 100; id++){
-        Position* position = new Position(rand() % 1000, rand() % 1000, rand() % 1000);
-        Movement* movement = new Movement(position);
-        NPC* npc = new NPC(id, movement);
-        this->npcs[id] = npc;
-    }*/
     srand (time(NULL));
     this->npcs.reserve(this->npcCount);
     for(int i=0; i< this->npcCount; i++){
@@ -57,7 +49,7 @@ void GameLoop::doLoop() {
     
     long timeRun = 0;
     struct timespec sleepTime;
-    sleepTime.tv_nsec = 10000000;
+    sleepTime.tv_nsec = 20000000;
     sleepTime.tv_sec = 0;
     while(timeRun < 5000){
         startLoop = getCurrentMs();

@@ -6,7 +6,11 @@
  */
 
 #include "Movement.h"
+#include "Utils.h"
 #include <cmath>
+#include <stdio.h>
+#include <iostream>
+#include <fstream>
 
 Movement::Movement() {
 }
@@ -25,6 +29,8 @@ Movement::~Movement() {
 
 void Movement::updatePositionAndFacing(Position*& currentPosition, Facing*& currentFacing, long time){
     Facing* facingToMove = calcFacingToMove(currentPosition);
+    std::cout << "Facing To Move -> XY-axis: " << facingToMove->getFacingDirectionXY() << "; ";
+    std::cout << "Z-axis: " << facingToMove->getFacingDirectionZ() << "; \n";
     
     this->updateCurrentState(currentFacing, facingToMove);
     
@@ -37,13 +43,13 @@ Facing* Movement::calcFacingToMove(Position* currentPosition){
     double deltaZ = this->destination->getZ() - currentPosition->getZ();
     
     double facingAngleXY = atan2(deltaY, deltaX) * 180 / M_PI;
-    
+
     double dist=sqrt(pow(deltaX, 2) + pow(deltaY, 2) + pow(deltaZ, 2));
-    double dist2=sqrt(pow(deltaX, 2) + pow(deltaZ, 2));
+    double dist2=sqrt(pow(deltaX, 2) + pow(deltaY, 2));
     
     double facingAngleZ = acos(dist2/dist) * 180 / M_PI;
     
-    Facing* facing = new Facing((int)round(facingAngleXY), (int)round(facingAngleZ));
+    Facing* facing = new Facing(Utils::mod((int)round(facingAngleXY),360), (int)round(facingAngleZ));
     return facing;
 }
 
@@ -123,7 +129,7 @@ void Movement::turn(Facing*& currentFacing, Facing* facingToMove, long time){
     switch(this->currentState){
         case Movement::TURNING_RIGHT:{
             if (degreesXY > degrees){
-                currentFacing->setFacingDirectionXY((currentFacing->getFacingDirectionXY() - degrees) % 360);
+                currentFacing->setFacingDirectionXY(Utils::mod((currentFacing->getFacingDirectionXY() - degrees),360));
             }
             else{
                 currentFacing->setFacingDirectionXY(facingToMove->getFacingDirectionXY());
@@ -132,7 +138,7 @@ void Movement::turn(Facing*& currentFacing, Facing* facingToMove, long time){
             break;
         case Movement::TURNING_LEFT:{
             if (degreesXY > degrees){
-                currentFacing->setFacingDirectionXY((currentFacing->getFacingDirectionXY() + degrees) % 360);
+                currentFacing->setFacingDirectionXY(Utils::mod((currentFacing->getFacingDirectionXY() + degrees), 360));
             }
             else{
                 currentFacing->setFacingDirectionXY(facingToMove->getFacingDirectionXY());

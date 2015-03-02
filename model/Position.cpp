@@ -8,6 +8,7 @@
 #include "Position.h"
 
 Position::Position() {
+    srand (time(NULL));
     this->x = rand() % 1000;
     this->y = rand() % 1000;
     this->z = 0;

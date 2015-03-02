@@ -9,6 +9,7 @@
 #define	POSICAO_H
 
 #include <stdlib.h>
+#include <time.h>
 
 class Position {
 public:
