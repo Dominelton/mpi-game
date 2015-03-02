@@ -26,6 +26,12 @@ Action::Action(const Action& orig) {
 Action::~Action() {
 }
 
+void Action::waitRandomTime(){
+    srand (time(NULL));
+    this->actionType = Action::WAIT;
+    this->waitingTime = rand() % 1000;
+}
+
 void Action::reduceWaitingTime(long time){
     if (this->waitingTime <= time){
         this->waitingTime = 0;

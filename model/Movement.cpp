@@ -47,7 +47,10 @@ Facing* Movement::calcFacingToMove(Position* currentPosition){
     double dist=sqrt(pow(deltaX, 2) + pow(deltaY, 2) + pow(deltaZ, 2));
     double dist2=sqrt(pow(deltaX, 2) + pow(deltaY, 2));
     
-    double facingAngleZ = acos(dist2/dist) * 180 / M_PI;
+    double facingAngleZ = 0;
+    if (dist != 0 || dist2 != 0){
+        facingAngleZ = acos(dist2/dist) * 180 / M_PI;
+    }
     
     Facing* facing = new Facing(Utils::mod((int)round(facingAngleXY),360), (int)round(facingAngleZ));
     return facing;
@@ -105,11 +108,11 @@ void Movement::executeMovement(Position*& currentPosition, Facing*& currentFacin
         }
             break;
         case Movement::WALKING:{
-            //this->move(currentPosition, false, time);
+            this->move(currentPosition, false, time);
         }
             break;
         case Movement::RUNNING:{
-            //this->move(currentPosition, true, time);
+            this->move(currentPosition, true, time);
         }
             break;
         case Movement::TURNING_LEFT:
@@ -179,9 +182,9 @@ void Movement::move(Position*& currentPosition, bool isRunning, long time){
     else{
         double distanceDivisor = distanceMoved / distanceToDestination;
         
-        currentPosition->setX((currentPosition->getX() + this->destination->getX()) * distanceDivisor);
-        currentPosition->setY((currentPosition->getY() + this->destination->getY()) * distanceDivisor);
-        currentPosition->setZ((currentPosition->getZ() + this->destination->getZ()) * distanceDivisor);
+        currentPosition->setX(currentPosition->getX() + (abs(currentPosition->getX() - this->destination->getX()) * distanceDivisor));
+        currentPosition->setY(currentPosition->getY() + (abs(currentPosition->getY() - this->destination->getY()) * distanceDivisor));
+        currentPosition->setZ(currentPosition->getZ() + (abs(currentPosition->getZ() - this->destination->getZ()) * distanceDivisor));
     }
 }
 

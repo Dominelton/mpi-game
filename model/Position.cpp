@@ -14,7 +14,7 @@ Position::Position() {
     this->z = 0;
 }
 
-Position::Position(int x, int y, int z) {
+Position::Position(double x, double y, double z) {
     this->x = x;
     this->y = y;
     this->z = z;
@@ -24,5 +24,17 @@ Position::Position(const Position& orig) {
 }
 
 Position::~Position() {
+}
+
+bool Position::equals(Position* compareTo){
+    bool equals = false;
+    
+    if (this->getX() == compareTo->getX() &&
+            this->getY() == compareTo->getY() &&
+            this->getZ() == compareTo->getZ()){
+        equals = true;
+    }
+    
+    return equals;
 }
 

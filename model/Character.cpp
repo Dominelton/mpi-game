@@ -68,8 +68,8 @@ void Character::processWaiting(long time){
 }
 
 void Character::processMoveTo(long time){
-    if (this->action->getMovement()->getDestination() == currentPosition){
-        //this->action->waitRandomTime();
+    if (this->action->getMovement()->getDestination()->equals(currentPosition)){
+        this->action->waitRandomTime();
     }
     else{
         this->action->updatePositionAndFacing(this->currentPosition, this->currentFacing, time);
