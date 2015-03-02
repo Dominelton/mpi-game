@@ -30,20 +30,10 @@ Character::~Character() {
 void Character::executeAction(long time){
     switch (this->action->getActionType()){
         case Action::WAIT: {
-            std::cout << "NPC " << id << " waiting for more " << this->action->getWaitingTime() << " milliseconds. Processing " << time << " milliseconds.\n";
             this->processWaiting(time);
         }
             break;
         case Action::MOVETO: {
-            std::cout << "NPC " << id << " is moving.\n";
-            std::cout << "Current Position -> X-axis: " << this->currentPosition->getX() << "; ";
-            std::cout << "Y-axis: " << this->currentPosition->getY() << "; ";
-            std::cout << "Z-axis: " << this->currentPosition->getZ() << "; \n";
-            std::cout << "Destination Position -> X-axis: " << this->action->getMovement()->getDestination()->getX() << "; ";
-            std::cout << "Y-axis: " << this->action->getMovement()->getDestination()->getY() << "; ";
-            std::cout << "Z-axis: " << this->action->getMovement()->getDestination()->getZ() << "; \n";
-            std::cout << "Current Facing -> XY-axis: " << this->currentFacing->getFacingDirectionXY() << "; ";
-            std::cout << "Z-axis: " << this->currentFacing->getFacingDirectionZ() << "; \n";
             this->processMoveTo(time);
         }
             break;
@@ -56,6 +46,7 @@ void Character::processWaiting(long time){
             // Não faz nada, já que é um Wait sem tempo para acabar
             break;
         case 0: {
+            std::cout << "NPC " << this->id << ": Start to move.\n";
             Position* destination = new Position();
             this->action->moveTo(destination);
         }
@@ -69,6 +60,7 @@ void Character::processWaiting(long time){
 
 void Character::processMoveTo(long time){
     if (this->action->getMovement()->getDestination()->equals(currentPosition)){
+        std::cout << "NPC " << this->id << ": Start to wait.\n";
         this->action->waitRandomTime();
     }
     else{
