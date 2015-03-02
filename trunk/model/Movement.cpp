@@ -182,9 +182,9 @@ void Movement::move(Position*& currentPosition, bool isRunning, long time){
     else{
         double distanceDivisor = distanceMoved / distanceToDestination;
         
-        currentPosition->setX(currentPosition->getX() + (abs(currentPosition->getX() - this->destination->getX()) * distanceDivisor));
-        currentPosition->setY(currentPosition->getY() + (abs(currentPosition->getY() - this->destination->getY()) * distanceDivisor));
-        currentPosition->setZ(currentPosition->getZ() + (abs(currentPosition->getZ() - this->destination->getZ()) * distanceDivisor));
+        currentPosition->setX(currentPosition->getX() + (this->destination->getX() - currentPosition->getX()) * distanceDivisor);
+        currentPosition->setY(currentPosition->getY() + (this->destination->getY() - currentPosition->getY()) * distanceDivisor);
+        currentPosition->setZ(currentPosition->getZ() + (this->destination->getZ() - currentPosition->getZ()) * distanceDivisor);
     }
 }
 
