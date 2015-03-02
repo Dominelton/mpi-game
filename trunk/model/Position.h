@@ -14,37 +14,39 @@
 class Position {
 public:
     Position();
-    Position(int, int, int);
+    Position(double, double, double);
     Position(const Position& orig);
     virtual ~Position();
+    
+    bool equals(Position*);
 
-    void setZ(int z) {
+    void setZ(double z) {
         this->z = z;
     }
 
-    int getZ() const {
+    double getZ() const {
         return z;
     }
 
-    void setY(int y) {
+    void setY(double y) {
         this->y = y;
     }
 
-    int getY() const {
+    double getY() const {
         return y;
     }
 
-    void setX(int x) {
+    void setX(double x) {
         this->x = x;
     }
 
-    int getX() const {
+    double getX() const {
         return x;
     }
 private:
-    int x;
-    int y;
-    int z;
+    double x;
+    double y;
+    double z;
 };
 
 #endif	/* POSICAO_H */

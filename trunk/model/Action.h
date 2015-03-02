@@ -20,6 +20,8 @@ public:
     Action(const Action& orig);
     virtual ~Action();
 
+    void waitRandomTime();
+    
     void reduceWaitingTime(long time);
     
     void moveTo(Position* destination);
