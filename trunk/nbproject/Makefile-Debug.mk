@@ -43,7 +43,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/model/Movement.o \
 	${OBJECTDIR}/model/NPC.o \
 	${OBJECTDIR}/model/Player.o \
-	${OBJECTDIR}/model/Position.o
+	${OBJECTDIR}/model/Position.o \
+	${OBJECTDIR}/model/Utils.o
 
 
 # C Compiler Flags
@@ -114,6 +115,11 @@ ${OBJECTDIR}/model/Position.o: model/Position.cpp
 	${MKDIR} -p ${OBJECTDIR}/model
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Position.o model/Position.cpp
+
+${OBJECTDIR}/model/Utils.o: model/Utils.cpp 
+	${MKDIR} -p ${OBJECTDIR}/model
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Utils.o model/Utils.cpp
 
 # Subprojects
 .build-subprojects:
