@@ -32,25 +32,30 @@ public:
     Movement(const Movement& orig);
     virtual ~Movement();
     
-    void moveTo(Position*);
-    void move(double, int);
+    void updatePositionAndFacing(Position*&, Facing*&, long);
 
-    void setTargetPosition(Position* targetPosition) {
-        this->targetPosition = targetPosition;
+    void setDestination(Position* destination) {
+        this->destination = destination;
     }
 
-    Position* getTargetPosition() {
-        return targetPosition;
+    Position* getDestination() {
+        return destination;
     }
 private:
-    Position* targetPosition;
+    Position* destination;
     
     int currentState;
     
-    Facing* calcFacingToMove();
-    int calculateTurnDirection(Facing*);
-    void move(int);
-    void turn(int);
+    Facing* calcFacingToMove(Position*);
+    void updateCurrentState(Facing*, Facing*);
+    int calculateTurnDirection(Facing*, Facing*);
+    void executeMovement(Position*&, Facing*&, Facing*, long);
+    
+    int calcTurningDegrees(long);
+    double calcDistanceMoved(bool, long);
+    
+    void turn(Facing*&, Facing*, long);
+    void move(Position*&, bool, long);
     
     bool isFacingTargetPosition(Facing*);
     bool hasArrivedTargetPosition(Position*);

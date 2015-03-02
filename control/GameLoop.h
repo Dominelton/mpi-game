@@ -26,7 +26,7 @@ private:
     long startLoop;
     long endLoop;
     long diffLoop;
-    long actionCount;
+    long npcCount;
     std::vector<NPC*> npcs;
 };
 

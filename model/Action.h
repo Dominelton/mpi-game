@@ -22,6 +22,10 @@ public:
 
     void reduceWaitingTime(long time);
     
+    void moveTo(Position* destination);
+    
+    void updatePositionAndFacing(Position*&, Facing*&, long);
+    
     void setMovement(Movement* movement) {
         this->movement = movement;
     }
