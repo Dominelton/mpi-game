@@ -10,7 +10,6 @@
 #include <stdlib.h>
 
 Action::Action(){
-    srand (time(NULL));
     this->actionType = Action::WAIT;
     this->waitingTime = rand() % 1000;
 }

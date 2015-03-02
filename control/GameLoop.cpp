@@ -21,7 +21,7 @@ GameLoop::GameLoop() {
     this->diffLoop  = 0;
     this->startLoop = 0;
     this->endLoop   = 0;
-    this->npcCount = 1;
+    this->npcCount = 10000;
     spawnNPC();
 }
 
@@ -43,17 +43,15 @@ void GameLoop::spawnNPC(){
 }
 
 void GameLoop::doLoop() {
-    std::ofstream dataFile( "../dataFile.txt" );
-    std::streambuf *coutbuf = std::cout.rdbuf();
-    std::cout.rdbuf(dataFile.rdbuf());
+    std::ofstream loopTime( "../loopTime.txt" );
     
     long timeRun = 0;
     struct timespec sleepTime;
     sleepTime.tv_nsec = 20000000;
     sleepTime.tv_sec = 0;
-    while(timeRun < 5000){
+    long j = 0;
+    while(timeRun < 60000){
         startLoop = getCurrentMs();
-        std::cout << "********** NEW TURN STARTING AT " << startLoop << " ms. **********\n";
         // Aqui executa toda a lógica de loop
         for (int i = 0; i < this->npcCount; i++){
             npcs[i]->executeAction(diffLoop);
@@ -66,12 +64,12 @@ void GameLoop::doLoop() {
         if (diffLoop < 0){
             diffLoop += 1000;
         }
-        std::cout << "********** TURN ENDING AT " << endLoop << " ms. ****************\n";
+        loopTime << "Loop " << j << ": " << diffLoop << "ms\n";
         timeRun += diffLoop;
+        j++;
     }
     
-    std::cout.rdbuf(coutbuf);
-    dataFile.close();
+    loopTime.close();
     
     /*int n = 0;
     while (n < 100){

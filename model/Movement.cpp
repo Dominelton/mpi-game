@@ -29,8 +29,6 @@ Movement::~Movement() {
 
 void Movement::updatePositionAndFacing(Position*& currentPosition, Facing*& currentFacing, long time){
     Facing* facingToMove = calcFacingToMove(currentPosition);
-    std::cout << "Facing To Move -> XY-axis: " << facingToMove->getFacingDirectionXY() << "; ";
-    std::cout << "Z-axis: " << facingToMove->getFacingDirectionZ() << "; \n";
     
     this->updateCurrentState(currentFacing, facingToMove);
     

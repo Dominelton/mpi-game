@@ -3,6 +3,8 @@
 #include "stdlib.h"
 #include "string.h"
 #include "GameLoop.h"
+#include <iostream>
+#include <fstream>
 
 const char* openPort();
 MPI::Intercomm acceptConnection(const char* port_name);
@@ -19,8 +21,15 @@ int main(int argc, char** argv) {
     
     MPI::Finalize();*/
     
+    std::ofstream debugNPC( "../debugNPC.txt" );
+    std::streambuf *coutbuf = std::cout.rdbuf();
+    std::cout.rdbuf(debugNPC.rdbuf());
+    
     GameLoop game;
     game.doLoop();
+    
+    std::cout.rdbuf(coutbuf);
+    debugNPC.close();
     
     return 0;
 }
