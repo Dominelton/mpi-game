@@ -27,7 +27,6 @@ Action::~Action() {
 }
 
 void Action::waitRandomTime(){
-    srand (time(NULL));
     this->actionType = Action::WAIT;
     this->waitingTime = rand() % 1000;
 }
