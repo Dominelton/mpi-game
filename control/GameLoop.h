@@ -8,10 +8,19 @@
 #ifndef GAMELOOP_H
 #define	GAMELOOP_H
 
-#include <time.h>
-#include <vector>
 #include "NPC.h"
+#include "Facing.h"
+#include "Position.h"
+#include "MPIGameConfig.h"
 
+#include <stdlib.h>
+#include <time.h>
+#include <stdio.h>
+
+#include <vector>
+#include <iostream>
+#include <fstream>
+#include <cmath>
 
 class GameLoop {
 public:

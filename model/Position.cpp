@@ -6,7 +6,6 @@
  */
 
 #include "Position.h"
-#include "MPIGameConfig.h"
 
 Position::Position() {
     this->x = rand() % MPIGameConfig::BATTLEFIELD_SIZE_X;

@@ -6,10 +6,6 @@
  */
 
 #include "Character.h"
-#include <time.h>
-#include <stdio.h>
-#include <iostream>
-#include <stdlib.h>
 
 Character::Character() {
 }

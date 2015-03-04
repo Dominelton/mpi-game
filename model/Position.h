@@ -8,6 +8,8 @@
 #ifndef POSICAO_H
 #define	POSICAO_H
 
+#include "MPIGameConfig.h"
+
 #include <stdlib.h>
 #include <time.h>
 

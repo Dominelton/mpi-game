@@ -6,9 +6,6 @@
  */
 
 #include "Action.h"
-#include "MPIGameConfig.h"
-#include <time.h>
-#include <stdlib.h>
 
 Action::Action(){
     this->waitRandomTime();

@@ -9,6 +9,10 @@
 #define	ACTION_H
 
 #include "Movement.h"
+#include "MPIGameConfig.h"
+
+#include <time.h>
+#include <stdlib.h>
 
 class Action {
 public:
