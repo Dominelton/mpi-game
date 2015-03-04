@@ -11,11 +11,14 @@
 #include "Position.h"
 #include "Facing.h"
 #include "Utils.h"
-#include <cmath>
+#include "MPIGameConfig.h"
+
 #include <stdio.h>
+
+#include <cmath>
 #include <iostream>
 #include <fstream>
-#include "MPIGameConfig.h"
+
 
 class Movement {
 public:

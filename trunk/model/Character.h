@@ -13,6 +13,12 @@
 #include "Facing.h"
 #include "Action.h"
 
+#include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <iostream>
+
 class Character {
 public:
     Character();

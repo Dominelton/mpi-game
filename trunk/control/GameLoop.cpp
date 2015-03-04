@@ -6,17 +6,7 @@
  */
 
 #include "GameLoop.h"
-#include "Facing.h"
-#include "Position.h"
-#include "NPC.h"
-#include "MPIGameConfig.h"
 
-#include <stdlib.h>
-#include <time.h>
-#include <stdio.h>
-#include <iostream>
-#include <fstream>
-#include <cmath>
 
 GameLoop::GameLoop() {
     this->diffLoop  = 0;
