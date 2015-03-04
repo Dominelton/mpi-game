@@ -35,6 +35,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/config/MPIGameConfig.o \
+	${OBJECTDIR}/config/Utils.o \
 	${OBJECTDIR}/control/GameLoop.o \
 	${OBJECTDIR}/control/MPIGameMain.o \
 	${OBJECTDIR}/model/Action.o \
@@ -43,8 +45,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/model/Movement.o \
 	${OBJECTDIR}/model/NPC.o \
 	${OBJECTDIR}/model/Player.o \
-	${OBJECTDIR}/model/Position.o \
-	${OBJECTDIR}/model/Utils.o
+	${OBJECTDIR}/model/Position.o
 
 
 # C Compiler Flags
@@ -71,55 +72,60 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/mpi-game: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	mpicxx -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/mpi-game ${OBJECTFILES} ${LDLIBSOPTIONS}
 
+${OBJECTDIR}/config/MPIGameConfig.o: config/MPIGameConfig.cpp 
+	${MKDIR} -p ${OBJECTDIR}/config
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/config/MPIGameConfig.o config/MPIGameConfig.cpp
+
+${OBJECTDIR}/config/Utils.o: config/Utils.cpp 
+	${MKDIR} -p ${OBJECTDIR}/config
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/config/Utils.o config/Utils.cpp
+
 ${OBJECTDIR}/control/GameLoop.o: control/GameLoop.cpp 
 	${MKDIR} -p ${OBJECTDIR}/control
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/control/GameLoop.o control/GameLoop.cpp
+	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/control/GameLoop.o control/GameLoop.cpp
 
 ${OBJECTDIR}/control/MPIGameMain.o: control/MPIGameMain.cpp 
 	${MKDIR} -p ${OBJECTDIR}/control
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/control/MPIGameMain.o control/MPIGameMain.cpp
+	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/control/MPIGameMain.o control/MPIGameMain.cpp
 
 ${OBJECTDIR}/model/Action.o: model/Action.cpp 
 	${MKDIR} -p ${OBJECTDIR}/model
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Action.o model/Action.cpp
+	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Action.o model/Action.cpp
 
 ${OBJECTDIR}/model/Character.o: model/Character.cpp 
 	${MKDIR} -p ${OBJECTDIR}/model
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Character.o model/Character.cpp
+	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Character.o model/Character.cpp
 
 ${OBJECTDIR}/model/Facing.o: model/Facing.cpp 
 	${MKDIR} -p ${OBJECTDIR}/model
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Facing.o model/Facing.cpp
+	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Facing.o model/Facing.cpp
 
 ${OBJECTDIR}/model/Movement.o: model/Movement.cpp 
 	${MKDIR} -p ${OBJECTDIR}/model
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Movement.o model/Movement.cpp
+	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Movement.o model/Movement.cpp
 
 ${OBJECTDIR}/model/NPC.o: model/NPC.cpp 
 	${MKDIR} -p ${OBJECTDIR}/model
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/NPC.o model/NPC.cpp
+	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/NPC.o model/NPC.cpp
 
 ${OBJECTDIR}/model/Player.o: model/Player.cpp 
 	${MKDIR} -p ${OBJECTDIR}/model
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Player.o model/Player.cpp
+	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Player.o model/Player.cpp
 
 ${OBJECTDIR}/model/Position.o: model/Position.cpp 
 	${MKDIR} -p ${OBJECTDIR}/model
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Position.o model/Position.cpp
-
-${OBJECTDIR}/model/Utils.o: model/Utils.cpp 
-	${MKDIR} -p ${OBJECTDIR}/model
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Utils.o model/Utils.cpp
+	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Position.o model/Position.cpp
 
 # Subprojects
 .build-subprojects:

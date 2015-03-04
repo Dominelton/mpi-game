@@ -19,6 +19,7 @@ Character::Character(int id, Position* currentPosition, Facing* currentFacing) {
     this->currentPosition = currentPosition;
     this->currentFacing = currentFacing;
     this->action = new Action();
+    std::cout << "NPC " << this->id << ": Waiting Time: " << this->action->getWaitingTime() << "ms\n";
 }
 
 Character::Character(const Character& orig) {

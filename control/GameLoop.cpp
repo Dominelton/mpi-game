@@ -9,6 +9,7 @@
 #include "Facing.h"
 #include "Position.h"
 #include "NPC.h"
+#include "MPIGameConfig.h"
 
 #include <stdlib.h>
 #include <time.h>
@@ -21,7 +22,10 @@ GameLoop::GameLoop() {
     this->diffLoop  = 0;
     this->startLoop = 0;
     this->endLoop   = 0;
-    this->npcCount = 10000;
+    this->loopTime  = 0;
+    this->sleepTime.tv_nsec = MPIGameConfig::MIN_LOOP_TIME_NS;
+    this->sleepTime.tv_sec = 0;
+    
     spawnNPC();
 }
 
@@ -33,8 +37,8 @@ GameLoop::~GameLoop() {
 
 void GameLoop::spawnNPC(){
     srand (time(NULL));
-    this->npcs.reserve(this->npcCount);
-    for(int i=0; i< this->npcCount; i++){
+    this->npcs.reserve(MPIGameConfig::NPC_COUNT);
+    for(int i=0; i< MPIGameConfig::NPC_COUNT; i++){
         Position* position = new Position();
         Facing* facing = new Facing(90, 0);
         NPC* npc = new NPC(i, position, facing);
@@ -46,26 +50,36 @@ void GameLoop::doLoop() {
     std::ofstream loopTime( "../loopTime.txt" );
     
     long timeRun = 0;
-    struct timespec sleepTime;
-    sleepTime.tv_nsec = 20000000;
-    sleepTime.tv_sec = 0;
     long j = 0;
-    while(timeRun < 60000){
-        startLoop = getCurrentMs();
+    while(timeRun < MPIGameConfig::SYSTEM_RUNTIME_MS){
+        this->startLoop = getCurrentMs();
         // Aqui executa toda a lógica de loop
-        for (int i = 0; i < this->npcCount; i++){
-            npcs[i]->executeAction(diffLoop);
+        for (int i = 0; i < MPIGameConfig::NPC_COUNT; i++){
+            this->npcs[i]->executeAction(this->loopTime);
         }
         
-        nanosleep(&sleepTime, NULL);
-        
-        endLoop   = getCurrentMs();
-        diffLoop = endLoop - startLoop;
-        if (diffLoop < 0){
-            diffLoop += 1000;
+        this->endLoop   = getCurrentMs();
+        this->diffLoop = this->endLoop - this->startLoop;
+        if (this->diffLoop < 0){
+            this->diffLoop += 1000;
         }
-        loopTime << "Loop " << j << ": " << diffLoop << "ms\n";
-        timeRun += diffLoop;
+        
+        long sleepTimeNs = MPIGameConfig::MIN_LOOP_TIME_NS - (this->diffLoop * 1000000);
+        long sleepTimeMs = sleepTimeNs / 1000000;
+        
+        if (sleepTimeMs > 0){
+            this->loopTime = diffLoop + sleepTimeMs;
+            
+            this->sleepTime.tv_nsec = sleepTimeNs;
+            nanosleep(&this->sleepTime, NULL);
+        }
+        else{
+            this->loopTime = diffLoop;
+        }
+        
+        loopTime << "Loop " << j << ": " << this->loopTime << "ms\n";
+        
+        timeRun += this->loopTime;
         j++;
     }
     

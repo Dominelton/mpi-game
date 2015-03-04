@@ -35,6 +35,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/config/MPIGameConfig.o \
+	${OBJECTDIR}/config/Utils.o \
 	${OBJECTDIR}/control/GameLoop.o \
 	${OBJECTDIR}/control/MPIGameMain.o \
 	${OBJECTDIR}/model/Action.o \
@@ -43,8 +45,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/model/Movement.o \
 	${OBJECTDIR}/model/NPC.o \
 	${OBJECTDIR}/model/Player.o \
-	${OBJECTDIR}/model/Position.o \
-	${OBJECTDIR}/model/Utils.o
+	${OBJECTDIR}/model/Position.o
 
 
 # C Compiler Flags
@@ -70,6 +71,16 @@ LDLIBSOPTIONS=
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/mpi-game: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/mpi-game ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/config/MPIGameConfig.o: config/MPIGameConfig.cpp 
+	${MKDIR} -p ${OBJECTDIR}/config
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/config/MPIGameConfig.o config/MPIGameConfig.cpp
+
+${OBJECTDIR}/config/Utils.o: config/Utils.cpp 
+	${MKDIR} -p ${OBJECTDIR}/config
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/config/Utils.o config/Utils.cpp
 
 ${OBJECTDIR}/control/GameLoop.o: control/GameLoop.cpp 
 	${MKDIR} -p ${OBJECTDIR}/control
@@ -115,11 +126,6 @@ ${OBJECTDIR}/model/Position.o: model/Position.cpp
 	${MKDIR} -p ${OBJECTDIR}/model
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Position.o model/Position.cpp
-
-${OBJECTDIR}/model/Utils.o: model/Utils.cpp 
-	${MKDIR} -p ${OBJECTDIR}/model
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Utils.o model/Utils.cpp
 
 # Subprojects
 .build-subprojects:

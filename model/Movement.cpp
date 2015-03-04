@@ -6,11 +6,6 @@
  */
 
 #include "Movement.h"
-#include "Utils.h"
-#include <cmath>
-#include <stdio.h>
-#include <iostream>
-#include <fstream>
 
 Movement::Movement() {
 }
@@ -187,12 +182,12 @@ void Movement::move(Position*& currentPosition, bool isRunning, long time){
 }
 
 int Movement::calcTurningDegrees(long time){
-    return (int)(Movement::TURN_SPEED * time / 1000);
+    return (int)(MPIGameConfig::SLOW_TURN_SPEED * time / 1000);
 }
 
 double Movement::calcDistanceMoved(bool isRunning, long time){
     if (isRunning){
-        return Movement::RUN_SPEED * time / 1000;
+        return MPIGameConfig::RUN_SPEED * time / 1000;
     }
-    return Movement::WALK_SPEED * time / 1000;
+    return MPIGameConfig::WALK_SPEED * time / 1000;
 }
