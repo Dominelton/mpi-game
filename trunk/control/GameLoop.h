@@ -29,12 +29,13 @@ public:
     virtual ~GameLoop();
     void doLoop();
     long getCurrentMs();
+    void doSleep();
     
 private:
     void spawnNPC();
-    long startLoop;
-    long endLoop;
-    long diffLoop;
+    long processingTimeStart;
+    long processingTimeEnd;
+    long processingTimeDiff;
     long loopTime;
     struct timespec sleepTime;
     std::vector<NPC*> npcs;

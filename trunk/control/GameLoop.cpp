@@ -9,12 +9,12 @@
 
 
 GameLoop::GameLoop() {
-    this->diffLoop  = 0;
-    this->startLoop = 0;
-    this->endLoop   = 0;
-    this->loopTime  = 0;
-    this->sleepTime.tv_nsec = MPIGameConfig::MIN_LOOP_TIME_NS;
-    this->sleepTime.tv_sec = 0;
+    this->processingTimeStart = 0;
+    this->processingTimeEnd   = 0;
+    this->processingTimeDiff  = 0;
+    this->loopTime            = 0;
+    this->sleepTime.tv_nsec   = MPIGameConfig::MIN_LOOP_TIME_NS;
+    this->sleepTime.tv_sec    = 0;
     
     spawnNPC();
 }
@@ -37,78 +37,44 @@ void GameLoop::spawnNPC(){
 }
 
 void GameLoop::doLoop() {
-    std::ofstream loopTime( "../loopTime.txt" );
+    // Starts and opens a control file of the loop time to be measured
+    std::ofstream loopTimeFile( "../loopTime.txt" );
     
-    long timeRun = 0;
-    long j = 0;
-    while(timeRun < MPIGameConfig::SYSTEM_RUNTIME_MS){
-        this->startLoop = getCurrentMs();
-        // Aqui executa toda a lógica de loop
+    // Starts elapsed time and loop count variables
+    long elapsedTime = 0;
+    long loop = 0;
+    while(elapsedTime < MPIGameConfig::SYSTEM_RUNTIME_MS){
+        
+        // Get the current time on the start of the logic processing phase
+        this->processingTimeStart = getCurrentMs();
+        
+        // Execute the logic processing
         for (int i = 0; i < MPIGameConfig::NPC_COUNT; i++){
             this->npcs[i]->executeAction(this->loopTime);
         }
         
-        this->endLoop   = getCurrentMs();
-        this->diffLoop = this->endLoop - this->startLoop;
-        if (this->diffLoop < 0){
-            this->diffLoop += 1000;
+        // Get the current time on the end of the logic processing phase
+        this->processingTimeEnd   = getCurrentMs();
+        
+        // Set the elapsed time of the logic processing
+        this->processingTimeDiff = this->processingTimeEnd - this->processingTimeStart;
+        if (this->processingTimeDiff < 0){
+            this->processingTimeDiff += 1000;
         }
         
-        long sleepTimeNs = MPIGameConfig::MIN_LOOP_TIME_NS - (this->diffLoop * 1000000);
-        long sleepTimeMs = sleepTimeNs / 1000000;
+        // Sleep to upstand the Config UPS
+        this->doSleep();
         
-        if (sleepTimeMs > 0){
-            this->loopTime = diffLoop + sleepTimeMs;
-            
-            this->sleepTime.tv_nsec = sleepTimeNs;
-            nanosleep(&this->sleepTime, NULL);
-        }
-        else{
-            this->loopTime = diffLoop;
-        }
+        // Print the loop time on a control file
+        loopTimeFile << "Loop " << loop << ": " << this->loopTime << "ms\n";
         
-        loopTime << "Loop " << j << ": " << this->loopTime << "ms\n";
-        
-        timeRun += this->loopTime;
-        j++;
+        // Increments elapsed time and loop count
+        elapsedTime += this->loopTime;
+        loop++;
     }
     
-    loopTime.close();
-    
-    /*int n = 0;
-    while (n < 100){
-        
-        std::cout << "NPC id " << npcs[n]->getId() << "\n";
-        std::cout << "Position start x " << npcs[n]->getMovement()->getStart()->getX() << "\n";
-        std::cout << "Position start y " << npcs[n]->getMovement()->getStart()->getY() << "\n";
-        std::cout << "Position start z " << npcs[n]->getMovement()->getStart()->getZ() << "\n";
-        n++;
-    }*/
-    
-    /* 
-    std::ofstream dataFile;
-    dataFile.open( "../dataFile.txt" );
-    
-    n = 0;
-    while (n < 100){
-    
-        startLoop = clock();
-
-        endLoop = clock();
-        
-        dataFile << "Loop " << n << ":\n";
-        dataFile << startLoop << "\n";
-     
-        dataFile << "NPC " << n << ":\n";
-        dataFile << "id: " << npcs[n]->getId() << "\n";
-      
-        dataFile << endLoop << "\n";
-        dataFile << CLOCKS_PER_SEC << "\n";
-        
-        n++;
-    }
-    
-    dataFile.close();*/
+    // Closes the control file of the loop time to be measured
+    loopTimeFile.close();
 }
 
 long GameLoop::getCurrentMs(){
@@ -118,4 +84,20 @@ long GameLoop::getCurrentMs(){
     clock_gettime(CLOCK_REALTIME, &spec);
 
     return round(spec.tv_nsec / 1.0e6);
+}
+
+void GameLoop::doSleep(){
+    // Set the sleep timers in nanoseconds and milliseconds for calculations
+    long sleepTimeNs = MPIGameConfig::MIN_LOOP_TIME_NS - (this->processingTimeDiff * 1000000);
+    long sleepTimeMs = sleepTimeNs / 1000000;
+    
+    this->loopTime = this->processingTimeDiff;
+    
+    // Calculate the loop time including a possible sleep of the loop
+    if (sleepTimeMs > 0){
+        this->loopTime += sleepTimeMs;
+
+        this->sleepTime.tv_nsec = sleepTimeNs;
+        nanosleep(&this->sleepTime, NULL);
+    }
 }
