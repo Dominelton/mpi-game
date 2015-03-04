@@ -10,6 +10,12 @@
 
 #include "Position.h"
 #include "Facing.h"
+#include "Utils.h"
+#include <cmath>
+#include <stdio.h>
+#include <iostream>
+#include <fstream>
+#include "MPIGameConfig.h"
 
 class Movement {
 public:
@@ -20,12 +26,6 @@ public:
     const static int TURNING_LEFT  = 4;
     const static int TURNING_UP    = 5;
     const static int TURNING_DOWN  = 6;
-    
-    /* Measured in Degrees per second */
-    const static int TURN_SPEED    = 180;
-    /* Measured in meters per second */
-    const static double WALK_SPEED = 1.5;
-    const static double RUN_SPEED  = 5.0;
     
     Movement();
     Movement(Position*);

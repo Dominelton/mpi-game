@@ -6,12 +6,12 @@
  */
 
 #include "Action.h"
+#include "MPIGameConfig.h"
 #include <time.h>
 #include <stdlib.h>
 
 Action::Action(){
-    this->actionType = Action::WAIT;
-    this->waitingTime = rand() % 1000;
+    this->waitRandomTime();
 }
 
 Action::Action(long waitingTime){
@@ -27,11 +27,11 @@ Action::~Action() {
 
 void Action::waitRandomTime(){
     this->actionType = Action::WAIT;
-    this->waitingTime = rand() % 1000;
+    this->waitingTime = rand() % MPIGameConfig::RANDOM_WAIT_TIME_MS;
 }
 
 void Action::reduceWaitingTime(long time){
-    if (this->waitingTime <= time){
+    if (this->waitingTime < time){
         this->waitingTime = 0;
     }
     else{

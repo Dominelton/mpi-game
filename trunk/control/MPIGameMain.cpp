@@ -15,19 +15,19 @@ void printRankAndSize(MPI::Intercomm intercom);
  */
 int main(int argc, char** argv) {
     /*MPI::Init(argc, argv);
-    
+
     const char* port_name = openPort();
     MPI::Intercomm intercom = acceptConnection(port_name);
-    
+
     MPI::Finalize();*/
-    
+
     std::ofstream debugNPC( "../debugNPC.txt" );
     std::streambuf *coutbuf = std::cout.rdbuf();
     std::cout.rdbuf(debugNPC.rdbuf());
     
     GameLoop game;
     game.doLoop();
-    
+
     std::cout.rdbuf(coutbuf);
     debugNPC.close();
     

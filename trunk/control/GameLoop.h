@@ -26,7 +26,8 @@ private:
     long startLoop;
     long endLoop;
     long diffLoop;
-    long npcCount;
+    long loopTime;
+    struct timespec sleepTime;
     std::vector<NPC*> npcs;
 };
 
