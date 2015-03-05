@@ -8,6 +8,8 @@
 #ifndef UTILS_H
 #define	UTILS_H
 
+#include <time.h>
+
 class Utils {
 public:
     Utils();
@@ -15,6 +17,12 @@ public:
     virtual ~Utils();
     
     static long long int mod(long long int a, long long int b);
+    
+    static timespec timespecSubtract(timespec, timespec);
+    static timespec timespecSum(timespec, timespec);
+    static timespec convertNSecToTimespec(long);
+    
+    const static int NANOSECOND = 1000000000;
 private:
 
 };

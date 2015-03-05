@@ -28,7 +28,7 @@ public:
     GameLoop(const GameLoop& orig);
     virtual ~GameLoop();
     void doLoop();
-    long getCurrentMs();
+    timespec getCurrentTimeSpec();
     void doSleep();
     
     std::vector<NPC*> getNPCS(){
@@ -37,11 +37,12 @@ public:
     
 private:
     void spawnNPC();
-    long processingTimeStart;
-    long processingTimeEnd;
-    long processingTimeDiff;
-    long loopTime;
+    struct timespec processingTimeStart;
+    struct timespec processingTimeEnd;
+    struct timespec processingTime;
+    struct timespec loopTime;
     struct timespec sleepTime;
+    struct timespec elapsedTime;
     std::vector<NPC*> npcs;
 };
 

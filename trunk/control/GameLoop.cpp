@@ -7,14 +7,20 @@
 
 #include "GameLoop.h"
 
-
 GameLoop::GameLoop() {
-    this->processingTimeStart = 0;
-    this->processingTimeEnd   = 0;
-    this->processingTimeDiff  = 0;
-    this->loopTime            = 0;
-    this->sleepTime.tv_nsec   = MPIGameConfig::MIN_LOOP_TIME_NS;
-    this->sleepTime.tv_sec    = 0;
+    this->processingTimeStart.tv_nsec = 0;
+    this->processingTimeStart.tv_sec  = 0;
+    this->processingTimeEnd.tv_nsec   = 0;
+    this->processingTimeEnd.tv_sec    = 0;
+    this->processingTime.tv_nsec      = 0;
+    this->processingTime.tv_sec       = 0;
+    
+    this->loopTime.tv_nsec            = 0;
+    this->loopTime.tv_sec             = 0;
+    this->sleepTime.tv_nsec           = MPIGameConfig::MIN_LOOP_TIME_NSEC;
+    this->sleepTime.tv_sec            = 0;
+    this->elapsedTime.tv_nsec         = 0;
+    this->elapsedTime.tv_sec          = 0;
     
     spawnNPC();
 }
@@ -41,35 +47,31 @@ void GameLoop::doLoop() {
     std::ofstream loopTimeFile( "../loopTime.txt" );
     
     // Starts elapsed time and loop count variables
-    long elapsedTime = 0;
     long loop = 0;
-    while(elapsedTime < MPIGameConfig::SYSTEM_RUNTIME_MS){
+    while(elapsedTime.tv_sec < MPIGameConfig::SYSTEM_RUNTIME_SEC){
         
         // Get the current time on the start of the logic processing phase
-        this->processingTimeStart = getCurrentMs();
+        this->processingTimeStart = getCurrentTimeSpec();
         
         // Execute the logic processing
         for (int i = 0; i < MPIGameConfig::NPC_COUNT; i++){
-            this->npcs[i]->executeAction(this->loopTime);
+            this->npcs[i]->executeAction(this->loopTime.tv_nsec + (this->loopTime.tv_sec * Utils::NANOSECOND));
         }
         
         // Get the current time on the end of the logic processing phase
-        this->processingTimeEnd   = getCurrentMs();
+        this->processingTimeEnd   = getCurrentTimeSpec();
         
         // Set the elapsed time of the logic processing
-        this->processingTimeDiff = this->processingTimeEnd - this->processingTimeStart;
-        if (this->processingTimeDiff < 0){
-            this->processingTimeDiff += 1000;
-        }
+        this->processingTime = Utils::timespecSubtract(this->processingTimeEnd, this->processingTimeStart);
         
         // Sleep to upstand the Config UPS
         this->doSleep();
         
         // Print the loop time on a control file
-        loopTimeFile << "Loop " << loop << ": " << this->loopTime << "ms\n";
+        loopTimeFile << "Loop " << loop << ": " << this->loopTime.tv_nsec << "ns\n";
         
         // Increments elapsed time and loop count
-        elapsedTime += this->loopTime;
+        this->elapsedTime = Utils::timespecSum(this->elapsedTime, this->loopTime);
         loop++;
     }
     
@@ -77,27 +79,26 @@ void GameLoop::doLoop() {
     loopTimeFile.close();
 }
 
-long GameLoop::getCurrentMs(){
-    long   ms; // Milliseconds
+timespec GameLoop::getCurrentTimeSpec(){
     struct timespec spec;
 
     clock_gettime(CLOCK_REALTIME, &spec);
 
-    return round(spec.tv_nsec / 1.0e6);
+    return spec;
 }
 
 void GameLoop::doSleep(){
-    // Set the sleep timers in nanoseconds and milliseconds for calculations
-    long sleepTimeNs = MPIGameConfig::MIN_LOOP_TIME_NS - (this->processingTimeDiff * 1000000);
-    long sleepTimeMs = sleepTimeNs / 1000000;
+    this->sleepTime.tv_nsec           = MPIGameConfig::MIN_LOOP_TIME_NSEC;
+    this->sleepTime.tv_sec            = 0;
     
-    this->loopTime = this->processingTimeDiff;
+    this->sleepTime = Utils::timespecSubtract(this->sleepTime, this->processingTime);
+    
+    this->loopTime = this->processingTime;
     
     // Calculate the loop time including a possible sleep of the loop
-    if (sleepTimeMs > 0){
-        this->loopTime += sleepTimeMs;
-
-        this->sleepTime.tv_nsec = sleepTimeNs;
+    if (this->sleepTime.tv_sec > 0 || this->sleepTime.tv_nsec > 0){
+        this->loopTime = Utils::timespecSum(this->loopTime, this->sleepTime);
+        
         nanosleep(&this->sleepTime, NULL);
     }
 }
