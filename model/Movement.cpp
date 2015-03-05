@@ -182,12 +182,12 @@ void Movement::move(Position*& currentPosition, bool isRunning, long time){
 }
 
 int Movement::calcTurningDegrees(long time){
-    return (int)(MPIGameConfig::SLOW_TURN_SPEED * time / 1000);
+    return (int)(MPIGameConfig::SLOW_TURN_SPEED * time / Utils::NANOSECOND);
 }
 
 double Movement::calcDistanceMoved(bool isRunning, long time){
     if (isRunning){
-        return MPIGameConfig::RUN_SPEED * time / 1000;
+        return MPIGameConfig::RUN_SPEED * time / Utils::NANOSECOND;
     }
-    return MPIGameConfig::WALK_SPEED * time / 1000;
+    return MPIGameConfig::WALK_SPEED * time / Utils::NANOSECOND;
 }

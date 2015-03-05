@@ -10,6 +10,7 @@
 
 #include "Movement.h"
 #include "MPIGameConfig.h"
+#include "Utils.h"
 
 #include <time.h>
 #include <stdlib.h>

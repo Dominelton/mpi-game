@@ -11,9 +11,9 @@ Action::Action(){
     this->waitRandomTime();
 }
 
-Action::Action(long waitingTime){
+Action::Action(long waitingTimeNSec){
     this->actionType = Action::WAIT;
-    this->waitingTime = waitingTime;
+    this->waitingTime = waitingTimeNSec;
 }
 
 Action::Action(const Action& orig) {
@@ -24,7 +24,7 @@ Action::~Action() {
 
 void Action::waitRandomTime(){
     this->actionType = Action::WAIT;
-    this->waitingTime = rand() % MPIGameConfig::RANDOM_WAIT_TIME_MS;
+    this->waitingTime = rand() % (MPIGameConfig::RANDOM_WAIT_TIME_SEC * Utils::NANOSECOND);
 }
 
 void Action::reduceWaitingTime(long time){
