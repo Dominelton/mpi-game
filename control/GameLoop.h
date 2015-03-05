@@ -31,6 +31,10 @@ public:
     long getCurrentMs();
     void doSleep();
     
+    std::vector<NPC*> getNPCS(){
+        return this->npcs;
+    }
+    
 private:
     void spawnNPC();
     long processingTimeStart;
