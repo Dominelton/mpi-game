@@ -15,7 +15,6 @@ Character::Character(int id, Position* currentPosition, Facing* currentFacing) {
     this->currentPosition = currentPosition;
     this->currentFacing = currentFacing;
     this->action = new Action();
-    std::cout << "NPC " << this->id << ": Waiting Time: " << this->action->getWaitingTime() << "ms\n";
 }
 
 Character::Character(const Character& orig) {
@@ -25,6 +24,65 @@ Character::~Character() {
 }
 
 void Character::executeAction(long time){
+    if (MPIGameConfig::DEBUG_CHARACTER_FULL){
+        std::cout << "NPC " << this->id << ":\n";
+        std::cout << "{\n";
+        std::cout << "    currentPosition:\n";
+        std::cout << "    {\n";
+        std::cout << "        x: " << this->currentPosition->getX() << "\n";
+        std::cout << "        y: " << this->currentPosition->getY() << "\n";
+        std::cout << "        z: " << this->currentPosition->getZ() << "\n";
+        std::cout << "    }\n";
+        std::cout << "    currentFacing:\n";
+        std::cout << "    {\n";
+        std::cout << "        facingDirectionXY: " << this->currentFacing->getFacingDirectionXY() << "\n";
+        std::cout << "        facingDirectionZ: "  << this->currentFacing->getFacingDirectionZ()  << "\n";
+        std::cout << "    }\n";
+        std::cout << "    action:\n";
+        std::cout << "    {\n";
+        std::cout << "        actiongType: " << ((this->action->getActionType() == 0) ? "WAIT" : "MOVETO") << "\n";
+        if (this->action->getActionType() == 0){
+            std::cout << "        waitingTime: " << this->action->getWaitingTime() << "ms\n";
+        }
+        else{
+            std::cout << "        movement:\n";
+            std::cout << "        {\n";
+            std::cout << "            destination:\n";
+            std::cout << "            {\n";
+            std::cout << "                x: " << this->action->getMovement()->getDestination()->getX() << "\n";
+            std::cout << "                y: " << this->action->getMovement()->getDestination()->getY() << "\n";
+            std::cout << "                z: " << this->action->getMovement()->getDestination()->getZ() << "\n";
+            std::cout << "            }\n";
+            std::cout << "        }\n";
+        }
+        std::cout << "    }\n";
+        std::cout << "}\n";
+    }
+    
+    if (MPIGameConfig::DEBUG_MOVEMENT){
+        if (this->action->getActionType() == 1){
+            std::cout << "NPC " << this->id << ":\n";
+            std::cout << "{\n";
+            std::cout << "    currentPosition:\n";
+            std::cout << "    {\n";
+            std::cout << "        x: " << this->currentPosition->getX() << "\n";
+            std::cout << "        y: " << this->currentPosition->getY() << "\n";
+            std::cout << "        z: " << this->currentPosition->getZ() << "\n";
+            std::cout << "    }\n";
+            std::cout << "    currentFacing:\n";
+            std::cout << "    {\n";
+            std::cout << "        facingDirectionXY: " << this->currentFacing->getFacingDirectionXY() << "\n";
+            std::cout << "        facingDirectionZ: "  << this->currentFacing->getFacingDirectionZ()  << "\n";
+            std::cout << "    }\n";
+            std::cout << "    destination:\n";
+            std::cout << "    {\n";
+            std::cout << "        x: " << this->action->getMovement()->getDestination()->getX() << "\n";
+            std::cout << "        y: " << this->action->getMovement()->getDestination()->getY() << "\n";
+            std::cout << "        z: " << this->action->getMovement()->getDestination()->getZ() << "\n";
+            std::cout << "    }\n";
+        }
+    }
+    
     switch (this->action->getActionType()){
         case Action::WAIT: {
             this->processWaiting(time);

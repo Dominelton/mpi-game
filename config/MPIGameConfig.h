@@ -16,10 +16,13 @@ public:
     
     const static int BATTLEFIELD_SIZE_X    = 50;
     const static int BATTLEFIELD_SIZE_Y    = 50;
-    const static int NPC_COUNT             = 100000;
-    const static int RANDOM_WAIT_TIME_SEC  = 1;
+    const static int NPC_COUNT             = 500;
+    const static int RANDOM_WAIT_TIME_SEC  = 5;
     const static long MIN_LOOP_TIME_NSEC   = 20000000;
-    const static int SYSTEM_RUNTIME_SEC    = 30;
+    const static int SYSTEM_RUNTIME_SEC    = 10;
+    
+    const static bool DEBUG_CHARACTER_FULL = false;
+    const static bool DEBUG_MOVEMENT       = false;
     
     /* Measured in Degrees per second */
     const static int SLOW_TURN_SPEED       = 180;
