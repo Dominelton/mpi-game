@@ -82,6 +82,7 @@
           <incDir>
             <pElem>../../mpich_install/include</pElem>
             <pElem>model</pElem>
+            <pElem>include/</pElem>
           </incDir>
         </ccTool>
         <linkerTool>

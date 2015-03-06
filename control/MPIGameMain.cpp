@@ -6,6 +6,12 @@
 #include <iostream>
 #include <fstream>
 
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
+#include <cstdio>
+
+
 bool isServer(int argc, char** argv);
 
 //server functions
@@ -21,41 +27,74 @@ void broadcastPortName(char* port_name);
 void receiveMessageFromTheServer(MPI::Intercomm intercom);
 MPI::Intercomm connectToServer(char* port_name);
 
-
-void startServer();
-void startClient();
+MPI::Intercomm startServer();
+MPI::Intercomm startClient();
 void startGameLoop();
+
+
 
 
 int main(int argc, char** argv) {
     MPI::Init(argc, argv);
     
-//    if(isServer(argc, argv)){
-//        startServer();
-//    }else{
-//        startClient();
-//    }
-
-    startGameLoop();
+//    startGameLoop();
+    
+    MPI::Intercomm intercomm;
+    
+    
+    if(isServer(argc, argv)){
+        intercomm = startServer();
+        
+        rapidjson::StringBuffer buffer;
+        rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+       
+        Action* action = new Action();
+        std::cout << "Server created Action type " << action->getActionType() << "\n";
+        std::cout << "Server created Waiting time " << action->getWaitingTime() << "\n";
+        action->serialize(writer);
+        std::cout << "Server sent message:\n " << buffer.GetString() << "\n";
+        const char* messageBuffer[1];
+        //messageBuffer[0] = buffer.GetString();
+        messageBuffer[0] = "oi teste";
+        intercomm.Send(messageBuffer, 1, MPI_CHAR, 0, 1);
+    }else{
+        intercomm = startClient();
+        
+        char* messageBuffer[1];
+        intercomm.Recv(messageBuffer, 1, MPI_CHAR, 0, 1);
+        char responseString[1000000];
+        //responseString = messageBuffer[0];
+        //std::string str(responseString);
+        //std::cout << "Client received message:\n " << responseString << "\n";
+        
+        /*rapidjson::Document document;
+        document.Parse(responseString);
+        Action* action = new Action();
+        action->deserialize(document);
+        
+        std::cout << "Client received Action type " << action->getActionType() << "\n";
+        std::cout << "Client received Waiting time " << action->getWaitingTime() << "\n";
+        */
+    }
     
     MPI::Finalize();
 
     return 0;
 }
 
-void startServer(){
+MPI::Intercomm startServer(){
     const char* port_name = openPort();
-    MPI::Intercomm intercom = acceptConnection(port_name);
-    printRankAndSize(intercom);
-    sendMessageToAllClients(intercom);
+    return acceptConnection(port_name);
+    //printRankAndSize(intercom);
+    //sendMessageToAllClients(intercom);
 }
 
-void startClient(){
+MPI::Intercomm startClient(){
     char port_name[MPI_MAX_PORT_NAME];
     getPortName(port_name);    
-    MPI::Intercomm intercom = connectToServer(port_name);
-    receiveMessageFromTheServer(intercom);
-    printRankAndSize(intercom);
+    return connectToServer(port_name);
+    //receiveMessageFromTheServer(intercom);
+    //printRankAndSize(intercom);
 }
 
 void startGameLoop(){

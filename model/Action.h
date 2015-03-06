@@ -15,6 +15,11 @@
 #include <time.h>
 #include <stdlib.h>
 
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/prettywriter.h"
+
 class Action {
 public:
     const static int WAIT   = 0;
@@ -25,6 +30,9 @@ public:
     Action(const Action& orig);
     virtual ~Action();
 
+    void serialize(rapidjson::Writer<rapidjson::StringBuffer>&);    
+    void deserialize(rapidjson::Document&);
+    
     void waitRandomTime();
     
     void reduceWaitingTime(long time);
@@ -56,6 +64,7 @@ public:
     int getActionType() const {
         return actionType;
     }
+    
     
     
 private:

@@ -44,3 +44,19 @@ void Action::moveTo(Position* destination){
 void Action::updatePositionAndFacing(Position *&currentPosition, Facing *&currentFacing, long time){
     this->movement->updatePositionAndFacing(currentPosition, currentFacing, time);
 }
+
+void Action::serialize(rapidjson::Writer<rapidjson::StringBuffer>& writer){
+    writer.StartObject();
+    writer.String("actionType");
+    writer.Int(this->actionType);
+    writer.String("waitingTime");
+    writer.Int64(this->waitingTime);
+    writer.EndObject();
+}
+
+void Action::deserialize(rapidjson::Document& document){
+    rapidjson::Value& valueActionType = document["actionType"];
+    rapidjson::Value& valueWaitingType = document["waitingTime"];
+    this->actionType = valueActionType.GetInt();
+    this->waitingTime = valueWaitingType.GetInt64();
+}
