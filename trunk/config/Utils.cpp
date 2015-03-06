@@ -60,25 +60,29 @@ timespec Utils::timespecSum(timespec first, timespec second){
             result.tv_sec--;
             result.tv_nsec += 1000000000;
         }
-        else{
-            if (result.tv_nsec > 1000000000){
-                result.tv_sec++;
-                result.tv_nsec -= 1000000000;
-            }
+        else if (result.tv_nsec >= 1000000000){
+            result.tv_sec++;
+            result.tv_nsec -= 1000000000;
+        }
+    }
+    else if (result.tv_sec < 0){
+        if (result.tv_nsec > 0){
+            result.tv_sec++;
+            result.tv_nsec -= 1000000000;
+        }
+        else if (result.tv_nsec <= -1000000000){
+            result.tv_sec--;
+            result.tv_nsec += 1000000000;
         }
     }
     else{
-        if (result.tv_sec < 0){
-            if (result.tv_nsec > 0){
-                result.tv_sec++;
-                result.tv_nsec -= 1000000000;
-            }
-            else{
-                if (result.tv_nsec < -1000000000){
-                    result.tv_sec--;
-                    result.tv_nsec += 1000000000;
-                }
-            }
+        if (result.tv_nsec >= 1000000000){
+            result.tv_sec++;
+            result.tv_nsec -= 1000000000;
+        }
+        else if (result.tv_nsec <= -1000000000){
+            result.tv_sec--;
+            result.tv_nsec += 1000000000;
         }
     }
     

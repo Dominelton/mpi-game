@@ -163,11 +163,19 @@ void Movement::turn(Facing*& currentFacing, Facing* facingToMove, long time){
 }
 
 void Movement::move(Position*& currentPosition, bool isRunning, long time){
-    double distanceToDestination = sqrt(pow((currentPosition->getX() + this->destination->getX()), 2) + 
-                                        pow((currentPosition->getY() + this->destination->getY()), 2) + 
-                                        pow((currentPosition->getZ() + this->destination->getZ()), 2));
+    double distanceToDestination = sqrt(pow((currentPosition->getX() - this->destination->getX()), 2) + 
+                                        pow((currentPosition->getY() - this->destination->getY()), 2) + 
+                                        pow((currentPosition->getZ() - this->destination->getZ()), 2));
+    
+    
     
     double distanceMoved = this->calcDistanceMoved(isRunning, time);
+    
+    if (MPIGameConfig::DEBUG_MOVEMENT){
+        std::cout << "    distanceToDestination: " << distanceToDestination << "\n";
+        std::cout << "    distanceMoved: " << distanceMoved << "\n";
+        std::cout << "}\n";
+    }
     
     if (distanceToDestination < distanceMoved){
         currentPosition = this->destination;
