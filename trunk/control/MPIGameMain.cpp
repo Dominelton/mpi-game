@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 
+
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
@@ -16,16 +17,18 @@ bool isServer(int argc, char** argv);
 
 //server functions
 const char* openPort();
+void writePortNameToFile(const char* portName);
+const char* readPortNameFromFile();
 MPI::Intercomm acceptConnection(const char* port_name);
 void sendMessageToAllClients(MPI::Intercomm intercom);
 void printRankAndSize(MPI::Intercomm intercom);
 
 //client functions
-void getPortName(char* port_name);
+const char* getPortName();
 char* receiveBroadcastedPortName();
-void broadcastPortName(char* port_name);
+void broadcastPortName(const char* port_name);
 void receiveMessageFromTheServer(MPI::Intercomm intercom);
-MPI::Intercomm connectToServer(char* port_name);
+MPI::Intercomm connectToServer(const char* port_name);
 
 MPI::Intercomm startServer();
 MPI::Intercomm startClient();
@@ -89,9 +92,28 @@ MPI::Intercomm startServer(){
     //sendMessageToAllClients(intercom);
 }
 
+void writePortNameToFile(const char* portName){
+    std::ofstream portNameFile;
+    portNameFile.open ("../portName.txt");
+    portNameFile << portName;
+    portNameFile.close();
+}
+
+const char* readPortNameFromFile(){
+  std::string line;
+  std::ifstream portNameFile ("../portName.txt");
+  if (portNameFile.is_open()){
+    if (std::getline (portNameFile, line)){
+        return line.c_str();
+    }
+    portNameFile.close();
+  }
+}
+
+
 MPI::Intercomm startClient(){
-    char port_name[MPI_MAX_PORT_NAME];
-    getPortName(port_name);    
+    //char port_name[MPI_MAX_PORT_NAME];
+    const char* port_name = getPortName();    
     return connectToServer(port_name);
     //receiveMessageFromTheServer(intercom);
     //printRankAndSize(intercom);
@@ -125,7 +147,8 @@ bool isServer(int argc, char** argv){
 const char* openPort(){
     char port_name[MPI_MAX_PORT_NAME];
     MPI::Open_port(MPI_INFO_NULL, port_name);
-    std::cout << "The port name is: " << port_name << "\n";
+    writePortNameToFile(port_name);
+    std::cout << "Server started\n";
     return port_name;
 }
 
@@ -170,31 +193,31 @@ void receiveMessageFromTheServer(MPI::Intercomm intercom){
     }
 }
 
-MPI::Intercomm connectToServer(char* port_name){
+MPI::Intercomm connectToServer(const char* port_name){
     MPI::Intercomm intercom = MPI::COMM_WORLD.Connect(port_name, MPI_INFO_NULL, 0);
     int rank = intercom.Get_rank();
     std::cout << "Client rank " << rank << " connected! \n"; 
     return intercom;
 }
 
-void getPortName(char* port_name){
+const char* getPortName(){
     int rank = MPI::COMM_WORLD.Get_rank();
-    
+    const char* port_name;
     if(rank == 0){
-        std::cout << "\nCLIENT RANK 0 AWATING PORT NAME INPUT:"; 
-        gets(port_name);
+        port_name = readPortNameFromFile();
         broadcastPortName(port_name);
     }else{
         port_name = receiveBroadcastedPortName();
-    }    
+    }   
+    return port_name;
 }
 
-void broadcastPortName(char* port_name){
+void broadcastPortName(const char* port_name){
     int size = MPI::COMM_WORLD.Get_size();
     if(size<=1){
         return;
     }
-    char* buffer[1];
+    const char* buffer[1];
     buffer[0] = port_name;
 
     int j;
