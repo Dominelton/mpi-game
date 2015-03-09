@@ -18,7 +18,8 @@ public:
     const static int BATTLEFIELD_SIZE_Y    = 50;
     const static int NPC_COUNT             = 500;
     const static int RANDOM_WAIT_TIME_SEC  = 5;
-    const static long MIN_LOOP_TIME_NSEC   = 20000000;
+    const static int MAX_UPS               = 50;
+    
     const static int SYSTEM_RUNTIME_SEC    = 10;
     
     const static bool DEBUG_CHARACTER_FULL = false;
@@ -35,4 +36,3 @@ private:
 };
 
 #endif	/* MPIGAMECONFIG_H */
-

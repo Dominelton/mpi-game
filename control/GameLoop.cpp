@@ -124,10 +124,7 @@ timespec GameLoop::getCurrentTimeSpec(){
 }
 
 void GameLoop::doSleep(){
-    this->sleepTime.tv_nsec = MPIGameConfig::MIN_LOOP_TIME_NSEC;
-    this->sleepTime.tv_sec  = 0;
-    
-    this->sleepTime = Utils::timespecSubtract(this->sleepTime, this->processingTime);
+    this->calculateSleepTime();
     
     this->loopTime = this->processingTime;
     
@@ -137,4 +134,13 @@ void GameLoop::doSleep(){
         
         nanosleep(&this->sleepTime, NULL);
     }
+}
+
+void GameLoop::calculateSleepTime(){
+    long updateNS = (long)(1 / MPIGameConfig::MAX_UPS * Utils::NANOSECOND);
+    
+    this->sleepTime.tv_nsec = updateNS;
+    this->sleepTime.tv_sec  = 0;
+    
+    this->sleepTime = Utils::timespecSubtract(this->sleepTime, this->processingTime);
 }
