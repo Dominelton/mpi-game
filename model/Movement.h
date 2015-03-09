@@ -44,6 +44,15 @@ public:
     Position* getDestination() {
         return destination;
     }
+
+    void setCurrentState(int currentState) {
+        this->currentState = currentState;
+    }
+
+    int getCurrentState() const {
+        return currentState;
+    }
+    
 private:
     Position* destination;
     
