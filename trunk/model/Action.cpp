@@ -47,16 +47,28 @@ void Action::updatePositionAndFacing(Position *&currentPosition, Facing *&curren
 
 void Action::serialize(rapidjson::Writer<rapidjson::StringBuffer>& writer){
     writer.StartObject();
+    
     writer.String("actionType");
     writer.Int(this->actionType);
     writer.String("waitingTime");
     writer.Int64(this->waitingTime);
+    
+    
+//    writer.String("movement");
+//    writer.StartObject();
+//    writer.String("currentState");
+//    writer.Int(this->getMovement()->getCurrentState());
+//    writer.EndObject();
+    
+    
     writer.EndObject();
 }
 
 void Action::deserialize(rapidjson::Document& document){
     rapidjson::Value& valueActionType = document["actionType"];
     rapidjson::Value& valueWaitingType = document["waitingTime"];
+    rapidjson::Value::MemberIterator member = document.FindMember("movement");
+    //member->
     this->actionType = valueActionType.GetInt();
     this->waitingTime = valueWaitingType.GetInt64();
 }

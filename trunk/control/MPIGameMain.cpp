@@ -55,29 +55,28 @@ int main(int argc, char** argv) {
         std::cout << "Server created Action type " << action->getActionType() << "\n";
         std::cout << "Server created Waiting time " << action->getWaitingTime() << "\n";
         action->serialize(writer);
-        std::cout << "Server sent message:\n " << buffer.GetString() << "\n";
-        const char* messageBuffer[1];
-        //messageBuffer[0] = buffer.GetString();
-        messageBuffer[0] = "oi teste";
-        intercomm.Send(messageBuffer, 1, MPI_CHAR, 0, 1);
+        std::string message = buffer.GetString();
+        std::cout << "Server sent message:\n " << message << "\n";
+        
+        intercomm.Send(message.c_str(), message.length(), MPI_CHAR, 0, 1);
     }else{
         intercomm = startClient();
         
-        char* messageBuffer[1];
-        intercomm.Recv(messageBuffer, 1, MPI_CHAR, 0, 1);
-        char responseString[1000000];
-        //responseString = messageBuffer[0];
-        //std::string str(responseString);
-        //std::cout << "Client received message:\n " << responseString << "\n";
+        MPI::Status status;
+        intercomm.Probe(0, 1, status);
+        int messageSize = status.Get_count(MPI::CHAR);
+        char *buffer = new char[messageSize];
+        intercomm.Recv(buffer, messageSize, MPI::CHAR, 0, 1, status);
         
-        /*rapidjson::Document document;
-        document.Parse(responseString);
+        std::string message(buffer, messageSize);
+        
+        rapidjson::Document document;
+        document.Parse(message.c_str());
         Action* action = new Action();
         action->deserialize(document);
         
         std::cout << "Client received Action type " << action->getActionType() << "\n";
         std::cout << "Client received Waiting time " << action->getWaitingTime() << "\n";
-        */
     }
     
     MPI::Finalize();
@@ -230,7 +229,7 @@ void broadcastPortName(const char* port_name){
 char* receiveBroadcastedPortName(){
     int rank = MPI::COMM_WORLD.Get_rank();
     char* buffer[1];
-    printf("PROCESS RANK %d AWAITING PORT NAME FROM RANK 0\n", rank);
+    printf("PROCESS RANK %d WAITING FOR THE PORT NAME FROM RANK 0\n", rank);
     MPI::COMM_WORLD.Recv(buffer, 1, MPI_CHAR, 0, 66);
     printf("PROCESS RANK %d RECEIVED PORT NAME FROM RANK 0\n", rank);
     return buffer[0];
