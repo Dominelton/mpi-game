@@ -30,6 +30,7 @@ public:
     void doLoop();
     timespec getCurrentTimeSpec();
     void doSleep();
+    void calculateSleepTime();
     
     std::vector<NPC*> getNPCS(){
         return this->npcs;
