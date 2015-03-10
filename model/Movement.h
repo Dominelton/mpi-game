@@ -63,7 +63,7 @@ private:
     int calculateTurnDirection(Facing*, Facing*);
     void executeMovement(Position*&, Facing*&, Facing*, long);
     
-    int calcTurningDegrees(long);
+    double calcTurningDegrees(long);
     double calcDistanceMoved(bool, long);
     
     void turn(Facing*&, Facing*, long);

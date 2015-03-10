@@ -11,32 +11,32 @@
 class Facing {
 public:
     Facing();
-    Facing(int, int);
+    Facing(double, double);
     Facing(const Facing& orig);
     virtual ~Facing();
     
-    void setFacingDirectionZ(int facingDirectionZ) {
+    void setFacingDirectionZ(double facingDirectionZ) {
         this->facingDirectionZ = facingDirectionZ;
     }
 
-    int getFacingDirectionZ() const {
+    double getFacingDirectionZ() const {
         return facingDirectionZ;
     }
     
-    void setFacingDirectionXY(int facingDirectionXY) {
+    void setFacingDirectionXY(double facingDirectionXY) {
         this->facingDirectionXY = facingDirectionXY;
     }
 
-    int getFacingDirectionXY() const {
+    double getFacingDirectionXY() const {
         return facingDirectionXY;
     }
     
-    static int differenceOfAngleXY(Facing*, Facing*);
-    static int differenceOfAngleZ(Facing*, Facing*);
+    static double differenceOfAngleXY(Facing*, Facing*);
+    static double differenceOfAngleZ(Facing*, Facing*);
     
 private:
-    int facingDirectionXY;
-    int facingDirectionZ;
+    double facingDirectionXY;
+    double facingDirectionZ;
 };
 
 #endif	/* FACING_H */

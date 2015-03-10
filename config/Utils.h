@@ -16,7 +16,9 @@ public:
     Utils(const Utils& orig);
     virtual ~Utils();
     
-    static long long int mod(long long int a, long long int b);
+    static long mod(long a, long b);
+    
+    static double mod(double a, long b);
     
     static timespec timespecSubtract(timespec, timespec);
     static timespec timespecSum(timespec, timespec);

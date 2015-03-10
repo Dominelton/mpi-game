@@ -16,13 +16,23 @@ Utils::Utils(const Utils& orig) {
 Utils::~Utils() {
 }
 
-long long int Utils::mod(long long int a, long long int b){
-    long long int rest = a % b;
+long Utils::mod(long a, long b){
+    long rest = a % b;
     if (rest < 0){
         rest += b;
     }
     
     return rest;
+}
+
+double Utils::mod(double a, long b){
+    long intA = (long)a;
+    long rest = intA % b;
+    if (rest < 0){
+        rest += b;
+    }
+    
+    return rest + (a - intA);
 }
 
 timespec Utils::timespecSubtract(timespec first, timespec second){
