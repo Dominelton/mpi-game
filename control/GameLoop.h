@@ -38,6 +38,8 @@ public:
     
 private:
     void spawnNPC();
+    void debug(bool, int);
+    
     struct timespec processingTimeStart;
     struct timespec processingTimeEnd;
     struct timespec processingTime;

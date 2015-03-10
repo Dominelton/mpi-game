@@ -24,6 +24,7 @@ public:
     
     const static bool DEBUG_CHARACTER_FULL = false;
     const static bool DEBUG_MOVEMENT       = false;
+    const static bool DEBUG_CLOCKS         = true;
     
     /* Measured in Degrees per second */
     const static int SLOW_TURN_SPEED       = 180;
