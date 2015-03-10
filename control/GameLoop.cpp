@@ -127,7 +127,7 @@ void GameLoop::calculateSleepTime(){
     this->sleepTime = Utils::timespecSubtract(this->sleepTime, this->processingTime);
 }
 
-void GameLoop::debug(bool isDebugging, int variableToDebug, std::ofstream file){
+void GameLoop::debug(bool isDebugging, int variableToDebug, std::ofstream& file){
     if (isDebugging){
         switch (variableToDebug){
             case 0: {
