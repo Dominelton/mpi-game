@@ -28,9 +28,6 @@ public:
     GameLoop(const GameLoop& orig);
     virtual ~GameLoop();
     void doLoop();
-    timespec getCurrentTimeSpec();
-    void doSleep();
-    void calculateSleepTime();
     
     std::vector<NPC*> getNPCS(){
         return this->npcs;
@@ -38,7 +35,10 @@ public:
     
 private:
     void spawnNPC();
-    void debug(bool, int);
+    void debug(bool, int, std::ofstream&);
+    timespec getCurrentTimeSpec();
+    void doSleep();
+    void calculateSleepTime();
     
     struct timespec processingTimeStart;
     struct timespec processingTimeEnd;
