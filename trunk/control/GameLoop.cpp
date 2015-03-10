@@ -53,11 +53,8 @@ void GameLoop::doLoop() {
         // Get the current time on the start of the logic processing phase
         this->processingTimeStart = getCurrentTimeSpec();
         
-        loopTimeFile << "processingTimeStart:\n";
-        loopTimeFile << "{\n";
-        loopTimeFile << "    tv_sec: " << this->processingTimeStart.tv_sec << "\n";
-        loopTimeFile << "    tv_nsec: " << this->processingTimeStart.tv_nsec << "\n";
-        loopTimeFile << "}\n";
+        // Debugging processingTimeStart
+        this->debug(MPIGameConfig::DEBUG_CLOCKS, 0, loopTimeFile);
         
         // Execute the logic processing
         for (int i = 0; i < MPIGameConfig::NPC_COUNT; i++){
@@ -67,35 +64,23 @@ void GameLoop::doLoop() {
         // Get the current time on the end of the logic processing phase
         this->processingTimeEnd   = getCurrentTimeSpec();
         
-        loopTimeFile << "processingTimeEnd:\n";
-        loopTimeFile << "{\n";
-        loopTimeFile << "    tv_sec: " << this->processingTimeEnd.tv_sec << "\n";
-        loopTimeFile << "    tv_nsec: " << this->processingTimeEnd.tv_nsec << "\n";
-        loopTimeFile << "}\n";
+        // Debugging processingTimeEnd
+        this->debug(MPIGameConfig::DEBUG_CLOCKS, 1, loopTimeFile);
         
         // Set the elapsed time of the logic processing
         this->processingTime = Utils::timespecSubtract(this->processingTimeEnd, this->processingTimeStart);
         
-        loopTimeFile << "processingTime:\n";
-        loopTimeFile << "{\n";
-        loopTimeFile << "    tv_sec: " << this->processingTime.tv_sec << "\n";
-        loopTimeFile << "    tv_nsec: " << this->processingTime.tv_nsec << "\n";
-        loopTimeFile << "}\n";
+        // Debugging processingTime
+        this->debug(MPIGameConfig::DEBUG_CLOCKS, 2, loopTimeFile);
         
         // Sleep to upstand the Config UPS
         this->doSleep();
         
-        loopTimeFile << "sleepTime:\n";
-        loopTimeFile << "{\n";
-        loopTimeFile << "    tv_sec: " << this->sleepTime.tv_sec << "\n";
-        loopTimeFile << "    tv_nsec: " << this->sleepTime.tv_nsec << "\n";
-        loopTimeFile << "}\n";
+        // Debugging sleepTime
+        this->debug(MPIGameConfig::DEBUG_CLOCKS, 3, loopTimeFile);
         
-        loopTimeFile << "loopTime:\n";
-        loopTimeFile << "{\n";
-        loopTimeFile << "    tv_sec: " << this->loopTime.tv_sec << "\n";
-        loopTimeFile << "    tv_nsec: " << this->loopTime.tv_nsec << "\n";
-        loopTimeFile << "}\n";
+        // Debugging loopTime
+        this->debug(MPIGameConfig::DEBUG_CLOCKS, 4, loopTimeFile);
         
         // Print the loop time on a control file
         loopTimeFile << "Loop " << loop << ": " << this->loopTime.tv_nsec << "ns\n";
@@ -104,11 +89,8 @@ void GameLoop::doLoop() {
         this->elapsedTime = Utils::timespecSum(this->elapsedTime, this->loopTime);
         loop++;
         
-        loopTimeFile << "elapsedTime:\n";
-        loopTimeFile << "{\n";
-        loopTimeFile << "    tv_sec: " << this->elapsedTime.tv_sec << "\n";
-        loopTimeFile << "    tv_nsec: " << this->elapsedTime.tv_nsec << "\n";
-        loopTimeFile << "}\n";
+        // Debugging elapsedTime
+        this->debug(MPIGameConfig::DEBUG_CLOCKS, 5, loopTimeFile);
     }
     
     // Closes the control file of the loop time to be measured
@@ -143,4 +125,59 @@ void GameLoop::calculateSleepTime(){
     this->sleepTime.tv_sec  = 0;
     
     this->sleepTime = Utils::timespecSubtract(this->sleepTime, this->processingTime);
+}
+
+void GameLoop::debug(bool isDebugging, int variableToDebug, std::ofstream file){
+    if (isDebugging){
+        switch (variableToDebug){
+            case 0: {
+                file << "processingTimeStart:\n";
+                file << "{\n";
+                file << "    tv_sec: " << this->processingTimeStart.tv_sec << "\n";
+                file << "    tv_nsec: " << this->processingTimeStart.tv_nsec << "\n";
+                file << "}\n";
+            }
+                break;
+            case 1: {
+                file << "processingTimeEnd:\n";
+                file << "{\n";
+                file << "    tv_sec: " << this->processingTimeEnd.tv_sec << "\n";
+                file << "    tv_nsec: " << this->processingTimeEnd.tv_nsec << "\n";
+                file << "}\n";
+            }
+                break;
+            case 2: {
+                file << "processingTime:\n";
+                file << "{\n";
+                file << "    tv_sec: " << this->processingTime.tv_sec << "\n";
+                file << "    tv_nsec: " << this->processingTime.tv_nsec << "\n";
+                file << "}\n";
+            }
+                break;
+            case 3: {
+                file << "sleepTime:\n";
+                file << "{\n";
+                file << "    tv_sec: " << this->sleepTime.tv_sec << "\n";
+                file << "    tv_nsec: " << this->sleepTime.tv_nsec << "\n";
+                file << "}\n";
+            }
+                break;
+            case 4: {
+                file << "loopTime:\n";
+                file << "{\n";
+                file << "    tv_sec: " << this->loopTime.tv_sec << "\n";
+                file << "    tv_nsec: " << this->loopTime.tv_nsec << "\n";
+                file << "}\n";
+            }
+                break;
+            case 5: {
+                file << "elapsedTime:\n";
+                file << "{\n";
+                file << "    tv_sec: " << this->elapsedTime.tv_sec << "\n";
+                file << "    tv_nsec: " << this->elapsedTime.tv_nsec << "\n";
+                file << "}\n";
+            }
+                break;
+        }
+    }
 }

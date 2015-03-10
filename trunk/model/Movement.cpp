@@ -12,7 +12,6 @@ Movement::Movement() {
 
 Movement::Movement(Position* destination) {
     this->destination = destination;
-    
     this->currentState = Movement::NOT_MOVING;
 }
 
