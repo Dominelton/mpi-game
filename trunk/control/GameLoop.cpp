@@ -17,7 +17,7 @@ GameLoop::GameLoop() {
     
     this->loopTime.tv_nsec            = 0;
     this->loopTime.tv_sec             = 0;
-    this->sleepTime.tv_nsec           = MPIGameConfig::MIN_LOOP_TIME_NSEC;
+    this->sleepTime.tv_nsec           = (long)(1 / MPIGameConfig::MAX_UPS * Utils::NANOSECOND);
     this->sleepTime.tv_sec            = 0;
     this->elapsedTime.tv_nsec         = 0;
     this->elapsedTime.tv_sec          = 0;

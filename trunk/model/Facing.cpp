@@ -10,7 +10,7 @@
 Facing::Facing() {
 }
 
-Facing::Facing(int facingDirectionXY, int facingDirectionZ) {
+Facing::Facing(double facingDirectionXY, double facingDirectionZ) {
     this->facingDirectionXY = facingDirectionXY;
     this->facingDirectionZ = facingDirectionZ;
 }
@@ -21,13 +21,13 @@ Facing::Facing(const Facing& orig) {
 Facing::~Facing() {
 }
 
-int Facing::differenceOfAngleXY(Facing* start, Facing* end){
-    int angleXYStart = start->getFacingDirectionXY();
-    int angleXYEnd   = end->getFacingDirectionXY();
+double Facing::differenceOfAngleXY(Facing* start, Facing* end){
+    double angleXYStart = start->getFacingDirectionXY();
+    double angleXYEnd   = end->getFacingDirectionXY();
     
     if (angleXYStart != angleXYEnd){
-        int distanceRight = 0;
-        int distanceLeft = 0;
+        double distanceRight = 0;
+        double distanceLeft = 0;
         
         if (angleXYStart > angleXYEnd){
             distanceRight = angleXYStart - angleXYEnd;
@@ -45,7 +45,7 @@ int Facing::differenceOfAngleXY(Facing* start, Facing* end){
     }
 }
 
-int Facing::differenceOfAngleZ(Facing* start, Facing* end){
+double Facing::differenceOfAngleZ(Facing* start, Facing* end){
     if (start->getFacingDirectionZ() < end->getFacingDirectionZ()){
         return end->getFacingDirectionZ() - start->getFacingDirectionZ();
     }

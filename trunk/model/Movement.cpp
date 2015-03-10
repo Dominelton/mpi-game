@@ -45,7 +45,7 @@ Facing* Movement::calcFacingToMove(Position* currentPosition){
         facingAngleZ = acos(dist2/dist) * 180 / M_PI;
     }
     
-    Facing* facing = new Facing(Utils::mod((int)round(facingAngleXY),360), (int)round(facingAngleZ));
+    Facing* facing = new Facing(Utils::mod(facingAngleXY, 360), facingAngleZ);
     return facing;
 }
 
@@ -63,14 +63,14 @@ void Movement::updateCurrentState(Facing* currentFacing, Facing* facingToMove){
 }
 
 int Movement::calculateTurnDirection(Facing* currentFacing, Facing* facingToMove){
-    int angleXYStart = currentFacing->getFacingDirectionXY();
-    int angleXYEnd = facingToMove->getFacingDirectionXY();
-    int angleZStart = currentFacing->getFacingDirectionZ();
-    int angleZEnd = facingToMove->getFacingDirectionZ();
+    double angleXYStart = currentFacing->getFacingDirectionXY();
+    double angleXYEnd = facingToMove->getFacingDirectionXY();
+    double angleZStart = currentFacing->getFacingDirectionZ();
+    double angleZEnd = facingToMove->getFacingDirectionZ();
     
     if (angleXYStart != angleXYEnd){
-        int distanceRight = 0;
-        int distanceLeft = 0;
+        double distanceRight = 0;
+        double distanceLeft = 0;
         
         if (angleXYStart > angleXYEnd){
             distanceRight = angleXYStart - angleXYEnd;
@@ -118,9 +118,9 @@ void Movement::executeMovement(Position*& currentPosition, Facing*& currentFacin
 }
 
 void Movement::turn(Facing*& currentFacing, Facing* facingToMove, long time){
-    int degrees = this->calcTurningDegrees(time);
-    int degreesXY = Facing::differenceOfAngleXY(currentFacing, facingToMove);
-    int degreesZ = Facing::differenceOfAngleZ(currentFacing, facingToMove);
+    double degrees = this->calcTurningDegrees(time);
+    double degreesXY = Facing::differenceOfAngleXY(currentFacing, facingToMove);
+    double degreesZ = Facing::differenceOfAngleZ(currentFacing, facingToMove);
     
     switch(this->currentState){
         case Movement::TURNING_RIGHT:{
@@ -189,8 +189,8 @@ void Movement::move(Position*& currentPosition, bool isRunning, long time){
     }
 }
 
-int Movement::calcTurningDegrees(long time){
-    return (int)(MPIGameConfig::SLOW_TURN_SPEED * time / Utils::NANOSECOND);
+double Movement::calcTurningDegrees(long time){
+    return MPIGameConfig::SLOW_TURN_SPEED * time / Utils::NANOSECOND;
 }
 
 double Movement::calcDistanceMoved(bool isRunning, long time){
