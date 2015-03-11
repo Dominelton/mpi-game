@@ -217,16 +217,14 @@ void Movement::serialize(rapidjson::Writer<rapidjson::StringBuffer>& writer){
 }
 
 void Movement::deserialize(rapidjson::Value& valueMovement){
-    for (rapidjson::Value::MemberIterator movementMember = valueMovement.MemberBegin(); movementMember != valueMovement.MemberEnd(); ++movementMember) {
-        std::string memberName(movementMember->name.GetString());
-        std::string currentState("currentState");
-        std::string destination("destination");
-        if(memberName.compare(currentState)==0){
-            this->currentState = (movementMember->value.GetInt());
-        }
-        if(memberName.compare(destination)==0){
-            this->destination = new Position();
-            this->destination->deserialize(movementMember->value); 
-        }
-    }
+    if (valueMovement.HasMember("currentState")){
+        rapidjson::Value& valueCurrentState = valueMovement["currentState"];
+        this->currentState = valueCurrentState.GetInt();
+    } 
+    
+    if (valueMovement.HasMember("destination")){
+        rapidjson::Value& valueDestination = valueMovement["destination"];
+        this->destination = new Position();
+        this->destination->deserialize(valueDestination);
+    } 
 }

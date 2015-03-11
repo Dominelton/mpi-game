@@ -68,16 +68,13 @@ void Facing::serialize(rapidjson::Writer<rapidjson::StringBuffer>& writer){
 }
 
 void Facing::deserialize(rapidjson::Value& valueFacing){
-    for (rapidjson::Value::MemberIterator facingMember = valueFacing.MemberBegin(); facingMember != valueFacing.MemberEnd(); ++facingMember) {
-        std::string memberName(facingMember->name.GetString());
-        std::string facingDirectionZ("facingDirectionZ");
-        std::string facingDirectionXY("facingDirectionXY");
-        
-        if(memberName.compare(facingDirectionZ)==0){
-            this->facingDirectionZ = (facingMember->value.GetDouble());
-        }
-        if(memberName.compare(facingDirectionXY)==0){
-            this->facingDirectionXY = (facingMember->value.GetDouble());
-        }
+    if (valueFacing.HasMember("facingDirectionZ")){
+        rapidjson::Value& valuefacingDirectionZ = valueFacing["facingDirectionZ"];
+        this->facingDirectionZ = valuefacingDirectionZ.GetDouble();
+    }
+    
+    if (valueFacing.HasMember("facingDirectionXY")){
+        rapidjson::Value& valuefacingDirectionXY = valueFacing["facingDirectionXY"];
+        this->facingDirectionXY = valuefacingDirectionXY.GetDouble();
     }
 }

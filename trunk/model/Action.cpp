@@ -66,20 +66,20 @@ void Action::serialize(rapidjson::Writer<rapidjson::StringBuffer>& writer){
 }
 
 void Action::deserialize(rapidjson::Value& valueAction){
-    for (rapidjson::Value::MemberIterator actionMember = valueAction.MemberBegin(); actionMember != valueAction.MemberEnd(); ++actionMember) {
-        std::string memberName(actionMember->name.GetString());
-        std::string actionType("actionType");
-        std::string waitingTime("waitingTime");
-        std::string movement("movement");
-        if(memberName.compare(actionType)==0){
-            this->actionType = (actionMember->value.GetInt());
-        }
-        if(memberName.compare(waitingTime)==0){
-            this->waitingTime = (actionMember->value.GetInt64());
-        }
-        if(memberName.compare(movement)==0){
-            this->movement = new Movement();
-            this->movement->deserialize(actionMember->value); 
-        }
+    if (valueAction.HasMember("actionType")){
+        rapidjson::Value& valueActionType = valueAction["actionType"];
+        this->actionType = valueActionType.GetInt();
     }
+    
+    if (valueAction.HasMember("waitingTime")){
+        rapidjson::Value& valueWaitingTime = valueAction["waitingTime"];
+        this->waitingTime = valueWaitingTime.GetInt64();
+    }
+    
+    if (valueAction.HasMember("movement")){
+        rapidjson::Value& valueMovement = valueAction["movement"];
+        this->movement = new Movement();
+        this->movement->deserialize(valueMovement);
+    }
+    
 }

@@ -52,9 +52,21 @@ int main(int argc, char** argv) {
             rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
             GameLoop* game = new GameLoop();
             game->doLoop();
-            NPC* npc = game->getNPCs()[0];
-
-            npc->serialize(writer);
+            game->getNPCs();
+            
+            writer.StartObject();
+            
+            writer.String("NPCs");
+            writer.StartArray();
+            for(int i=0; i< (game->getNPCs().size()) ; i++){
+                game->getNPCs()[i]->serialize(writer);
+            }
+            
+            writer.EndArray();
+            
+            writer.EndObject();
+            
+            
             std::string message = buffer.GetString();
             std::cout << "Server sent message:\n " << message << "\n";
             intercomm.Send(message.c_str(), message.length(), MPI_CHAR, 0, 1);
@@ -72,14 +84,25 @@ int main(int argc, char** argv) {
 
             rapidjson::Document document;
             document.Parse(message.c_str());
-            NPC* npc = new NPC();
-            npc->deserialize(document);
+            rapidjson::Value& valueCharacters = document["NPCs"];
+            std::vector<NPC*> NPCs;
+            for(int i=0; i< valueCharacters.Size(); i++){
+                NPC* npc = new NPC();
+                npc->deserialize(valueCharacters[i]);
+                std::cout << "NPC received: " << npc->getId() << "\n";
+                NPCs.push_back(npc);
+            }
+            
+            
+            
+//            NPC* npc = new NPC();
+//            npc->deserialize(document["character"]);
             std::cout << "Client received message: " << message << "\n";
-            std::cout << "Client received action type " << npc->getAction()->getActionType() << "\n";
-            std::cout << "Client received waiting time " << npc->getAction()->getWaitingTime() << "\n";
-            std::cout << "Client received Movement's current state " << npc->getAction()->getMovement()->getCurrentState() << "\n";
-            std::cout << "Client received Movement's destination's X " << npc->getAction()->getMovement()->getDestination()->getX() << "\n";
-            std::cout << "Client received Movement's destination's Y " << npc->getAction()->getMovement()->getDestination()->getY() << "\n";
+//            std::cout << "Client received action type " << npc->getAction()->getActionType() << "\n";
+//            std::cout << "Client received waiting time " << npc->getAction()->getWaitingTime() << "\n";
+//            std::cout << "Client received Movement's current state " << npc->getAction()->getMovement()->getCurrentState() << "\n";
+//            std::cout << "Client received Movement's destination's X " << npc->getAction()->getMovement()->getDestination()->getX() << "\n";
+//            std::cout << "Client received Movement's destination's Y " << npc->getAction()->getMovement()->getDestination()->getY() << "\n";
         }
         
         MPI::Finalize();
