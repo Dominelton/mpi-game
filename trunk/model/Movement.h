@@ -19,6 +19,9 @@
 #include <iostream>
 #include <fstream>
 
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
 
 class Movement {
 public:
@@ -36,7 +39,9 @@ public:
     virtual ~Movement();
     
     void updatePositionAndFacing(Position*&, Facing*&, long);
-
+    void serialize(rapidjson::Writer<rapidjson::StringBuffer>&);    
+    void deserialize(rapidjson::Value&);
+    
     void setDestination(Position* destination) {
         this->destination = destination;
     }
@@ -50,7 +55,7 @@ public:
     }
 
     int getCurrentState() const {
-        return currentState;
+        return this->currentState;
     }
     
 private:

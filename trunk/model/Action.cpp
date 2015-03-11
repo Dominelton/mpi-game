@@ -53,22 +53,28 @@ void Action::serialize(rapidjson::Writer<rapidjson::StringBuffer>& writer){
     writer.String("waitingTime");
     writer.Int64(this->waitingTime);
     
-    
-//    writer.String("movement");
-//    writer.StartObject();
-//    writer.String("currentState");
-//    writer.Int(this->getMovement()->getCurrentState());
-//    writer.EndObject();
-    
+    if(this->movement){
+        writer.String("movement");
+        this->movement->serialize(writer);
+    }
     
     writer.EndObject();
 }
 
 void Action::deserialize(rapidjson::Document& document){
-    rapidjson::Value& valueActionType = document["actionType"];
-    rapidjson::Value& valueWaitingType = document["waitingTime"];
-    rapidjson::Value::MemberIterator member = document.FindMember("movement");
-    //member->
-    this->actionType = valueActionType.GetInt();
-    this->waitingTime = valueWaitingType.GetInt64();
+    if(document.HasMember("actionType")){
+        rapidjson::Value& valueActionType = document["actionType"];
+        this->actionType = valueActionType.GetInt();
+    }
+    
+    if(document.HasMember("waitingTime")){
+        rapidjson::Value& valueWaitingType = document["waitingTime"];
+        this->waitingTime = valueWaitingType.GetInt64();
+    }
+    
+    if(document.HasMember("movement")){
+        rapidjson::Value& valueMovement = document["movement"];
+        this->movement = new Movement();
+        this->movement->deserialize(valueMovement);
+    }
 }

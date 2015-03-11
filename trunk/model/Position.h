@@ -13,6 +13,11 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
+
+
 class Position {
 public:
     Position();
@@ -21,7 +26,9 @@ public:
     virtual ~Position();
     
     bool equals(Position*);
-
+    void serialize(rapidjson::Writer<rapidjson::StringBuffer>&);    
+    void deserialize(rapidjson::Value&);
+    
     void setZ(double z) {
         this->z = z;
     }
