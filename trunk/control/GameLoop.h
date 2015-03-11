@@ -29,8 +29,17 @@ public:
     virtual ~GameLoop();
     void doLoop();
     
-    std::vector<NPC*> getNPCS(){
-        return this->npcs;
+    std::vector<NPC*> getNPCs(){
+        return this->NPCs;
+    }
+    
+    std::vector<NPC*> getDisctributedNPCs(){
+        return this->distributedNPCs;
+    }
+    
+    void setDistributedLoopTime(long sec, long nsec){
+        this->distributedLoopTime.tv_sec  = sec;
+        this->distributedLoopTime.tv_nsec = nsec;
     }
     
 private:
@@ -46,7 +55,10 @@ private:
     struct timespec loopTime;
     struct timespec sleepTime;
     struct timespec elapsedTime;
-    std::vector<NPC*> npcs;
+    struct timespec distributedLoopTime;
+    
+    std::vector<NPC*> NPCs;
+    std::vector<NPC*> distributedNPCs;
 };
 
 #endif	/* GAMELOOP_H */
