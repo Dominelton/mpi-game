@@ -50,10 +50,10 @@ int main(int argc, char** argv) {
         
         rapidjson::StringBuffer buffer;
         rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-       
-        Action* action = new Action();
-        std::cout << "Server created Action type " << action->getActionType() << "\n";
-        std::cout << "Server created Waiting time " << action->getWaitingTime() << "\n";
+        GameLoop* game = new GameLoop();
+        game->doLoop();
+        Action* action = game->getNPCS()[0]->getAction();
+
         action->serialize(writer);
         std::string message = buffer.GetString();
         std::cout << "Server sent message:\n " << message << "\n";
@@ -74,9 +74,12 @@ int main(int argc, char** argv) {
         document.Parse(message.c_str());
         Action* action = new Action();
         action->deserialize(document);
-        
-        std::cout << "Client received Action type " << action->getActionType() << "\n";
-        std::cout << "Client received Waiting time " << action->getWaitingTime() << "\n";
+        std::cout << "Client received message: " << message << "\n";
+        std::cout << "Client received action type " << action->getActionType() << "\n";
+        std::cout << "Client received waiting time " << action->getWaitingTime() << "\n";
+        std::cout << "Client received Movement's current state " << action->getMovement()->getCurrentState() << "\n";
+        std::cout << "Client received Movement's destination's X " << action->getMovement()->getDestination()->getX() << "\n";
+        std::cout << "Client received Movement's destination's Y " << action->getMovement()->getDestination()->getY() << "\n";
     }
     
     MPI::Finalize();

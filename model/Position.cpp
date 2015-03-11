@@ -37,3 +37,41 @@ bool Position::equals(Position* compareTo){
     return equals;
 }
 
+void Position::serialize(rapidjson::Writer<rapidjson::StringBuffer>& writer){
+    writer.StartObject();
+    
+    if(this->x){
+        writer.String("x");
+        writer.Double(this->x);
+    }
+    if(this->y){
+        writer.String("y");
+        writer.Double(this->y);
+    }
+    if(this->z){
+        writer.String("z");
+        writer.Double(this->z);
+    }
+    
+    writer.EndObject();
+}
+
+void Position::deserialize(rapidjson::Value& valuePosition){
+    
+    for (rapidjson::Value::MemberIterator positionMember = valuePosition.MemberBegin(); positionMember != valuePosition.MemberEnd(); ++positionMember) {
+        std::string x("x");
+        std::string y("y");
+        std::string z("z");
+        std::string memberName(positionMember->name.GetString());
+        
+        if(memberName.compare(x)==0){
+            this->x = (positionMember->value.GetDouble());
+        }
+        if(memberName.compare(y)==0){
+            this->y = (positionMember->value.GetDouble());
+        }
+        if(memberName.compare(z)==0){
+            this->z = (positionMember->value.GetDouble());
+        }
+    }
+}

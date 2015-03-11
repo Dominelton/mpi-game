@@ -16,7 +16,7 @@ public:
     
     const static int BATTLEFIELD_SIZE_X    = 50;
     const static int BATTLEFIELD_SIZE_Y    = 50;
-    const static int NPC_COUNT             = 500;
+    const static int NPC_COUNT             = 1;
     const static int RANDOM_WAIT_TIME_SEC  = 5;
     const static int MAX_UPS               = 50;
     

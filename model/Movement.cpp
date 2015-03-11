@@ -6,6 +6,7 @@
  */
 
 #include "Movement.h"
+#include "rapidjson/document.h"
 
 Movement::Movement() {
 }
@@ -197,4 +198,36 @@ double Movement::calcDistanceMoved(bool isRunning, long time){
         return MPIGameConfig::RUN_SPEED * time / Utils::NANOSECOND;
     }
     return MPIGameConfig::WALK_SPEED * time / Utils::NANOSECOND;
+}
+
+void Movement::serialize(rapidjson::Writer<rapidjson::StringBuffer>& writer){
+    writer.StartObject();
+    
+    if(this->currentState){
+        writer.String("currentState");
+        writer.Int(this->currentState);
+    }
+    
+    if(this->destination){
+        writer.String("destination");
+        this->destination->serialize(writer);
+    }
+    
+    writer.EndObject();
+}
+
+void Movement::deserialize(rapidjson::Value& valueMovement){
+    for (rapidjson::Value::MemberIterator movementMember = valueMovement.MemberBegin(); movementMember != valueMovement.MemberEnd(); ++movementMember) {
+        std::cout << "Movement member: " << movementMember->name.GetString() << "\n";
+        std::string memberName(movementMember->name.GetString());
+        std::string currentState("currentState");
+        std::string destination("destination");
+        if(memberName.compare(currentState)==0){
+            this->currentState = (movementMember->value.GetInt());
+        }
+        if(memberName.compare(destination)==0){
+            this->destination = new Position();
+            this->destination->deserialize(movementMember->value); 
+        }
+    }
 }
