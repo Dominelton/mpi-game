@@ -50,4 +50,3 @@ private:
 };
 
 #endif	/* GAMELOOP_H */
-
