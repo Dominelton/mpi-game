@@ -64,9 +64,9 @@ void GameLoop::doLoop() {
         }
         
         // Execute the logic processing of the distributed NPCs
-        for (int i = 0; i < MPIGameConfig::NPC_COUNT; i++){
+        /*for (int i = 0; i < MPIGameConfig::NPC_COUNT; i++){
             this->distributedNPCs[i]->executeAction(this->distributedLoopTime.tv_nsec + (this->distributedLoopTime.tv_sec * Utils::NANOSECOND));
-        }
+        }*/
         
         // Get the current time on the end of the logic processing phase
         this->processingTimeEnd   = getCurrentTimeSpec();
@@ -89,9 +89,6 @@ void GameLoop::doLoop() {
         // Debugging loopTime
         this->debug(MPIGameConfig::DEBUG_CLOCKS, 4, loopTimeFile);
         
-        // Print the loop time on a control file
-        loopTimeFile << "Loop " << loop << ": " << this->loopTime.tv_nsec << "ns\n";
-        
         // Increments elapsed time and loop count
         this->elapsedTime = Utils::timespecSum(this->elapsedTime, this->loopTime);
         loop++;
@@ -100,6 +97,8 @@ void GameLoop::doLoop() {
         this->debug(MPIGameConfig::DEBUG_CLOCKS, 5, loopTimeFile);
     }
     
+    loopTimeFile << "Loops: " << loop;
+            
     // Closes the control file of the loop time to be measured
     loopTimeFile.close();
 }
@@ -126,7 +125,7 @@ void GameLoop::doSleep(){
 }
 
 void GameLoop::calculateSleepTime(){
-    long updateNS = (long)(1 / MPIGameConfig::MAX_UPS * Utils::NANOSECOND);
+    long updateNS = (long)(Utils::NANOSECOND / MPIGameConfig::MAX_UPS);
     
     this->sleepTime.tv_nsec = updateNS;
     this->sleepTime.tv_sec  = 0;

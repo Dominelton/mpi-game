@@ -19,7 +19,7 @@ public:
     const static int NPC_COUNT              = 1;
     const static int RANDOM_WAIT_TIME_SEC   = 5;
     const static int MAX_UPS                = 50;
-    const static int SYSTEM_RUNTIME_SEC     = 10;
+    const static int SYSTEM_RUNTIME_SEC     = 2;
     
     // Distribute parameters
     const static bool DISTRIBUTE_PROCESSING = false;
