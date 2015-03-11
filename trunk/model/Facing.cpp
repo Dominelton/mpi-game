@@ -51,3 +51,33 @@ double Facing::differenceOfAngleZ(Facing* start, Facing* end){
     }
     return start->getFacingDirectionZ() - end->getFacingDirectionZ();
 }
+
+void Facing::serialize(rapidjson::Writer<rapidjson::StringBuffer>& writer){
+    writer.StartObject();
+    
+    if(this->facingDirectionXY){
+        writer.String("facingDirectionXY");
+        writer.Double(this->facingDirectionXY);
+    }
+    if(this->facingDirectionZ >= -90 && this->facingDirectionZ <= 90){
+        writer.String("facingDirectionZ");
+        writer.Double(this->facingDirectionZ);
+    }
+        
+    writer.EndObject();
+}
+
+void Facing::deserialize(rapidjson::Value& valueFacing){
+    for (rapidjson::Value::MemberIterator facingMember = valueFacing.MemberBegin(); facingMember != valueFacing.MemberEnd(); ++facingMember) {
+        std::string memberName(facingMember->name.GetString());
+        std::string facingDirectionZ("facingDirectionZ");
+        std::string facingDirectionXY("facingDirectionXY");
+        
+        if(memberName.compare(facingDirectionZ)==0){
+            this->facingDirectionZ = (facingMember->value.GetDouble());
+        }
+        if(memberName.compare(facingDirectionXY)==0){
+            this->facingDirectionXY = (facingMember->value.GetDouble());
+        }
+    }
+}

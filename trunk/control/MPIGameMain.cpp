@@ -41,51 +41,29 @@ int main(int argc, char** argv) {
     
     if (MPIGameConfig::DISTRIBUTE_PROCESSING){
         
-        MPI::Init(argc, argv);
+        rapidjson::StringBuffer buffer;
+        rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+        GameLoop* game = new GameLoop();
+        game->doLoop();
+        NPC* npc = game->getNPCS()[0];
 
-        MPI::Intercomm intercomm;
+        npc->serialize(writer);
+        std::string message = buffer.GetString();
+        std::cout << "Server sent message:\n " << message << "\n";
         
         rapidjson::StringBuffer buffer;
         rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
         
         rapidjson::Document document;
-        
-        if(isServer(argc, argv)){
-            intercomm = startServer();
-            
-            GameLoop* game = new GameLoop();
-            game->doLoop();
-            Action* action = game->getNPCS()[0]->getAction();
-
-            action->serialize(writer);
-            std::string message = buffer.GetString();
-            std::cout << "Server sent message:\n " << message << "\n";
-
-            intercomm.Send(message.c_str(), message.length(), MPI_CHAR, 0, 1);
-        }
-        else{
-            intercomm = startClient();
-
-            MPI::Status status;
-            intercomm.Probe(0, 1, status);
-            int messageSize = status.Get_count(MPI::CHAR);
-            char *buffer = new char[messageSize];
-            intercomm.Recv(buffer, messageSize, MPI::CHAR, 0, 1, status);
-
-            std::string message(buffer, messageSize);
-
-            document.Parse(message.c_str());
-            Action* action = new Action();
-            action->deserialize(document);
-            std::cout << "Client received message: " << message << "\n";
-            std::cout << "Client received action type " << action->getActionType() << "\n";
-            std::cout << "Client received waiting time " << action->getWaitingTime() << "\n";
-            std::cout << "Client received Movement's current state " << action->getMovement()->getCurrentState() << "\n";
-            std::cout << "Client received Movement's destination's X " << action->getMovement()->getDestination()->getX() << "\n";
-            std::cout << "Client received Movement's destination's Y " << action->getMovement()->getDestination()->getY() << "\n";
-        }
-
-        MPI::Finalize();
+        document.Parse(message.c_str());
+        NPC* npc = new NPC();
+        npc->deserialize(document);
+        std::cout << "Client received message: " << message << "\n";
+        std::cout << "Client received action type " << npc->getAction()->getActionType() << "\n";
+        std::cout << "Client received waiting time " << npc->getAction()->getWaitingTime() << "\n";
+        std::cout << "Client received Movement's current state " << npc->getAction()->getMovement()->getCurrentState() << "\n";
+        std::cout << "Client received Movement's destination's X " << npc->getAction()->getMovement()->getDestination()->getX() << "\n";
+        std::cout << "Client received Movement's destination's Y " << npc->getAction()->getMovement()->getDestination()->getY() << "\n";
     }
     else{
         startGameLoop();

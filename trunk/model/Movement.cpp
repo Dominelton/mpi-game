@@ -218,7 +218,6 @@ void Movement::serialize(rapidjson::Writer<rapidjson::StringBuffer>& writer){
 
 void Movement::deserialize(rapidjson::Value& valueMovement){
     for (rapidjson::Value::MemberIterator movementMember = valueMovement.MemberBegin(); movementMember != valueMovement.MemberEnd(); ++movementMember) {
-        std::cout << "Movement member: " << movementMember->name.GetString() << "\n";
         std::string memberName(movementMember->name.GetString());
         std::string currentState("currentState");
         std::string destination("destination");

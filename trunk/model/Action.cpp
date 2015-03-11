@@ -48,10 +48,14 @@ void Action::updatePositionAndFacing(Position *&currentPosition, Facing *&curren
 void Action::serialize(rapidjson::Writer<rapidjson::StringBuffer>& writer){
     writer.StartObject();
     
-    writer.String("actionType");
-    writer.Int(this->actionType);
-    writer.String("waitingTime");
-    writer.Int64(this->waitingTime);
+    if(this->actionType){
+        writer.String("actionType");
+        writer.Int(this->actionType);
+    }
+    if(this->waitingTime){
+        writer.String("waitingTime");
+        writer.Int64(this->waitingTime);
+    }
     
     if(this->movement){
         writer.String("movement");
@@ -61,20 +65,21 @@ void Action::serialize(rapidjson::Writer<rapidjson::StringBuffer>& writer){
     writer.EndObject();
 }
 
-void Action::deserialize(rapidjson::Document& document){
-    if(document.HasMember("actionType")){
-        rapidjson::Value& valueActionType = document["actionType"];
-        this->actionType = valueActionType.GetInt();
-    }
-    
-    if(document.HasMember("waitingTime")){
-        rapidjson::Value& valueWaitingType = document["waitingTime"];
-        this->waitingTime = valueWaitingType.GetInt64();
-    }
-    
-    if(document.HasMember("movement")){
-        rapidjson::Value& valueMovement = document["movement"];
-        this->movement = new Movement();
-        this->movement->deserialize(valueMovement);
+void Action::deserialize(rapidjson::Value& valueAction){
+    for (rapidjson::Value::MemberIterator actionMember = valueAction.MemberBegin(); actionMember != valueAction.MemberEnd(); ++actionMember) {
+        std::string memberName(actionMember->name.GetString());
+        std::string actionType("actionType");
+        std::string waitingTime("waitingTime");
+        std::string movement("movement");
+        if(memberName.compare(actionType)==0){
+            this->actionType = (actionMember->value.GetInt());
+        }
+        if(memberName.compare(waitingTime)==0){
+            this->waitingTime = (actionMember->value.GetInt64());
+        }
+        if(memberName.compare(movement)==0){
+            this->movement = new Movement();
+            this->movement->deserialize(actionMember->value); 
+        }
     }
 }

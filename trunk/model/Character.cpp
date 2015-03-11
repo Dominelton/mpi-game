@@ -122,3 +122,55 @@ void Character::processMoveTo(long time){
         this->action->updatePositionAndFacing(this->currentPosition, this->currentFacing, time);
     }
 }
+
+void Character::serialize(rapidjson::Writer<rapidjson::StringBuffer>& writer){
+    writer.StartObject();
+    
+    if(this->id >= 0){
+        writer.String("id");
+        writer.Int(this->id);
+    }
+    
+    if(this->action){
+        writer.String("action");
+        this->action->serialize(writer);
+    }
+    
+    if(this->currentFacing){
+        writer.String("currentFacing");
+        this->currentFacing->serialize(writer);
+    }
+    
+    if(this->currentPosition){
+        writer.String("currentPosition");
+        this->currentPosition->serialize(writer);
+    }
+    
+    writer.EndObject();
+}
+
+void Character::deserialize(rapidjson::Document& document){
+    if(document.HasMember("id")){
+        rapidjson::Value& valueId = document["id"];
+        this->id = valueId.GetInt();
+    }
+    
+    if(document.HasMember("action")){
+        rapidjson::Value& valueAction = document["action"];
+        this->action = new Action();
+        this->action->deserialize(valueAction);
+    }
+    
+    if(document.HasMember("currentFacing")){
+        rapidjson::Value& valueFacing = document["currentFacing"];
+        this->currentFacing = new Facing();
+        this->currentFacing->deserialize(valueFacing);
+    }
+    
+    if(document.HasMember("currentPosition")){
+        rapidjson::Value& valuePosition = document["currentPosition"];
+        this->currentPosition = new Position();
+        this->currentPosition->deserialize(valuePosition);
+    }
+    
+}
