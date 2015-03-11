@@ -17,6 +17,8 @@ GameLoop::GameLoop() {
     
     this->loopTime.tv_nsec            = 0;
     this->loopTime.tv_sec             = 0;
+    this->distributedLoopTime.tv_sec  = 0;
+    this->distributedLoopTime.tv_nsec = 0;
     this->sleepTime.tv_nsec           = (long)(1 / MPIGameConfig::MAX_UPS * Utils::NANOSECOND);
     this->sleepTime.tv_sec            = 0;
     this->elapsedTime.tv_nsec         = 0;
@@ -33,12 +35,12 @@ GameLoop::~GameLoop() {
 
 void GameLoop::spawnNPC(){
     srand (time(NULL));
-    this->npcs.reserve(MPIGameConfig::NPC_COUNT);
+    this->NPCs.reserve(MPIGameConfig::NPC_COUNT);
     for(int i=0; i< MPIGameConfig::NPC_COUNT; i++){
         Position* position = new Position();
         Facing* facing = new Facing(90, 0);
         NPC* npc = new NPC(i, position, facing);
-        this->npcs.push_back(npc);
+        this->NPCs.push_back(npc);
     }
 }
 
@@ -56,9 +58,14 @@ void GameLoop::doLoop() {
         // Debugging processingTimeStart
         this->debug(MPIGameConfig::DEBUG_CLOCKS, 0, loopTimeFile);
         
-        // Execute the logic processing
+        // Execute the logic processing of the NPCs
         for (int i = 0; i < MPIGameConfig::NPC_COUNT; i++){
-            this->npcs[i]->executeAction(this->loopTime.tv_nsec + (this->loopTime.tv_sec * Utils::NANOSECOND));
+            this->NPCs[i]->executeAction(this->loopTime.tv_nsec + (this->loopTime.tv_sec * Utils::NANOSECOND));
+        }
+        
+        // Execute the logic processing of the distributed NPCs
+        for (int i = 0; i < MPIGameConfig::NPC_COUNT; i++){
+            this->distributedNPCs[i]->executeAction(this->distributedLoopTime.tv_nsec + (this->distributedLoopTime.tv_sec * Utils::NANOSECOND));
         }
         
         // Get the current time on the end of the logic processing phase
