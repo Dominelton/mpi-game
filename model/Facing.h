@@ -8,6 +8,10 @@
 #ifndef FACING_H
 #define	FACING_H
 
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
+
 class Facing {
 public:
     Facing();
@@ -33,6 +37,9 @@ public:
     
     static double differenceOfAngleXY(Facing*, Facing*);
     static double differenceOfAngleZ(Facing*, Facing*);
+    
+    void serialize(rapidjson::Writer<rapidjson::StringBuffer>&);    
+    void deserialize(rapidjson::Value&);
     
 private:
     double facingDirectionXY;

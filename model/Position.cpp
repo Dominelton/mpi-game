@@ -48,7 +48,7 @@ void Position::serialize(rapidjson::Writer<rapidjson::StringBuffer>& writer){
         writer.String("y");
         writer.Double(this->y);
     }
-    if(this->z){
+    if(this->z >= 0){
         writer.String("z");
         writer.Double(this->z);
     }

@@ -30,7 +30,7 @@ public:
     virtual ~Action();
 
     void serialize(rapidjson::Writer<rapidjson::StringBuffer>&);    
-    void deserialize(rapidjson::Document&);
+    void deserialize(rapidjson::Value&);
     
     void waitRandomTime();
     

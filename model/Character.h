@@ -20,6 +20,10 @@
 #include <string>
 #include <iostream>
 
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
+
 class Character {
 public:
     Character();
@@ -33,6 +37,9 @@ public:
     
     void processMoveTo(long);
 
+    void serialize(rapidjson::Writer<rapidjson::StringBuffer>&);    
+    void deserialize(rapidjson::Document&);
+    
     void setAction(Action* action) {
         this->action = action;
     }
