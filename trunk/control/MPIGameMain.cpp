@@ -33,56 +33,63 @@ MPI::Intercomm connectToServer(const char* port_name);
 MPI::Intercomm startServer();
 MPI::Intercomm startClient();
 void startGameLoop();
-
+void sendNPC(NPC*);
 
 
 
 int main(int argc, char** argv) {
-    MPI::Init(argc, argv);
     
-//    startGameLoop();
-    
-    MPI::Intercomm intercomm;
-    
-    
-    if(isServer(argc, argv)){
-        intercomm = startServer();
+    if (MPIGameConfig::DISTRIBUTE_PROCESSING){
+        
+        MPI::Init(argc, argv);
+
+        MPI::Intercomm intercomm;
         
         rapidjson::StringBuffer buffer;
         rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-        GameLoop* game = new GameLoop();
-        game->doLoop();
-        Action* action = game->getNPCS()[0]->getAction();
-
-        action->serialize(writer);
-        std::string message = buffer.GetString();
-        std::cout << "Server sent message:\n " << message << "\n";
-        
-        intercomm.Send(message.c_str(), message.length(), MPI_CHAR, 0, 1);
-    }else{
-        intercomm = startClient();
-        
-        MPI::Status status;
-        intercomm.Probe(0, 1, status);
-        int messageSize = status.Get_count(MPI::CHAR);
-        char *buffer = new char[messageSize];
-        intercomm.Recv(buffer, messageSize, MPI::CHAR, 0, 1, status);
-        
-        std::string message(buffer, messageSize);
         
         rapidjson::Document document;
-        document.Parse(message.c_str());
-        Action* action = new Action();
-        action->deserialize(document);
-        std::cout << "Client received message: " << message << "\n";
-        std::cout << "Client received action type " << action->getActionType() << "\n";
-        std::cout << "Client received waiting time " << action->getWaitingTime() << "\n";
-        std::cout << "Client received Movement's current state " << action->getMovement()->getCurrentState() << "\n";
-        std::cout << "Client received Movement's destination's X " << action->getMovement()->getDestination()->getX() << "\n";
-        std::cout << "Client received Movement's destination's Y " << action->getMovement()->getDestination()->getY() << "\n";
+        
+        if(isServer(argc, argv)){
+            intercomm = startServer();
+            
+            GameLoop* game = new GameLoop();
+            game->doLoop();
+            Action* action = game->getNPCS()[0]->getAction();
+
+            action->serialize(writer);
+            std::string message = buffer.GetString();
+            std::cout << "Server sent message:\n " << message << "\n";
+
+            intercomm.Send(message.c_str(), message.length(), MPI_CHAR, 0, 1);
+        }
+        else{
+            intercomm = startClient();
+
+            MPI::Status status;
+            intercomm.Probe(0, 1, status);
+            int messageSize = status.Get_count(MPI::CHAR);
+            char *buffer = new char[messageSize];
+            intercomm.Recv(buffer, messageSize, MPI::CHAR, 0, 1, status);
+
+            std::string message(buffer, messageSize);
+
+            document.Parse(message.c_str());
+            Action* action = new Action();
+            action->deserialize(document);
+            std::cout << "Client received message: " << message << "\n";
+            std::cout << "Client received action type " << action->getActionType() << "\n";
+            std::cout << "Client received waiting time " << action->getWaitingTime() << "\n";
+            std::cout << "Client received Movement's current state " << action->getMovement()->getCurrentState() << "\n";
+            std::cout << "Client received Movement's destination's X " << action->getMovement()->getDestination()->getX() << "\n";
+            std::cout << "Client received Movement's destination's Y " << action->getMovement()->getDestination()->getY() << "\n";
+        }
+
+        MPI::Finalize();
     }
-    
-    MPI::Finalize();
+    else{
+        startGameLoop();
+    }
 
     return 0;
 }
@@ -236,4 +243,8 @@ char* receiveBroadcastedPortName(){
     MPI::COMM_WORLD.Recv(buffer, 1, MPI_CHAR, 0, 66);
     printf("PROCESS RANK %d RECEIVED PORT NAME FROM RANK 0\n", rank);
     return buffer[0];
+}
+
+void sendNPC(NPC* npc){
+    
 }
