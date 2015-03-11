@@ -57,21 +57,16 @@ void Position::serialize(rapidjson::Writer<rapidjson::StringBuffer>& writer){
 }
 
 void Position::deserialize(rapidjson::Value& valuePosition){
-    
-    for (rapidjson::Value::MemberIterator positionMember = valuePosition.MemberBegin(); positionMember != valuePosition.MemberEnd(); ++positionMember) {
-        std::string x("x");
-        std::string y("y");
-        std::string z("z");
-        std::string memberName(positionMember->name.GetString());
-        
-        if(memberName.compare(x)==0){
-            this->x = (positionMember->value.GetDouble());
-        }
-        if(memberName.compare(y)==0){
-            this->y = (positionMember->value.GetDouble());
-        }
-        if(memberName.compare(z)==0){
-            this->z = (positionMember->value.GetDouble());
-        }
+    if (valuePosition.HasMember("x")){
+        rapidjson::Value& valueX = valuePosition["x"];
+        this->x = valueX.GetDouble();
+    }
+    if (valuePosition.HasMember("y")){
+        rapidjson::Value& valueY = valuePosition["y"];
+        this->y = valueY.GetDouble();
+    }
+    if (valuePosition.HasMember("z")){
+        rapidjson::Value& valueZ = valuePosition["z"];
+        this->z = valueZ.GetDouble();
     }
 }

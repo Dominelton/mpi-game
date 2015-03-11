@@ -149,26 +149,26 @@ void Character::serialize(rapidjson::Writer<rapidjson::StringBuffer>& writer){
     writer.EndObject();
 }
 
-void Character::deserialize(rapidjson::Document& document){
-    if(document.HasMember("id")){
-        rapidjson::Value& valueId = document["id"];
+void Character::deserialize(rapidjson::Value& valueCharacter){
+    if(valueCharacter.HasMember("id")){
+        rapidjson::Value& valueId = valueCharacter["id"];
         this->id = valueId.GetInt();
     }
     
-    if(document.HasMember("action")){
-        rapidjson::Value& valueAction = document["action"];
+    if(valueCharacter.HasMember("action")){
+        rapidjson::Value& valueAction = valueCharacter["action"];
         this->action = new Action();
         this->action->deserialize(valueAction);
     }
     
-    if(document.HasMember("currentFacing")){
-        rapidjson::Value& valueFacing = document["currentFacing"];
+    if(valueCharacter.HasMember("currentFacing")){
+        rapidjson::Value& valueFacing = valueCharacter["currentFacing"];
         this->currentFacing = new Facing();
         this->currentFacing->deserialize(valueFacing);
     }
     
-    if(document.HasMember("currentPosition")){
-        rapidjson::Value& valuePosition = document["currentPosition"];
+    if(valueCharacter.HasMember("currentPosition")){
+        rapidjson::Value& valuePosition = valueCharacter["currentPosition"];
         this->currentPosition = new Position();
         this->currentPosition->deserialize(valuePosition);
     }

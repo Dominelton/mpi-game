@@ -38,7 +38,7 @@ public:
     void processMoveTo(long);
 
     void serialize(rapidjson::Writer<rapidjson::StringBuffer>&);    
-    void deserialize(rapidjson::Document&);
+    void deserialize(rapidjson::Value&);
     
     void setAction(Action* action) {
         this->action = action;
