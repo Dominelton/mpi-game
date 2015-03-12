@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/config/MPIGameConfig.o \
 	${OBJECTDIR}/config/Utils.o \
 	${OBJECTDIR}/control/GameLoop.o \
+	${OBJECTDIR}/control/MPIControl.o \
 	${OBJECTDIR}/control/MPIGameMain.o \
 	${OBJECTDIR}/model/Action.o \
 	${OBJECTDIR}/model/Character.o \
@@ -86,6 +87,11 @@ ${OBJECTDIR}/control/GameLoop.o: control/GameLoop.cpp
 	${MKDIR} -p ${OBJECTDIR}/control
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -Iinclude/ -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/control/GameLoop.o control/GameLoop.cpp
+
+${OBJECTDIR}/control/MPIControl.o: control/MPIControl.cpp 
+	${MKDIR} -p ${OBJECTDIR}/control
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I../../mpich_install/include -Imodel -Iinclude/ -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/control/MPIControl.o control/MPIControl.cpp
 
 ${OBJECTDIR}/control/MPIGameMain.o: control/MPIGameMain.cpp 
 	${MKDIR} -p ${OBJECTDIR}/control
