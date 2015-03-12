@@ -11,7 +11,6 @@ MPIControl::MPIControl() {
 }
 
 MPIControl::MPIControl(bool isServer) {
-    
     if(isServer){
         this->intercomm = this->startServer();
     }else{
@@ -62,13 +61,13 @@ const char* MPIControl::openPort(){
 }
 
 MPI::Intercomm MPIControl::acceptConnection(const char* port_name){
-    MPI::Intercomm intercom = MPI::COMM_WORLD.Accept(port_name, MPI_INFO_NULL, 0);
+    MPI::Intercomm intercom = MPI::COMM_WORLD.Accept(port_name, MPI_INFO_NULL, DEFAULT_PROCESS_RANK);
     std::cout << "Server connected.\n";
     return intercom;
 }
 
 MPI::Intercomm MPIControl::connectToServer(const char* port_name){
-    MPI::Intercomm intercom = MPI::COMM_WORLD.Connect(port_name, MPI_INFO_NULL, 0);
+    MPI::Intercomm intercom = MPI::COMM_WORLD.Connect(port_name, MPI_INFO_NULL, DEFAULT_PROCESS_RANK);
     int rank = intercom.Get_rank();
     std::cout << "Client rank " << rank << " connected! \n"; 
     return intercom;
@@ -78,6 +77,20 @@ void MPIControl::sendNPCs(std::vector<NPC*> NPCs){
     rapidjson::StringBuffer buffer;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
     
+    serializeNPCs(NPCs, writer);
+    
+    std::string message = buffer.GetString();
+    sendMPIStringMessage(message, NPCS_MESSAGE_ID);    
+}
+
+std::vector<NPC*> MPIControl::receiveNPCs(){
+    rapidjson::Document document;
+    std::string message = this->receiveMPIStringMessage(NPCS_MESSAGE_ID);
+    document.Parse(message.c_str());
+    return this->deserializeNPCs(document);
+}
+
+void MPIControl::serializeNPCs(std::vector<NPC*> NPCs, rapidjson::Writer<rapidjson::StringBuffer>& writer){
     writer.StartObject();
             
     writer.String("NPCs");
@@ -88,22 +101,9 @@ void MPIControl::sendNPCs(std::vector<NPC*> NPCs){
     writer.EndArray();
 
     writer.EndObject();
-    
-    std::string message = buffer.GetString();
-    intercomm.Send(message.c_str(), message.length(), MPI_CHAR, 0, 1);
-}
+} 
 
-std::vector<NPC*> MPIControl::receiveNPCs(){
-    MPI::Status status;
-    intercomm.Probe(0, 1, status);
-    int messageSize = status.Get_count(MPI::CHAR);
-    char *buffer = new char[messageSize];
-    intercomm.Recv(buffer, messageSize, MPI::CHAR, 0, 1, status);
-
-    std::string message(buffer, messageSize);
-
-    rapidjson::Document document;
-    document.Parse(message.c_str());
+std::vector<NPC*> MPIControl::deserializeNPCs(rapidjson::Document& document){
     rapidjson::Value& valueNPCs = document["NPCs"];
     std::vector<NPC*> NPCs;
     for(int i=0; i< valueNPCs.Size(); i++){
@@ -113,4 +113,19 @@ std::vector<NPC*> MPIControl::receiveNPCs(){
         NPCs.push_back(npc);
     }
     return NPCs;
+}
+
+
+void MPIControl::sendMPIStringMessage(std::string message, int messageId){
+    this->intercomm.Send(message.c_str(), message.length(), MPI_CHAR, DEFAULT_PROCESS_RANK, messageId);
+}
+
+std::string MPIControl::receiveMPIStringMessage(int messageId){
+    MPI::Status status;
+    this->intercomm.Probe(DEFAULT_PROCESS_RANK, messageId, status);
+    int messageSize = status.Get_count(MPI::CHAR);
+    char *buffer = new char[messageSize];
+    this->intercomm.Recv(buffer, messageSize, MPI_CHAR, DEFAULT_PROCESS_RANK, messageId, status);
+    std::string message(buffer, messageSize);
+    return message;
 }
