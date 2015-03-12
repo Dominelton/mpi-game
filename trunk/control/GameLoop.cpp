@@ -27,6 +27,13 @@ GameLoop::GameLoop() {
     spawnNPC();
 }
 
+GameLoop::GameLoop(bool isServer) {
+    this();
+    
+    this->isServer                    = isServer;
+    this->mpi                         = new MPIControl(this->isServer);
+}
+
 GameLoop::GameLoop(const GameLoop& orig) {
 }
 
@@ -58,15 +65,41 @@ void GameLoop::doLoop() {
         // Debugging processingTimeStart
         this->debug(MPIGameConfig::DEBUG_CLOCKS, 0, loopTimeFile);
         
+        if (MPIGameConfig::DISTRIBUTE_PROCESSING){
+            if (this->isServer){
+                std::vector<NPC*> npcsToDistribute = getNPCsToDistribute();
+                
+                this->mpi->sendNPCs(npcsToDistribute);
+            }
+            else{
+                this->distributedNPCs = this->mpi->receiveNPCs();
+            }
+        }
+        
         // Execute the logic processing of the NPCs
         for (int i = 0; i < MPIGameConfig::NPC_COUNT; i++){
             this->NPCs[i]->executeAction(this->loopTime.tv_nsec + (this->loopTime.tv_sec * Utils::NANOSECOND));
         }
         
-        // Execute the logic processing of the distributed NPCs
-        /*for (int i = 0; i < MPIGameConfig::NPC_COUNT; i++){
-            this->distributedNPCs[i]->executeAction(this->distributedLoopTime.tv_nsec + (this->distributedLoopTime.tv_sec * Utils::NANOSECOND));
-        }*/
+        if (MPIGameConfig::DISTRIBUTE_PROCESSING){
+            if (!this->isServer){
+                // Execute the logic processing of the distributed NPCs
+                for (int i = 0; i < this->distributedNPCs->size(); i++){
+                    this->distributedNPCs[i]->executeAction(this->distributedLoopTime.tv_nsec + (this->distributedLoopTime.tv_sec * Utils::NANOSECOND));
+                }
+            }
+        }
+        
+        if (MPIGameConfig::DISTRIBUTE_PROCESSING){
+            if (this->isServer){
+                std::vector<NPC*> processedNPCs = this->mpi->receiveNPCs();
+                
+                this->updateNPCs(processedNPCs);
+            }
+            else{
+                this->mpi->sendNPCs(this->distributedNPCs);
+            }
+        }
         
         // Get the current time on the end of the logic processing phase
         this->processingTimeEnd   = getCurrentTimeSpec();
@@ -185,5 +218,24 @@ void GameLoop::debug(bool isDebugging, int variableToDebug, std::ofstream& file)
             }
                 break;
         }
+    }
+}
+
+std::vector<NPC*> GameLoop::getNPCsToDistribute(){
+    std::vector<NPC*> npcsToDistribute;
+    
+    int elements = (int)(this->NPCs->size()/2);
+    
+    for (int i = 0; i < elements; i++){
+        npcsToDistribute->push_back(this->NPCs[this->NPCs->size() - 1]);
+        this->NPCs->pop_back();
+    }
+    
+    return npcsToDistribute;
+}
+
+void GameLoop::updateNPCs(std::vector<NPC*> processedNPCs){
+    for (int i = 0; i < processedNPCs->size(); i++){
+        this->NPCs->push_back(processedNPCs[i]);
     }
 }

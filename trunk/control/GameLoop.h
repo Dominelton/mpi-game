@@ -12,6 +12,7 @@
 #include "Facing.h"
 #include "Position.h"
 #include "MPIGameConfig.h"
+#include "MPIControl"
 
 #include <stdlib.h>
 #include <time.h>
@@ -25,6 +26,7 @@
 class GameLoop {
 public:
     GameLoop();
+    GameLoop(bool);
     GameLoop(const GameLoop& orig);
     virtual ~GameLoop();
     void doLoop();
@@ -49,6 +51,9 @@ private:
     void doSleep();
     void calculateSleepTime();
     
+    std::vector<NPC*> getNPCsToDistribute();
+    void updateNPCs(std::vector<NPC*>&);
+    
     struct timespec processingTimeStart;
     struct timespec processingTimeEnd;
     struct timespec processingTime;
@@ -59,6 +64,10 @@ private:
     
     std::vector<NPC*> NPCs;
     std::vector<NPC*> distributedNPCs;
+    
+    bool isServer;
+    
+    MPIGame mpi;
 };
 
 #endif	/* GAMELOOP_H */
