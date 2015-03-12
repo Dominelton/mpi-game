@@ -20,6 +20,12 @@
       </logicalFolder>
       <logicalFolder name="f3" displayName="control" projectFiles="true">
         <logicalFolder name="f4" displayName="connection" projectFiles="true">
+          <logicalFolder name="f1" displayName="header" projectFiles="true">
+            <itemPath>control/MPIControl.h</itemPath>
+          </logicalFolder>
+          <logicalFolder name="f2" displayName="impl" projectFiles="true">
+            <itemPath>control/MPIControl.cpp</itemPath>
+          </logicalFolder>
           <itemPath>control/MPIGameMain.cpp</itemPath>
         </logicalFolder>
         <logicalFolder name="f1" displayName="header" projectFiles="true">
@@ -104,6 +110,10 @@
       </item>
       <item path="control/GameLoop.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="control/MPIControl.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="control/MPIControl.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="control/MPIGameMain.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <folder path="SourceFiles/f1">
@@ -180,6 +190,10 @@
       <item path="control/GameLoop.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="control/GameLoop.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="control/MPIControl.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="control/MPIControl.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="control/MPIGameMain.cpp" ex="false" tool="1" flavor2="0">
       </item>

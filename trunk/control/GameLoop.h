@@ -12,7 +12,7 @@
 #include "Facing.h"
 #include "Position.h"
 #include "MPIGameConfig.h"
-#include "MPIControl"
+#include "MPIControl.h"
 
 #include <stdlib.h>
 #include <time.h>
@@ -52,7 +52,7 @@ private:
     void calculateSleepTime();
     
     std::vector<NPC*> getNPCsToDistribute();
-    void updateNPCs(std::vector<NPC*>&);
+    void updateNPCs(std::vector<NPC*>);
     
     struct timespec processingTimeStart;
     struct timespec processingTimeEnd;
@@ -67,7 +67,7 @@ private:
     
     bool isServer;
     
-    MPIGame mpi;
+    MPIControl* mpi;
 };
 
 #endif	/* GAMELOOP_H */
