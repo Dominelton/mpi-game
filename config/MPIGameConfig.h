@@ -23,7 +23,6 @@ public:
     
     // Distribute parameters
     const static bool DISTRIBUTE_PROCESSING = true;
-    const static double DISTRIBUTE_LOAD     = 0.5;
     
     const static bool DEBUG_CHARACTER_FULL  = false;
     const static bool DEBUG_MOVEMENT        = false;
