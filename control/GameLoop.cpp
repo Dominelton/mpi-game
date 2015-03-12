@@ -8,13 +8,30 @@
 #include "GameLoop.h"
 
 GameLoop::GameLoop() {
+    this->init();
+}
+
+GameLoop::GameLoop(bool isServer) {
+    this->init();
+    
+    this->isServer                    = isServer;
+    this->mpi                         = new MPIControl(this->isServer);
+}
+
+GameLoop::GameLoop(const GameLoop& orig) {
+}
+
+GameLoop::~GameLoop() {
+}
+
+void GameLoop::init(){
     this->processingTimeStart.tv_nsec = 0;
     this->processingTimeStart.tv_sec  = 0;
     this->processingTimeEnd.tv_nsec   = 0;
     this->processingTimeEnd.tv_sec    = 0;
     this->processingTime.tv_nsec      = 0;
     this->processingTime.tv_sec       = 0;
-    
+
     this->loopTime.tv_nsec            = 0;
     this->loopTime.tv_sec             = 0;
     this->distributedLoopTime.tv_sec  = 0;
@@ -25,19 +42,6 @@ GameLoop::GameLoop() {
     this->elapsedTime.tv_sec          = 0;
     
     spawnNPC();
-}
-
-GameLoop::GameLoop(bool isServer) {
-    GameLoop();
-    
-    this->isServer                    = isServer;
-    this->mpi                         = new MPIControl(this->isServer);
-}
-
-GameLoop::GameLoop(const GameLoop& orig) {
-}
-
-GameLoop::~GameLoop() {
 }
 
 void GameLoop::spawnNPC(){

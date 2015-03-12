@@ -45,6 +45,7 @@ public:
     }
     
 private:
+    void init();
     void spawnNPC();
     void debug(bool, int, std::ofstream&);
     timespec getCurrentTimeSpec();
