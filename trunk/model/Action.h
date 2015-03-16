@@ -23,7 +23,7 @@ class Action {
 public:
     const static int WAIT   = 0;
     const static int MOVETO = 1;
-    
+         
     Action();
     Action(long);
     Action(const Action& orig);
