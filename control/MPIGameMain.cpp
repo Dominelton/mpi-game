@@ -36,9 +36,12 @@ int main(int argc, char** argv) {
 }
 
 void startGameLoop(bool isServer){
-    std::ofstream debugNPC( "../debugNPC.txt" );
+    std::ofstream debugNPC( "../standardDebugFile.txt" );
     std::streambuf *coutbuf = std::cout.rdbuf();
-    std::cout.rdbuf(debugNPC.rdbuf());
+    
+    if (MPIGameConfig::DEBUG_FILE_ENABLED){
+        std::cout.rdbuf(debugNPC.rdbuf());
+    }
     
     GameLoop* game;
     if (MPIGameConfig::DISTRIBUTE_PROCESSING){
@@ -49,8 +52,10 @@ void startGameLoop(bool isServer){
     }
     
     game->doLoop();
-
-    std::cout.rdbuf(coutbuf);
+    if (MPIGameConfig::DEBUG_FILE_ENABLED){
+        std::cout.rdbuf(coutbuf);
+    }
+    
     debugNPC.close();
 }
 
