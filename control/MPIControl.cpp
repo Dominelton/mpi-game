@@ -56,20 +56,20 @@ const char* MPIControl::openPort(){
     char port_name[MPI_MAX_PORT_NAME];
     MPI::Open_port(MPI_INFO_NULL, port_name);
     writePortNameToFile(port_name);
-    std::cout << "Server started\n";
+    std::cout << "***MPI*** - Server started\n";
     return port_name;
 }
 
 MPI::Intercomm MPIControl::acceptConnection(const char* port_name){
     MPI::Intercomm intercom = MPI::COMM_WORLD.Accept(port_name, MPI_INFO_NULL, DEFAULT_PROCESS_RANK);
-    std::cout << "Server connected.\n";
+    std::cout << "***MPI*** - Server connected.\n";
     return intercom;
 }
 
 MPI::Intercomm MPIControl::connectToServer(const char* port_name){
     MPI::Intercomm intercom = MPI::COMM_WORLD.Connect(port_name, MPI_INFO_NULL, DEFAULT_PROCESS_RANK);
     int rank = intercom.Get_rank();
-    std::cout << "Client rank " << rank << " connected! \n"; 
+    std::cout << "***MPI*** - Client rank " << rank << " connected! \n"; 
     return intercom;
 }
 
@@ -109,7 +109,6 @@ std::vector<NPC*> MPIControl::deserializeNPCs(rapidjson::Document& document){
     for(int i=0; i< valueNPCs.Size(); i++){
         NPC* npc = new NPC();
         npc->deserialize(valueNPCs[i]);
-        std::cout << "NPC received: " << npc->getId() << "\n";
         NPCs.push_back(npc);
     }
     return NPCs;

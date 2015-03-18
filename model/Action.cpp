@@ -9,6 +9,7 @@
 
 Action::Action(){
     this->waitRandomTime();
+    this->movement = NULL;
 }
 
 Action::Action(long waitingTimeNSec){
@@ -57,7 +58,7 @@ void Action::serialize(rapidjson::Writer<rapidjson::StringBuffer>& writer){
         writer.Int64(this->waitingTime);
     }
     
-    if(this->movement){
+    if(this->movement != NULL){
         writer.String("movement");
         this->movement->serialize(writer);
     }

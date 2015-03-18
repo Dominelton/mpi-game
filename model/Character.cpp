@@ -8,6 +8,9 @@
 #include "Character.h"
 
 Character::Character() {
+    this->action = NULL;
+    this->currentFacing = NULL;
+    this->currentPosition = NULL;
 }
 
 Character::Character(int id, Position* currentPosition, Facing* currentFacing) {
@@ -136,12 +139,12 @@ void Character::serialize(rapidjson::Writer<rapidjson::StringBuffer>& writer){
         this->action->serialize(writer);
     }
     
-    if(this->currentFacing){
+    if(this->currentFacing != NULL){
         writer.String("currentFacing");
         this->currentFacing->serialize(writer);
     }
     
-    if(this->currentPosition){
+    if(this->currentPosition != NULL){
         writer.String("currentPosition");
         this->currentPosition->serialize(writer);
     }

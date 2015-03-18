@@ -9,6 +9,7 @@
 #include "rapidjson/document.h"
 
 Movement::Movement() {
+    this->destination = NULL;
 }
 
 Movement::Movement(Position* destination) {
