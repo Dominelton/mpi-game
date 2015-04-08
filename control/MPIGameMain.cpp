@@ -20,6 +20,8 @@ void startGameLoop(bool);
 
 int main(int argc, char** argv) {
     
+    MPIGameConfig::loadConfigFromFile("config.txt");
+    
     if (MPIGameConfig::DISTRIBUTE_PROCESSING){
         
         MPI::Init(argc, argv);
