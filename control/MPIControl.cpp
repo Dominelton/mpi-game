@@ -30,7 +30,8 @@ MPI::Intercomm MPIControl::startServer(){
 }
 
 MPI::Intercomm MPIControl::startClient(){
-    const char* port_name = readPortNameFromFile();    
+    char* port_name; //= readPortNameFromFile();    
+    gets(port_name);
     return connectToServer(port_name);
 }
 
