@@ -29,6 +29,8 @@ namespace MPIGameConfig {
     bool DEBUG_CLOCKS          = false;
     bool DEBUG_FILE_ENABLED    = false;
     
+    bool COLLECT_DATA          = false;
+    
     /* Measured in Degrees per second */
     int SLOW_TURN_SPEED        = 180;
     int FAST_TURN_SPEED        = 360;
@@ -55,7 +57,6 @@ bool MPIGameConfig::loadConfigFromFile(std::string filePath){
     
     while (std::getline(configFile, line)) {
         
-        std::cout << "Linha: " << lineLoop << "\n";
         lineLoop++;
         
         // Pula linha vazia
@@ -67,25 +68,23 @@ bool MPIGameConfig::loadConfigFromFile(std::string filePath){
 
         std::istringstream issInt (line);
         if ((issInt >> property >> separator >> intValue) && (separator == "=")) {
-            std::cout << "Teste INT\n";
             intMap.insert(std::make_pair(property, intValue));
         }
         
         std::istringstream issDouble (line);
         if ((issDouble >> property >> separator >> doubleValue) && (separator == "=")) {
-            std::cout << "Teste DOUBLE\n";
             doubleMap.insert(std::make_pair(property, doubleValue));
         }
         
         std::istringstream issBool (line);
         if ((issBool >> property >> separator >> boolValue) && (separator == "=")) {
-            std::cout << "Teste BOOL\n";
             boolMap.insert(std::make_pair(property, boolValue));
         }
     }
     
     configFile.close();
     
+    /*
     std::cout << "\nInt Map:\n";
     typedef std::map<std::string, int> ::const_iterator MapIterator;
     for (MapIterator iter = intMap.begin(); iter != intMap.end(); iter++)
@@ -106,7 +105,7 @@ bool MPIGameConfig::loadConfigFromFile(std::string filePath){
     {
         std::cout << "Key: " << iter3->first << " - " << "Values: " << iter3->second << "\n";
     }
-    
+    */
     return loadProperties(intMap, doubleMap, boolMap);
 }
 
@@ -126,6 +125,8 @@ bool MPIGameConfig::loadProperties(std::map<std::string, int> intMap, std::map<s
     MPIGameConfig::DEBUG_MOVEMENT        = boolMap.at("DEBUG_MOVEMENT");
     MPIGameConfig::DEBUG_CLOCKS          = boolMap.at("DEBUG_CLOCKS");
     MPIGameConfig::DEBUG_FILE_ENABLED    = boolMap.at("DEBUG_FILE_ENABLED");
+    
+    MPIGameConfig::COLLECT_DATA          = boolMap.at("COLLECT_DATA");
     
     /* Measured in Degrees per second */
     MPIGameConfig::SLOW_TURN_SPEED       = intMap.at("SLOW_TURN_SPEED");

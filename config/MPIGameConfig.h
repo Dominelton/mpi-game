@@ -30,6 +30,8 @@ namespace MPIGameConfig {
     extern bool DEBUG_CLOCKS;
     extern bool DEBUG_FILE_ENABLED;
     
+    extern bool COLLECT_DATA;
+    
     /* Measured in Degrees per second */
     extern int SLOW_TURN_SPEED;
     extern int FAST_TURN_SPEED;

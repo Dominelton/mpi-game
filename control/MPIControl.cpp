@@ -55,7 +55,8 @@ const char* MPIControl::readPortNameFromFile(){
 const char* MPIControl::openPort(){
     char port_name[MPI_MAX_PORT_NAME];
     MPI::Open_port(MPI_INFO_NULL, port_name);
-    writePortNameToFile(port_name);
+    //writePortNameToFile(port_name);
+    std::cout << "PortName: " << port_name << "\n";
     std::cout << "***MPI*** - Server started\n";
     return port_name;
 }
@@ -71,6 +72,19 @@ MPI::Intercomm MPIControl::connectToServer(const char* port_name){
     int rank = intercom.Get_rank();
     std::cout << "***MPI*** - Client rank " << rank << " connected! \n"; 
     return intercom;
+}
+
+void MPIControl::sendLoopTime(long int sec, long int nsec){
+    sendMPILongMessage(sec, LOOPTIME_SEC_MESSAGE_ID);
+    sendMPILongMessage(nsec, LOOPTIME_NSEC_MESSAGE_ID);
+}
+
+long int MPIControl::receiveLoopTimeSec(){
+    return this->receiveMPILongMessage(LOOPTIME_SEC_MESSAGE_ID);
+}
+
+long int MPIControl::receiveLoopTimeNSec(){
+    return this->receiveMPILongMessage(LOOPTIME_NSEC_MESSAGE_ID);
 }
 
 void MPIControl::sendNPCs(std::vector<NPC*> NPCs){
@@ -127,4 +141,18 @@ std::string MPIControl::receiveMPIStringMessage(int messageId){
     this->intercomm.Recv(buffer, messageSize, MPI_CHAR, DEFAULT_PROCESS_RANK, messageId, status);
     std::string message(buffer, messageSize);
     return message;
+}
+
+void MPIControl::sendMPILongMessage(long int message, int messageId){
+    this->intercomm.Send(&message, 1, MPI_LONG, DEFAULT_PROCESS_RANK, messageId);
+}
+
+long int MPIControl::receiveMPILongMessage(int messageId){
+    MPI::Status status;
+    this->intercomm.Probe(DEFAULT_PROCESS_RANK, messageId, status);
+    int messageSize = status.Get_count(MPI::LONG);
+    long int number;
+    this->intercomm.Recv(&number, messageSize, MPI_LONG, DEFAULT_PROCESS_RANK, messageId, status);
+    
+    return number;
 }

@@ -20,7 +20,12 @@ void startGameLoop(bool);
 
 int main(int argc, char** argv) {
     
-    MPIGameConfig::loadConfigFromFile("config.txt");
+    if (isServer(argc, argv)){
+        MPIGameConfig::loadConfigFromFile("configServer.txt");
+    }
+    else{
+        MPIGameConfig::loadConfigFromFile("config.txt");
+    }
     
     if (MPIGameConfig::DISTRIBUTE_PROCESSING){
         

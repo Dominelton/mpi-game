@@ -104,7 +104,7 @@ void Character::processWaiting(long time){
             // Não faz nada, já que é um Wait sem tempo para acabar
             break;
         case 0: {
-            std::cout << "NPC " << this->id << ": Start to move.\n";
+            //std::cout << "NPC " << this->id << ": Start to move.\n";
             Position* destination = new Position();
             this->action->moveTo(destination);
         }
@@ -118,7 +118,7 @@ void Character::processWaiting(long time){
 
 void Character::processMoveTo(long time){
     if (this->action->getMovement()->getDestination()->equals(currentPosition)){
-        std::cout << "NPC " << this->id << ": Start to wait.\n";
+        //std::cout << "NPC " << this->id << ": Start to wait.\n";
         this->action->waitRandomTime();
     }
     else{

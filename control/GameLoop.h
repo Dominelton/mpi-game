@@ -51,6 +51,7 @@ private:
     timespec getCurrentTimeSpec();
     void doSleep();
     void calculateSleepTime();
+    void collectData(std::ofstream&, int, int);
     
     std::vector<NPC*> getNPCsToDistribute();
     void updateNPCs(std::vector<NPC*>);
@@ -58,10 +59,23 @@ private:
     struct timespec processingTimeStart;
     struct timespec processingTimeEnd;
     struct timespec processingTime;
-    struct timespec loopTime;
+    
     struct timespec sleepTime;
     struct timespec elapsedTime;
+    
+    struct timespec loopTime;
     struct timespec distributedLoopTime;
+    
+    struct timespec logicProcessingStart;
+    struct timespec logicProcessingEnd;
+    struct timespec logicProcessing;
+    
+    struct timespec distributedPhase1Start;
+    struct timespec distributedPhase1End;
+    struct timespec distributedPhase1;
+    struct timespec distributedPhase2Start;
+    struct timespec distributedPhase2End;
+    struct timespec distributedPhase2;
     
     std::vector<NPC*> NPCs;
     std::vector<NPC*> distributedNPCs;

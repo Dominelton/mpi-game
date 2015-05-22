@@ -25,21 +25,40 @@ GameLoop::~GameLoop() {
 }
 
 void GameLoop::init(){
-    this->processingTimeStart.tv_nsec = 0;
-    this->processingTimeStart.tv_sec  = 0;
-    this->processingTimeEnd.tv_nsec   = 0;
-    this->processingTimeEnd.tv_sec    = 0;
-    this->processingTime.tv_nsec      = 0;
-    this->processingTime.tv_sec       = 0;
+    this->processingTimeStart.tv_nsec    = 0;
+    this->processingTimeStart.tv_sec     = 0;
+    this->processingTimeEnd.tv_nsec      = 0;
+    this->processingTimeEnd.tv_sec       = 0;
+    this->processingTime.tv_nsec         = 0;
+    this->processingTime.tv_sec          = 0;
 
-    this->loopTime.tv_nsec            = 0;
-    this->loopTime.tv_sec             = 0;
-    this->distributedLoopTime.tv_sec  = 0;
-    this->distributedLoopTime.tv_nsec = 0;
-    this->sleepTime.tv_nsec           = (long)(1 / MPIGameConfig::MAX_UPS * Utils::NANOSECOND);
-    this->sleepTime.tv_sec            = 0;
-    this->elapsedTime.tv_nsec         = 0;
-    this->elapsedTime.tv_sec          = 0;
+    this->loopTime.tv_nsec               = 0;
+    this->loopTime.tv_sec                = 0;
+    this->distributedLoopTime.tv_sec     = 0;
+    this->distributedLoopTime.tv_nsec    = 0;
+    this->sleepTime.tv_nsec              = (long)(1 / MPIGameConfig::MAX_UPS * Utils::NANOSECOND);
+    this->sleepTime.tv_sec               = 0;
+    this->elapsedTime.tv_nsec            = 0;
+    this->elapsedTime.tv_sec             = 0;
+    
+    this->logicProcessingStart.tv_sec    = 0;
+    this->logicProcessingStart.tv_nsec   = 0;
+    this->logicProcessingEnd.tv_sec      = 0;
+    this->logicProcessingEnd.tv_nsec     = 0;
+    this->logicProcessing.tv_sec         = 0;
+    this->logicProcessing.tv_nsec        = 0;
+    this->distributedPhase1Start.tv_nsec = 0;
+    this->distributedPhase1Start.tv_sec  = 0;
+    this->distributedPhase1End.tv_nsec   = 0;
+    this->distributedPhase1End.tv_sec    = 0;
+    this->distributedPhase1.tv_nsec      = 0;
+    this->distributedPhase1.tv_sec       = 0;
+    this->distributedPhase2Start.tv_nsec = 0;
+    this->distributedPhase2Start.tv_sec  = 0;
+    this->distributedPhase2End.tv_nsec   = 0;
+    this->distributedPhase2End.tv_sec    = 0;
+    this->distributedPhase2.tv_nsec      = 0;
+    this->distributedPhase2.tv_sec       = 0;
     
     spawnNPC();
 }
@@ -57,7 +76,22 @@ void GameLoop::spawnNPC(){
 
 void GameLoop::doLoop() {
     // Starts and opens a control file of the loop time to be measured
-    std::ofstream loopTimeFile( "../loopTime.txt" );
+    char* dataFileName;
+    char* loopTimeFileName;
+    
+    if (this->isServer){
+        dataFileName = "../dataServer.csv";
+        loopTimeFileName = "../loopTimeServer.txt";
+    }
+    else{
+        dataFileName = "../dataClient.csv";
+        loopTimeFileName = "../loopTimeClient.txt";
+    }
+    
+    std::ofstream dataFile(dataFileName);
+    std::ofstream loopTimeFile(loopTimeFileName);
+    
+    this->collectData(dataFile, 0, 0);
     
     // Starts elapsed time and loop count variables
     long loop = 0;
@@ -69,17 +103,22 @@ void GameLoop::doLoop() {
         // Debugging processingTimeStart
         this->debug(MPIGameConfig::DEBUG_CLOCKS, 0, loopTimeFile);
         
+        this->distributedPhase1Start = getCurrentTimeSpec();
         if (MPIGameConfig::DISTRIBUTE_PROCESSING){
             if (this->isServer){
                 std::vector<NPC*> npcsToDistribute = getNPCsToDistribute();
-                
+                this->mpi->sendLoopTime(this->loopTime.tv_sec, this->loopTime.tv_nsec);
                 this->mpi->sendNPCs(npcsToDistribute);
             }
             else{
+                this->distributedLoopTime.tv_sec  = this->mpi->receiveLoopTimeSec();
+                this->distributedLoopTime.tv_nsec = this->mpi->receiveLoopTimeNSec();
                 this->distributedNPCs = this->mpi->receiveNPCs();
             }
         }
+        this->distributedPhase1End = getCurrentTimeSpec();
         
+        this->logicProcessingStart = getCurrentTimeSpec();
         // Execute the logic processing of the NPCs
         for (int i = 0; i < MPIGameConfig::NPC_COUNT; i++){
             this->NPCs[i]->executeAction(this->loopTime.tv_nsec + (this->loopTime.tv_sec * Utils::NANOSECOND));
@@ -93,7 +132,9 @@ void GameLoop::doLoop() {
                 }
             }
         }
+        this->logicProcessingEnd = getCurrentTimeSpec();
         
+        this->distributedPhase2Start = getCurrentTimeSpec();
         if (MPIGameConfig::DISTRIBUTE_PROCESSING){
             if (this->isServer){
                 std::vector<NPC*> processedNPCs = this->mpi->receiveNPCs();
@@ -104,9 +145,15 @@ void GameLoop::doLoop() {
                 this->mpi->sendNPCs(this->distributedNPCs);
             }
         }
+        this->distributedPhase2End = getCurrentTimeSpec();
         
         // Get the current time on the end of the logic processing phase
         this->processingTimeEnd   = getCurrentTimeSpec();
+        
+        // Set the elapsed times of code blocs
+        this->distributedPhase1 = Utils::timespecSubtract(this->distributedPhase1End, this->distributedPhase1Start);
+        this->distributedPhase2 = Utils::timespecSubtract(this->distributedPhase2End, this->distributedPhase2Start);
+        this->logicProcessing = Utils::timespecSubtract(this->logicProcessingEnd, this->logicProcessingStart);
         
         // Debugging processingTimeEnd
         this->debug(MPIGameConfig::DEBUG_CLOCKS, 1, loopTimeFile);
@@ -132,6 +179,8 @@ void GameLoop::doLoop() {
         
         // Debugging elapsedTime
         this->debug(MPIGameConfig::DEBUG_CLOCKS, 5, loopTimeFile);
+        
+        this->collectData(dataFile, 1, loop);
     }
     
     loopTimeFile << "Loops: " << loop;
@@ -221,6 +270,34 @@ void GameLoop::debug(bool isDebugging, int variableToDebug, std::ofstream& file)
                 file << "}\n";
             }
                 break;
+        }
+    }
+}
+
+void GameLoop::collectData(std::ofstream& file, int data, int loop){
+    char separator = ',';
+    if (MPIGameConfig::COLLECT_DATA){
+        switch (data){
+            case 0: {
+                file << "NPCs" << separator << MPIGameConfig::NPC_COUNT << "\n";
+                file << "MPI" << separator;
+                if (MPIGameConfig::DISTRIBUTE_PROCESSING){
+                    file << "Enabled\n";
+                }
+                else{
+                    file << "Disabled\n";
+                }
+                file << "Loop" << separator << "Processing Time" << separator << "Logic Processing" << separator << "Distributed P1" << separator << "Distributed P2\n";
+            }
+            break;
+            case 1: {
+                file << loop << separator;
+                file << ((this->processingTime.tv_sec * Utils::NANOSECOND) + this->processingTime.tv_nsec) << separator;
+                file << ((this->logicProcessing.tv_sec * Utils::NANOSECOND) + this->logicProcessing.tv_nsec) << separator;
+                file << ((this->distributedPhase1.tv_sec * Utils::NANOSECOND) + this->distributedPhase1.tv_nsec) << separator;
+                file << ((this->distributedPhase2.tv_sec * Utils::NANOSECOND) + this->distributedPhase2.tv_nsec) << "\n";
+            }
+            break;
         }
     }
 }
