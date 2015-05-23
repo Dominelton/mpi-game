@@ -86,14 +86,14 @@
         <ccTool>
           <commandlineTool>mpicxx</commandlineTool>
           <incDir>
-            <pElem>../../mpich_install/include</pElem>
             <pElem>model</pElem>
             <pElem>include/</pElem>
+            <pElem>/opt/mpich-install/include</pElem>
           </incDir>
         </ccTool>
         <linkerTool>
           <linkerAddLib>
-            <pElem>../../mpich_install/lib</pElem>
+            <pElem>/opt/mpich-install/lib</pElem>
           </linkerAddLib>
           <commandlineTool>mpicxx</commandlineTool>
         </linkerTool>

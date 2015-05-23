@@ -10,8 +10,8 @@
 
 #include "Position.h"
 #include "Facing.h"
-#include "Utils.h"
-#include "MPIGameConfig.h"
+#include "../config/Utils.h"
+#include "../config/MPIGameConfig.h"
 
 #include <stdio.h>
 
@@ -19,9 +19,9 @@
 #include <iostream>
 #include <fstream>
 
-#include "rapidjson/document.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/stringbuffer.h"
+#include "../include/rapidjson/document.h"
+#include "../include/rapidjson/writer.h"
+#include "../include/rapidjson/stringbuffer.h"
 
 class Movement {
 public:

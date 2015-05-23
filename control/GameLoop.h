@@ -8,10 +8,10 @@
 #ifndef GAMELOOP_H
 #define	GAMELOOP_H
 
-#include "NPC.h"
-#include "Facing.h"
-#include "Position.h"
-#include "MPIGameConfig.h"
+#include "../model/NPC.h"
+#include "../model/Facing.h"
+#include "../model/Position.h"
+#include "../config/MPIGameConfig.h"
 #include "MPIControl.h"
 
 #include <stdlib.h>

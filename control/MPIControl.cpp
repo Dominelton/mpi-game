@@ -45,14 +45,14 @@ void MPIControl::writePortNameToFile(const char* portName){
 }
 
 const char* MPIControl::readPortNameFromFile(){
-  std::string line;
-  std::ifstream portNameFile ("../portName.txt");
-  if (portNameFile.is_open()){
-    if (std::getline (portNameFile, line)){
-        return line.c_str();
+    std::string line;
+    std::ifstream portNameFile ("../portName.txt");
+    if (portNameFile.is_open()){
+        if (std::getline (portNameFile, line)){
+            return line.c_str();
+        }
+        portNameFile.close();
     }
-    portNameFile.close();
-  }
 }
 
 const char* MPIControl::openPort(){

@@ -9,12 +9,12 @@
 #define	MPICONTROL_H
 
 #include "mpi.h"
-#include "NPC.h"
+#include "../model/NPC.h"
 #include <vector>
 
-#include "rapidjson/document.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/stringbuffer.h"
+#include "../include/rapidjson/document.h"
+#include "../include/rapidjson/writer.h"
+#include "../include/rapidjson/stringbuffer.h"
 
 class MPIControl {
 public:

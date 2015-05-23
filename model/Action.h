@@ -9,15 +9,15 @@
 #define	ACTION_H
 
 #include "Movement.h"
-#include "MPIGameConfig.h"
-#include "Utils.h"
+#include "../config/MPIGameConfig.h"
+#include "../config/Utils.h"
 
 #include <time.h>
 #include <stdlib.h>
 
-#include "rapidjson/document.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/stringbuffer.h"
+#include "../include/rapidjson/document.h"
+#include "../include/rapidjson/writer.h"
+#include "../include/rapidjson/stringbuffer.h"
 
 class Action {
 public:
