@@ -15,7 +15,7 @@ MPIControl::MPIControl(bool isServer) {
         this->intercomm = this->startServer();
     }else{
         this->intercomm = this->startClient();
-    }
+    } 
 }
 
 MPIControl::MPIControl(const MPIControl& orig) {
