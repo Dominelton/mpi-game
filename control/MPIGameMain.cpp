@@ -1,8 +1,10 @@
+#include <unistd.h>
 #include "mpi.h"
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"
 #include "GameLoop.h"
+#include "../config/MPIGameConfig.h"
 #include <iostream>
 #include <fstream>
 

@@ -63,7 +63,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-L/opt/mpich-install/lib
+LDLIBSOPTIONS=-L/home/skrep/mpich-install/lib
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -76,62 +76,62 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/mpi-game: ${OBJECTFILES}
 ${OBJECTDIR}/config/MPIGameConfig.o: config/MPIGameConfig.cpp 
 	${MKDIR} -p ${OBJECTDIR}/config
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Imodel -Iinclude/ -I/opt/mpich-install/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/config/MPIGameConfig.o config/MPIGameConfig.cpp
+	$(COMPILE.cc) -g -Imodel -Iinclude/ -I/home/skrep/mpich-install/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/config/MPIGameConfig.o config/MPIGameConfig.cpp
 
 ${OBJECTDIR}/config/Utils.o: config/Utils.cpp 
 	${MKDIR} -p ${OBJECTDIR}/config
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Imodel -Iinclude/ -I/opt/mpich-install/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/config/Utils.o config/Utils.cpp
+	$(COMPILE.cc) -g -Imodel -Iinclude/ -I/home/skrep/mpich-install/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/config/Utils.o config/Utils.cpp
 
 ${OBJECTDIR}/control/GameLoop.o: control/GameLoop.cpp 
 	${MKDIR} -p ${OBJECTDIR}/control
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Imodel -Iinclude/ -I/opt/mpich-install/include -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/control/GameLoop.o control/GameLoop.cpp
+	$(COMPILE.cc) -g -Imodel -Iinclude/ -I/home/skrep/mpich-install/include -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/control/GameLoop.o control/GameLoop.cpp
 
 ${OBJECTDIR}/control/MPIControl.o: control/MPIControl.cpp 
 	${MKDIR} -p ${OBJECTDIR}/control
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Imodel -Iinclude/ -I/opt/mpich-install/include -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/control/MPIControl.o control/MPIControl.cpp
+	$(COMPILE.cc) -g -Imodel -Iinclude/ -I/home/skrep/mpich-install/include -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/control/MPIControl.o control/MPIControl.cpp
 
 ${OBJECTDIR}/control/MPIGameMain.o: control/MPIGameMain.cpp 
 	${MKDIR} -p ${OBJECTDIR}/control
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Imodel -Iinclude/ -I/opt/mpich-install/include -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/control/MPIGameMain.o control/MPIGameMain.cpp
+	$(COMPILE.cc) -g -Imodel -Iinclude/ -I/home/skrep/mpich-install/include -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/control/MPIGameMain.o control/MPIGameMain.cpp
 
 ${OBJECTDIR}/model/Action.o: model/Action.cpp 
 	${MKDIR} -p ${OBJECTDIR}/model
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Imodel -Iinclude/ -I/opt/mpich-install/include -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Action.o model/Action.cpp
+	$(COMPILE.cc) -g -Imodel -Iinclude/ -I/home/skrep/mpich-install/include -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Action.o model/Action.cpp
 
 ${OBJECTDIR}/model/Character.o: model/Character.cpp 
 	${MKDIR} -p ${OBJECTDIR}/model
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Imodel -Iinclude/ -I/opt/mpich-install/include -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Character.o model/Character.cpp
+	$(COMPILE.cc) -g -Imodel -Iinclude/ -I/home/skrep/mpich-install/include -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Character.o model/Character.cpp
 
 ${OBJECTDIR}/model/Facing.o: model/Facing.cpp 
 	${MKDIR} -p ${OBJECTDIR}/model
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Imodel -Iinclude/ -I/opt/mpich-install/include -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Facing.o model/Facing.cpp
+	$(COMPILE.cc) -g -Imodel -Iinclude/ -I/home/skrep/mpich-install/include -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Facing.o model/Facing.cpp
 
 ${OBJECTDIR}/model/Movement.o: model/Movement.cpp 
 	${MKDIR} -p ${OBJECTDIR}/model
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Imodel -Iinclude/ -I/opt/mpich-install/include -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Movement.o model/Movement.cpp
+	$(COMPILE.cc) -g -Imodel -Iinclude/ -I/home/skrep/mpich-install/include -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Movement.o model/Movement.cpp
 
 ${OBJECTDIR}/model/NPC.o: model/NPC.cpp 
 	${MKDIR} -p ${OBJECTDIR}/model
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Imodel -Iinclude/ -I/opt/mpich-install/include -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/NPC.o model/NPC.cpp
+	$(COMPILE.cc) -g -Imodel -Iinclude/ -I/home/skrep/mpich-install/include -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/NPC.o model/NPC.cpp
 
 ${OBJECTDIR}/model/Player.o: model/Player.cpp 
 	${MKDIR} -p ${OBJECTDIR}/model
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Imodel -Iinclude/ -I/opt/mpich-install/include -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Player.o model/Player.cpp
+	$(COMPILE.cc) -g -Imodel -Iinclude/ -I/home/skrep/mpich-install/include -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Player.o model/Player.cpp
 
 ${OBJECTDIR}/model/Position.o: model/Position.cpp 
 	${MKDIR} -p ${OBJECTDIR}/model
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Imodel -Iinclude/ -I/opt/mpich-install/include -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Position.o model/Position.cpp
+	$(COMPILE.cc) -g -Imodel -Iinclude/ -I/home/skrep/mpich-install/include -Iconfig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/model/Position.o model/Position.cpp
 
 # Subprojects
 .build-subprojects:

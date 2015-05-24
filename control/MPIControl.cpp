@@ -30,10 +30,9 @@ MPI::Intercomm MPIControl::startServer(){
 }
 
 MPI::Intercomm MPIControl::startClient(){
-    std::cout << "TESTE 1";
-    const char* port_name = readPortNameFromFile(); 
-    std::cout << "TESTE 2";
-    //gets(port_name);
+    //char* port_name = readPortNameFromFile();
+    char port_name[MPI_MAX_PORT_NAME];
+    gets(port_name);
     return connectToServer(port_name);
 }
 
@@ -58,8 +57,8 @@ const char* MPIControl::readPortNameFromFile(){
 const char* MPIControl::openPort(){
     char port_name[MPI_MAX_PORT_NAME];
     MPI::Open_port(MPI_INFO_NULL, port_name);
-    writePortNameToFile(port_name);
-    //std::cout << "PortName: " << port_name << "\n";
+    //writePortNameToFile(port_name);
+    std::cout << "PortName: " << port_name << "\n";
     std::cout << "***MPI*** - Server started\n";
     return port_name;
 }

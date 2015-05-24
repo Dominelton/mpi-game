@@ -88,12 +88,12 @@
           <incDir>
             <pElem>model</pElem>
             <pElem>include/</pElem>
-            <pElem>/opt/mpich-install/include</pElem>
+            <pElem>/home/skrep/mpich-install/include</pElem>
           </incDir>
         </ccTool>
         <linkerTool>
           <linkerAddLib>
-            <pElem>/opt/mpich-install/lib</pElem>
+            <pElem>/home/skrep/mpich-install/lib</pElem>
           </linkerAddLib>
           <commandlineTool>mpicxx</commandlineTool>
         </linkerTool>
