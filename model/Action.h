@@ -26,6 +26,7 @@ public:
          
     Action();
     Action(long);
+    Action(bool);
     Action(const Action& orig);
     virtual ~Action();
 
